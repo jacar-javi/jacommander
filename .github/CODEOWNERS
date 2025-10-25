@@ -1,0 +1,39 @@
+# CODEOWNERS file for JaCommander
+# These owners will be the default owners for everything in the repo
+# They will be requested for review when someone opens a pull request
+
+# Default owners for everything in the repository
+* @jacar-javi
+
+# Backend Go code
+/backend/ @jacar-javi
+
+# Frontend JavaScript/CSS
+/frontend/ @jacar-javi
+
+# Docker configuration
+/Dockerfile @jacar-javi
+/docker-compose.yml @jacar-javi
+/.dockerignore @jacar-javi
+
+# CI/CD workflows
+/.github/workflows/ @jacar-javi
+
+# Documentation
+/README.md @jacar-javi
+/CONTRIBUTING.md @jacar-javi
+/CODE_OF_CONDUCT.md @jacar-javi
+/SECURITY.md @jacar-javi
+/docs/ @jacar-javi
+
+# Configuration files
+/config/ @jacar-javi
+/.env* @jacar-javi
+
+# Dependencies
+/go.mod @jacar-javi
+/go.sum @jacar-javi
+
+# Security sensitive files
+/SECURITY.md @jacar-javi
+/.github/dependabot.yml @jacar-javi

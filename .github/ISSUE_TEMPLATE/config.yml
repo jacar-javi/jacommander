@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/jacar-javi/jacommander/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: Documentation
+    url: https://github.com/jacar-javi/jacommander/wiki
+    about: Read the official documentation
+  - name: Security Vulnerability
+    url: https://github.com/jacar-javi/jacommander/security/advisories/new
+    about: Report security vulnerabilities privately

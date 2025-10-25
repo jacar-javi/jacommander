@@ -38,8 +38,8 @@ Complete CI/CD workflow with comprehensive testing:
    ```
 
 2. Set up GitHub Secrets (for Docker Hub):
-   - `DOCKER_USERNAME` - Your Docker Hub username
-   - `DOCKER_PASSWORD` - Your Docker Hub access token
+   - `DOCKERHUB_USERNAME` - Your Docker Hub username
+   - `DOCKERHUB_TOKEN` - Your Docker Hub access token
 
 3. Configure Codecov (optional):
    - Sign up at codecov.io
