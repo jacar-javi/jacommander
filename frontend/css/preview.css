@@ -1,0 +1,262 @@
+/**
+ * File Preview Styles
+ * Hover preview tooltip for files
+ */
+
+/* Preview Container */
+.file-preview {
+  position: fixed;
+  width: 400px;
+  max-width: 90vw;
+  max-height: 500px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.file-preview.preview-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Preview Header */
+.preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+
+.preview-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.preview-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.preview-badge {
+  display: none;
+  padding: 2px 8px;
+  background: var(--primary);
+  color: white;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Preview Content */
+.preview-content {
+  max-height: 350px;
+  overflow: auto;
+  padding: 12px 16px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre;
+  color: var(--text-secondary);
+}
+
+.preview-content.highlighted {
+  padding: 0;
+  overflow: hidden;
+}
+
+.preview-content.highlighted .syntax-highlighted {
+  margin: 0;
+  border-radius: 0;
+  background: var(--bg-primary);
+  font-size: 11px;
+  max-height: 350px;
+  overflow: auto;
+}
+
+.preview-content.highlighted .syntax-highlighted code {
+  padding: 12px 16px;
+}
+
+/* Simplified line numbers for preview */
+.preview-content .line-number {
+  width: 3em;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+/* Preview Info (for metadata-only preview) */
+.preview-info {
+  font-family: var(--font-primary);
+  white-space: normal;
+  line-height: 1.6;
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.info-label {
+  font-weight: 600;
+  margin-right: 8px;
+  color: var(--text-secondary);
+}
+
+.info-value {
+  color: var(--text-primary);
+}
+
+.info-note {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: var(--warning-bg, rgba(255, 193, 7, 0.1));
+  color: var(--warning, #ffc107);
+  border-radius: 4px;
+  font-size: 11px;
+  text-align: center;
+}
+
+.preview-image,
+.preview-binary {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-family: var(--font-primary);
+}
+
+.preview-image {
+  font-size: 48px;
+}
+
+/* Preview Footer */
+.preview-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-family: var(--font-primary);
+}
+
+.preview-size,
+.preview-modified,
+.preview-permissions {
+  display: inline-flex;
+  align-items: center;
+}
+
+.preview-permissions {
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+/* Scrollbar styling */
+.preview-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.preview-content::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.preview-content::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.preview-content::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Theme Variables */
+.theme-dark {
+  --preview-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --warning-bg: rgba(255, 193, 7, 0.1);
+  --warning: #ffc107;
+}
+
+.theme-light {
+  --preview-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --warning-bg: rgba(255, 152, 0, 0.1);
+  --warning: #ff9800;
+}
+
+.theme-high-contrast {
+  --preview-shadow: 0 0 0 2px #ffffff;
+  --warning-bg: rgba(255, 255, 0, 0.2);
+  --warning: #ffff00;
+}
+
+.theme-dark .file-preview {
+  box-shadow: var(--preview-shadow);
+}
+
+.theme-light .file-preview {
+  box-shadow: var(--preview-shadow);
+}
+
+.theme-high-contrast .file-preview {
+  box-shadow: var(--preview-shadow);
+}
+
+/* Prevent preview from blocking interactions */
+.file-preview:not(.preview-visible) {
+  pointer-events: none;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .file-preview {
+    width: 300px;
+    max-height: 400px;
+  }
+
+  .preview-content {
+    max-height: 250px;
+  }
+
+  .preview-content.highlighted .syntax-highlighted {
+    max-height: 250px;
+  }
+}
+
+/* Animation for smooth appearance */
+@keyframes previewSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.file-preview.preview-visible {
+  animation: previewSlideIn 0.2s ease-out;
+}

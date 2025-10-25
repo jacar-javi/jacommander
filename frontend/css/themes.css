@@ -1,0 +1,174 @@
+/* Theme definitions for JaCommander */
+
+/* Dark Theme (Default) */
+.theme-dark {
+  /* Background Colors */
+  --main-bg: #1e1e1e;
+  --header-bg: #252526;
+  --footer-bg: #252526;
+  --panel-bg: #1e1e1e;
+  --modal-bg: #2d2d30;
+  --editor-bg: #1e1e1e;
+  --input-bg: #3c3c3c;
+  --button-bg: #3c3c3c;
+  --hover-bg: #2a2d2e;
+  --active-bg: #094771;
+  --selected-bg: #094771;
+
+  /* Text Colors */
+  --text-primary: #e0e0e0;
+  --text-secondary: #969696;
+  --text-disabled: #5a5a5a;
+
+  /* Border Colors */
+  --border-color: #464647;
+  --focus-border: #007acc;
+
+  /* Accent Colors */
+  --accent-color: #0d7fcc;
+  --accent-hover: #1a8fe3;
+  --accent-light: rgba(13, 127, 204, 0.2);
+
+  /* Status Colors */
+  --success-color: #4ec9b0;
+  --warning-color: #ce9178;
+  --danger-color: #f44747;
+  --danger-hover: #ff5555;
+  --info-color: #3794ff;
+
+  /* File Type Colors */
+  --folder-color: #dcb67a;
+  --file-color: #e0e0e0;
+  --link-color: #3794ff;
+  --executable-color: #4ec9b0;
+
+  /* Scrollbar */
+  --scrollbar-track: #1e1e1e;
+  --scrollbar-thumb: #464647;
+  --scrollbar-thumb-hover: #5a5a5a;
+
+  /* Panel Specific */
+  --panel-active-border: #007acc;
+  --panel-inactive-border: #464647;
+  --row-hover: rgba(255, 255, 255, 0.05);
+  --row-selected: #094771;
+}
+
+/* Light Theme */
+.theme-light {
+  /* Background Colors */
+  --main-bg: #ffffff;
+  --header-bg: #f3f3f3;
+  --footer-bg: #f3f3f3;
+  --panel-bg: #ffffff;
+  --modal-bg: #ffffff;
+  --editor-bg: #ffffff;
+  --input-bg: #ffffff;
+  --button-bg: #f0f0f0;
+  --hover-bg: #e8e8e8;
+  --active-bg: #cce7ff;
+  --selected-bg: #cce7ff;
+
+  /* Text Colors */
+  --text-primary: #333333;
+  --text-secondary: #6e6e6e;
+  --text-disabled: #a0a0a0;
+
+  /* Border Colors */
+  --border-color: #e0e0e0;
+  --focus-border: #0066cc;
+
+  /* Accent Colors */
+  --accent-color: #0066cc;
+  --accent-hover: #0052a3;
+  --accent-light: rgba(0, 102, 204, 0.1);
+
+  /* Status Colors */
+  --success-color: #107c10;
+  --warning-color: #ca5010;
+  --danger-color: #d13438;
+  --danger-hover: #e74c3c;
+  --info-color: #0078d4;
+
+  /* File Type Colors */
+  --folder-color: #896500;
+  --file-color: #333333;
+  --link-color: #0066cc;
+  --executable-color: #107c10;
+
+  /* Scrollbar */
+  --scrollbar-track: #f3f3f3;
+  --scrollbar-thumb: #c1c1c1;
+  --scrollbar-thumb-hover: #a0a0a0;
+
+  /* Panel Specific */
+  --panel-active-border: #0066cc;
+  --panel-inactive-border: #e0e0e0;
+  --row-hover: rgba(0, 0, 0, 0.04);
+  --row-selected: #cce7ff;
+}
+
+/* High Contrast Theme (Optional) */
+.theme-high-contrast {
+  /* Background Colors */
+  --main-bg: #000000;
+  --header-bg: #000000;
+  --footer-bg: #000000;
+  --panel-bg: #000000;
+  --modal-bg: #000000;
+  --editor-bg: #000000;
+  --input-bg: #000000;
+  --button-bg: #1aebff;
+  --hover-bg: #1aebff;
+  --active-bg: #1aebff;
+  --selected-bg: #1aebff;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #1aebff;
+  --text-disabled: #666666;
+
+  /* Border Colors */
+  --border-color: #1aebff;
+  --focus-border: #ffffff;
+
+  /* Accent Colors */
+  --accent-color: #1aebff;
+  --accent-hover: #00ffff;
+  --accent-light: rgba(26, 235, 255, 0.3);
+
+  /* Status Colors */
+  --success-color: #00ff00;
+  --warning-color: #ffff00;
+  --danger-color: #ff0000;
+  --danger-hover: #ff3333;
+  --info-color: #1aebff;
+
+  /* File Type Colors */
+  --folder-color: #ffff00;
+  --file-color: #ffffff;
+  --link-color: #1aebff;
+  --executable-color: #00ff00;
+
+  /* Scrollbar */
+  --scrollbar-track: #000000;
+  --scrollbar-thumb: #1aebff;
+  --scrollbar-thumb-hover: #00ffff;
+
+  /* Panel Specific */
+  --panel-active-border: #ffffff;
+  --panel-inactive-border: #1aebff;
+  --row-hover: rgba(26, 235, 255, 0.2);
+  --row-selected: rgba(26, 235, 255, 0.4);
+}
+
+/* Theme Transitions */
+body {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+* {
+  transition: border-color 0.2s ease;
+}

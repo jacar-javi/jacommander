@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JaCommander - Minimalist File Manager</title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/themes.css" />
+    <link rel="stylesheet" href="css/panels.css" />
+    <link rel="stylesheet" href="css/syntax.css" />
+    <link rel="stylesheet" href="css/preview.css" />
+    <link rel="stylesheet" href="css/dragdrop.css" />
+    <link rel="stylesheet" href="css/breadcrumb.css" />
+    <link rel="stylesheet" href="css/upload.css" />
+    <link rel="stylesheet" href="css/shortcuts.css" />
+    <link rel="stylesheet" href="css/tabs.css" />
+    <link rel="stylesheet" href="css/cloud-storage.css" />
+    <link rel="stylesheet" href="css/ui-alignment.css" />
+  </head>
+  <body class="theme-dark">
+    <!-- Header Bar -->
+    <header class="header-bar">
+      <div class="header-left">
+        <button id="menu-btn" class="header-btn" title="Menu (F9)">☰</button>
+        <span class="app-title">JaCommander</span>
+      </div>
+      <div class="header-right">
+        <!-- Custom Language Dropdown -->
+        <div class="custom-dropdown" id="language-dropdown">
+          <div class="dropdown-trigger" id="dropdown-trigger">
+            <span class="dropdown-flag">🇬🇧</span>
+            <span class="dropdown-text">EN</span>
+            <span class="dropdown-arrow">▼</span>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu">
+            <!-- Language items are dynamically generated -->
+          </div>
+        </div>
+        <div class="header-separator"></div>
+        <button id="shortcuts-btn" class="header-btn" title="Keyboard Shortcuts (Ctrl+K)">⌨</button>
+        <button id="config-btn" class="header-btn" title="Configuration">⚙</button>
+        <button id="theme-btn" class="header-btn" title="Toggle Theme">◐</button>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Dual Panel Container -->
+      <div class="panels-container">
+        <!-- Left Panel -->
+        <div class="panel" id="panel-left" data-panel="left">
+          <div class="panel-header">
+            <select class="storage-selector" id="storage-left">
+              <option value="">Loading...</option>
+            </select>
+            <div class="panel-path">
+              <input type="text" class="path-input" id="path-left" value="/" readonly />
+            </div>
+          </div>
+
+          <div class="panel-content">
+            <table class="file-list" id="file-list-left">
+              <thead>
+                <tr>
+                  <th class="col-select">☐</th>
+                  <th class="col-name">Name</th>
+                  <th class="col-size">Size</th>
+                  <th class="col-modified">Modified</th>
+                </tr>
+              </thead>
+              <tbody id="files-left">
+                <!-- File entries will be added here -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel-footer">
+            <span class="panel-info">
+              <span id="item-count-left">0 items</span> |
+              <span id="selected-count-left">0 selected</span>
+            </span>
+            <span class="panel-space">
+              <span id="space-info-left">-- / --</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="panel" id="panel-right" data-panel="right">
+          <div class="panel-header">
+            <select class="storage-selector" id="storage-right">
+              <option value="">Loading...</option>
+            </select>
+            <div class="panel-path">
+              <input type="text" class="path-input" id="path-right" value="/" readonly />
+            </div>
+          </div>
+
+          <div class="panel-content">
+            <table class="file-list" id="file-list-right">
+              <thead>
+                <tr>
+                  <th class="col-select">☐</th>
+                  <th class="col-name">Name</th>
+                  <th class="col-size">Size</th>
+                  <th class="col-modified">Modified</th>
+                </tr>
+              </thead>
+              <tbody id="files-right">
+                <!-- File entries will be added here -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel-footer">
+            <span class="panel-info">
+              <span id="item-count-right">0 items</span> |
+              <span id="selected-count-right">0 selected</span>
+            </span>
+            <span class="panel-space">
+              <span id="space-info-right">-- / --</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Bar for Operations -->
+      <div class="progress-container" id="progress-container" style="display: none">
+        <div class="progress-header">
+          <span id="progress-operation">Operation</span>
+          <button class="progress-cancel" id="progress-cancel">✕</button>
+        </div>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="progress-info">
+          <span id="progress-percentage">0%</span>
+          <span id="progress-speed"></span>
+          <span id="progress-remaining"></span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer with Function Keys -->
+    <footer class="footer-bar">
+      <button class="function-key" data-key="F1" title="Help">F1 Help</button>
+      <button class="function-key" data-key="F2" title="Menu">F2 Menu</button>
+      <button class="function-key" data-key="F3" title="View">F3 View</button>
+      <button class="function-key" data-key="F4" title="Edit">F4 Edit</button>
+      <button class="function-key" data-key="F5" title="Copy">F5 Copy</button>
+      <button class="function-key" data-key="F6" title="Move">F6 Move</button>
+      <button class="function-key" data-key="F7" title="New Folder">F7 MkDir</button>
+      <button class="function-key" data-key="F8" title="Delete">F8 Delete</button>
+      <button class="function-key" data-key="F9" title="Menu">F9 Menu</button>
+      <button class="function-key" data-key="F10" title="Exit">F10 Exit</button>
+      <button class="function-key" data-key="F11" title="Terminal">F11 Term</button>
+      <button class="function-key" data-key="F12" title="Settings">F12 Settings</button>
+    </footer>
+
+    <!-- Modals -->
+
+    <!-- Help Modal (F1) -->
+    <div class="modal" id="help-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Keyboard Shortcuts</h2>
+          <button class="modal-close" data-modal="help-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="shortcuts-grid">
+            <div class="shortcut-item"><kbd>F1</kbd> Help</div>
+            <div class="shortcut-item"><kbd>F2</kbd> User Menu</div>
+            <div class="shortcut-item"><kbd>F3</kbd> View File</div>
+            <div class="shortcut-item"><kbd>F4</kbd> Edit File</div>
+            <div class="shortcut-item"><kbd>F5</kbd> Copy Files</div>
+            <div class="shortcut-item"><kbd>F6</kbd> Move/Rename</div>
+            <div class="shortcut-item"><kbd>F7</kbd> Create Directory</div>
+            <div class="shortcut-item"><kbd>F8</kbd> Delete</div>
+            <div class="shortcut-item"><kbd>F9</kbd> Menu</div>
+            <div class="shortcut-item"><kbd>F10</kbd> Exit</div>
+            <div class="shortcut-item"><kbd>Tab</kbd> Switch Panel</div>
+            <div class="shortcut-item"><kbd>Insert</kbd> Select Item</div>
+            <div class="shortcut-item"><kbd>Ctrl+A</kbd> Select All</div>
+            <div class="shortcut-item"><kbd>Ctrl+\</kbd> Deselect All</div>
+            <div class="shortcut-item"><kbd>Ctrl+R</kbd> Refresh</div>
+            <div class="shortcut-item"><kbd>Ctrl+S</kbd> Search</div>
+            <div class="shortcut-item"><kbd>Alt+F5</kbd> Compress</div>
+            <div class="shortcut-item"><kbd>Alt+F6</kbd> Decompress</div>
+            <div class="shortcut-item"><kbd>Shift+F4</kbd> New File</div>
+            <div class="shortcut-item"><kbd>Shift+F6</kbd> Rename</div>
+            <div class="shortcut-item"><kbd>Ctrl+K</kbd> Customize Shortcuts</div>
+            <div class="shortcut-item"><kbd>Ctrl+T</kbd> New Tab</div>
+            <div class="shortcut-item"><kbd>Ctrl+W</kbd> Close Tab</div>
+            <div class="shortcut-item"><kbd>Ctrl+Tab</kbd> Next Tab</div>
+            <div class="shortcut-item"><kbd>Ctrl+Shift+Tab</kbd> Previous Tab</div>
+            <div class="shortcut-item"><kbd>Ctrl+1-9</kbd> Go to Tab N</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Modal (F3) -->
+    <div class="modal" id="view-modal" style="display: none">
+      <div class="modal-content modal-wide">
+        <div class="modal-header">
+          <h2 id="view-title">View File</h2>
+          <button class="modal-close" data-modal="view-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <pre id="view-content" class="file-viewer"></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Modal (F4) -->
+    <div class="modal" id="edit-modal" style="display: none">
+      <div class="modal-content modal-wide">
+        <div class="modal-header">
+          <h2 id="edit-title">Edit File</h2>
+          <div class="modal-actions">
+            <button id="edit-save">Save (Ctrl+S)</button>
+            <button class="modal-close" data-modal="edit-modal">Close (ESC)</button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <textarea id="edit-content" class="file-editor"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copy/Move Confirmation Modal -->
+    <div class="modal" id="copy-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="copy-title">Copy Files</h2>
+          <button class="modal-close" data-modal="copy-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="copy-message">Copy selected files to:</p>
+          <input type="text" id="copy-destination" class="modal-input" />
+          <div class="file-list-preview" id="copy-files-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="copy-confirm" class="btn-primary">Copy</button>
+          <button class="btn-cancel" data-modal="copy-modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Directory Modal (F7) -->
+    <div class="modal" id="mkdir-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Create Directory</h2>
+          <button class="modal-close" data-modal="mkdir-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <label for="mkdir-name">Directory name:</label>
+          <input type="text" id="mkdir-name" class="modal-input" placeholder="New Folder" />
+        </div>
+        <div class="modal-footer">
+          <button id="mkdir-confirm" class="btn-primary">Create</button>
+          <button class="btn-cancel" data-modal="mkdir-modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal (F8) -->
+    <div class="modal" id="delete-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Confirm Delete</h2>
+          <button class="modal-close" data-modal="delete-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete the following files?</p>
+          <div class="file-list-preview" id="delete-files-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="delete-confirm" class="btn-danger">Delete</button>
+          <button class="btn-cancel" data-modal="delete-modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compression Modal (Alt+F5) -->
+    <div class="modal" id="compress-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Compress Files</h2>
+          <button class="modal-close" data-modal="compress-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <label for="compress-name">Archive name:</label>
+          <input type="text" id="compress-name" class="modal-input" placeholder="archive.zip" />
+
+          <label for="compress-format">Format:</label>
+          <select id="compress-format" class="modal-select">
+            <option value="zip">ZIP</option>
+            <option value="tar">TAR</option>
+            <option value="tar.gz">TAR.GZ</option>
+          </select>
+
+          <div class="file-list-preview" id="compress-files-list"></div>
+        </div>
+        <div class="modal-footer">
+          <button id="compress-confirm" class="btn-primary">Compress</button>
+          <button class="btn-cancel" data-modal="compress-modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Modal (Ctrl+S) -->
+    <div class="modal" id="search-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Search Files</h2>
+          <button class="modal-close" data-modal="search-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <label for="search-query">Search for:</label>
+          <input type="text" id="search-query" class="modal-input" placeholder="Enter filename or pattern..." />
+
+          <div class="search-options">
+            <label>
+              <input type="checkbox" id="search-case-sensitive" />
+              Case sensitive
+            </label>
+            <label>
+              <input type="checkbox" id="search-regex" />
+              Use regex
+            </label>
+            <label>
+              <input type="checkbox" id="search-subdirs" checked />
+              Include subdirectories
+            </label>
+          </div>
+
+          <div id="search-results" class="search-results-container" style="display: none">
+            <h3>Results:</h3>
+            <div id="search-results-list" class="file-list-preview"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="search-confirm" class="btn-primary">Search</button>
+          <button class="btn-cancel" data-modal="search-modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="context-menu" class="context-menu">
+      <div class="context-menu-item" data-action="view"><span>📄</span> View (F3)</div>
+      <div class="context-menu-item" data-action="edit"><span>✏️</span> Edit (F4)</div>
+      <div class="context-menu-separator"></div>
+      <div class="context-menu-item" data-action="copy"><span>📋</span> Copy (F5)</div>
+      <div class="context-menu-item" data-action="move"><span>✂️</span> Cut (F6)</div>
+      <div class="context-menu-item" data-action="rename"><span>📝</span> Rename</div>
+      <div class="context-menu-separator"></div>
+      <div class="context-menu-item" data-action="compress"><span>📦</span> Compress</div>
+      <div class="context-menu-item" data-action="delete"><span>🗑️</span> Delete (F8)</div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

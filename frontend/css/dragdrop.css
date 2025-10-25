@@ -1,0 +1,270 @@
+/**
+ * Drag and Drop Styles
+ * Visual feedback for drag and drop operations
+ */
+
+/* Draggable files */
+.file-list tr.draggable {
+  cursor: move;
+}
+
+.file-list tr.draggable:hover {
+  background: var(--hover-bg);
+}
+
+/* Dragging state */
+body.dragging {
+  cursor: move !important;
+}
+
+body.dragging * {
+  cursor: move !important;
+}
+
+/* Source element being dragged */
+.dragging-source {
+  opacity: 0.5;
+  background: var(--primary-light) !important;
+}
+
+/* Drop target indicators */
+.drop-target {
+  position: relative;
+  background: var(--drop-target-bg) !important;
+  outline: 2px dashed var(--primary);
+  outline-offset: -2px;
+}
+
+.drop-target::before {
+  content: attr(data-drop-effect);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary);
+  text-transform: uppercase;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.drop-target[data-drop-effect='copy']::before {
+  content: 'COPY';
+}
+
+.drop-target[data-drop-effect='move']::before {
+  content: 'MOVE';
+}
+
+/* Folder drop targets */
+.file-list tr.drag-over {
+  background: var(--primary-light) !important;
+  outline: 2px solid var(--primary);
+}
+
+/* Drop position indicators */
+.file-list tr.drop-before {
+  border-top: 3px solid var(--primary);
+}
+
+.file-list tr.drop-after {
+  border-bottom: 3px solid var(--primary);
+}
+
+/* Custom drag image */
+.drag-image {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 12px;
+  max-width: 250px;
+  pointer-events: none !important;
+}
+
+.drag-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.drag-count {
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.drag-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary);
+}
+
+.drag-more {
+  font-style: italic;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+/* Panel drop zones */
+.file-panel {
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.file-panel.drop-target {
+  background: var(--drop-zone-bg);
+}
+
+.file-panel.drop-target .file-list {
+  opacity: 0.7;
+}
+
+/* Drag handle for touch devices */
+.touch-drag-handle {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: move;
+}
+
+.touch-device .touch-drag-handle {
+  display: flex;
+}
+
+/* Prevent text selection during drag */
+.dragging {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Theme-specific colors */
+.theme-dark {
+  --drop-target-bg: rgba(33, 150, 243, 0.1);
+  --drop-zone-bg: rgba(33, 150, 243, 0.05);
+  --primary-light: rgba(33, 150, 243, 0.2);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+}
+
+.theme-light {
+  --drop-target-bg: rgba(33, 150, 243, 0.1);
+  --drop-zone-bg: rgba(33, 150, 243, 0.05);
+  --primary-light: rgba(33, 150, 243, 0.15);
+  --hover-bg: rgba(0, 0, 0, 0.05);
+}
+
+.theme-high-contrast {
+  --drop-target-bg: rgba(255, 255, 0, 0.2);
+  --drop-zone-bg: rgba(255, 255, 0, 0.1);
+  --primary-light: rgba(255, 255, 0, 0.3);
+  --hover-bg: rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes dropPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.drop-target {
+  animation: dropPulse 1s infinite;
+}
+
+/* Drag ghost image (native) */
+.dragging .file-list tr {
+  transition: opacity 0.2s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .drag-image {
+    font-size: 11px;
+    max-width: 200px;
+  }
+
+  .drag-count {
+    font-size: 11px;
+  }
+}
+
+/* Accessibility */
+.draggable:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* File upload drop zone */
+.upload-drop-zone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.upload-drop-zone.active {
+  display: flex;
+}
+
+.upload-drop-message {
+  background: var(--bg-primary);
+  padding: 40px;
+  border-radius: 12px;
+  border: 3px dashed var(--primary);
+  text-align: center;
+}
+
+.upload-drop-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.upload-drop-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.upload-drop-hint {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Disabled drag state */
+.no-drag {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+/* Visual feedback for invalid drop targets */
+.invalid-drop-target {
+  cursor: not-allowed;
+  background: var(--error-bg) !important;
+  outline-color: var(--error) !important;
+}
