@@ -115,7 +115,7 @@ go mod tidy
 ```bash
 # Check Go version
 go version
-# Requires Go 1.24+
+# Requires Go 1.25+
 
 # Update Go
 # Visit: https://golang.org/dl/
@@ -148,7 +148,7 @@ docker system prune -a
 3. **Base image pull fails**
 ```bash
 # Pull base image manually
-docker pull golang:1.24-alpine
+docker pull golang:1.25-alpine
 docker pull alpine:latest
 ```
 

@@ -15,7 +15,7 @@
 - **Docker Compose**: 2.0 or later
 
 #### Manual Installation
-- **Go**: 1.24 or later
+- **Go**: 1.25 or later
 - **Git**: 2.0 or later
 
 ## Quick Install Methods
@@ -70,7 +70,7 @@ docker-compose up -d
 **For development or custom deployments**
 
 ```bash
-# Install Go 1.24+
+# Install Go 1.25+
 # Visit: https://golang.org/dl/
 
 # Clone repository

@@ -251,7 +251,7 @@ Virtual scrolling handles thousands of files, intelligent caching, and chunked u
 ### Technology Stack
 
 **Backend:**
-- Go (Golang) 1.24+
+- Go (Golang) 1.25+
 - Gorilla Mux (routing)
 - Gorilla WebSocket (real-time updates)
 

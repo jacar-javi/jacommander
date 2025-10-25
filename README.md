@@ -110,7 +110,7 @@ http://localhost:8080
 
 ### Manual Installation
 
-1. Ensure you have Go 1.24+ installed
+1. Ensure you have Go 1.25+ installed
 
 2. Clone and build:
 ```bash
