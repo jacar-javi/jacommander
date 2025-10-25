@@ -18,7 +18,9 @@
 
 **A modern, minimalist dual-panel file manager for the web**
 
-[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Development](#development) • [Contributing](#contributing)
+[Features](#features) • [Quick Start](#-quick-start) • [Documentation](#-documentation) • [API](#-api-documentation) • [Contributing](#-contributing)
+
+📖 **[Complete Documentation](docs/README.md)** • 🚀 **[Installation Guide](docs/installation.md)** • ⌨️ **[Keyboard Shortcuts](docs/keyboard-shortcuts.md)** • 🔧 **[Configuration](docs/configuration.md)**
 
 </div>
 
@@ -120,6 +122,40 @@ go run backend/main.go
 
 3. Open browser to http://localhost:8080
 
+## 📖 Documentation
+
+**Comprehensive guides and references:**
+
+### Getting Started
+- 📘 **[Documentation Home](docs/README.md)** - Complete documentation index
+- 🚀 **[Installation Guide](docs/installation.md)** - Docker, manual, and platform-specific installation
+- ✨ **[Features Overview](docs/features.md)** - Detailed feature documentation
+
+### Configuration & Setup
+- 🔧 **[Configuration Guide](docs/configuration.md)** - Production deployment and scenarios
+- 📝 **[Environment Variables](docs/environment-variables.md)** - Complete variable reference
+- 💾 **[Storage Backends](docs/storage-backends.md)** - S3, Google Drive, OneDrive, FTP, WebDAV, NFS
+
+### Usage & Reference
+- ⌨️ **[Keyboard Shortcuts](docs/keyboard-shortcuts.md)** - Complete shortcut reference
+- 🔌 **[API Documentation](docs/api.md)** - REST API and WebSocket reference
+- 🔍 **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
+
+### Quick Links
+```bash
+# Installation
+https://github.com/jacar-javi/jacommander/blob/main/docs/installation.md
+
+# Configuration
+https://github.com/jacar-javi/jacommander/blob/main/docs/configuration.md
+
+# Environment Variables
+https://github.com/jacar-javi/jacommander/blob/main/docs/environment-variables.md
+
+# Keyboard Shortcuts
+https://github.com/jacar-javi/jacommander/blob/main/docs/keyboard-shortcuts.md
+```
+
 ## ⚙️ Configuration
 
 ### Environment Variables
@@ -214,6 +250,8 @@ CGO_ENABLED=0 go build -ldflags="-s -w" -o jacommander ./backend
 
 ## 📝 API Documentation
 
+**📌 [Complete API Reference](docs/api.md)** - Full REST API and WebSocket documentation
+
 ### File Operations
 
 - `GET /api/fs/list` - List directory contents
@@ -232,6 +270,21 @@ CGO_ENABLED=0 go build -ldflags="-s -w" -o jacommander ./backend
 ### WebSocket
 
 - `WS /api/ws` - Real-time progress updates
+
+**Example Usage:**
+
+```bash
+# Login
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"secret"}'
+
+# List files
+curl "http://localhost:8080/api/fs/list?path=/data" \
+  -H "Authorization: Bearer {token}"
+```
+
+See **[API Documentation](docs/api.md)** for complete examples and reference.
 
 ## 🎨 Advanced Features
 
@@ -329,9 +382,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
+- 📖 **Documentation**: [Complete Documentation](docs/README.md) - Guides, references, and tutorials
+- 🔍 **Troubleshooting**: [Troubleshooting Guide](docs/troubleshooting.md) - Solutions to common issues
 - 🐛 **Issues**: [GitHub Issues](https://github.com/jacar-javi/jacommander/issues) - ![GitHub issues](https://img.shields.io/github/issues-raw/jacar-javi/jacommander)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/jacar-javi/jacommander/discussions)
-- 📖 **Documentation**: [Wiki](https://github.com/jacar-javi/jacommander/wiki)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/jacar-javi/jacommander/discussions) - Community Q&A
 - ⭐ **Feature Requests**: [Request a Feature](https://github.com/jacar-javi/jacommander/issues/new?labels=enhancement)
 - 🐞 **Bug Reports**: [Report a Bug](https://github.com/jacar-javi/jacommander/issues/new?labels=bug)
 
@@ -364,6 +418,6 @@ If you find this project useful, please consider giving it a star! It helps othe
 
 Made with ❤️ by Javier Cañete Arroyo
 
-[Website](https://jacommander.io) • [Documentation](https://docs.jacommander.io) • [Demo](https://demo.jacommander.io)
+[Website](https://jacommander.io) • [Documentation](docs/README.md) • [Docker Hub](https://hub.docker.com/r/jacarjavi/jacommander) • [Demo](https://demo.jacommander.io)
 
 </div>
