@@ -33,17 +33,33 @@ gh api \
     --method PUT \
     -H "Accept: application/vnd.github+json" \
     "/repos/${REPO}/branches/${BRANCH}/protection" \
-    -f required_status_checks='{"strict":true,"contexts":["build","test","lint"]}' \
-    -F enforce_admins=false \
-    -f required_pull_request_reviews='{"dismissal_restrictions":{},"dismiss_stale_reviews":true,"require_code_owner_reviews":true,"required_approving_review_count":1,"require_last_push_approval":false}' \
-    -f restrictions=null \
-    -F required_linear_history=false \
-    -F allow_force_pushes=false \
-    -F allow_deletions=false \
-    -F block_creations=false \
-    -F required_conversation_resolution=true \
-    -F lock_branch=false \
-    -F allow_fork_syncing=true
+    --input - <<EOF
+{
+  "required_status_checks": {
+    "strict": true,
+    "checks": [
+      {"context": "build"},
+      {"context": "test"},
+      {"context": "lint"}
+    ]
+  },
+  "enforce_admins": false,
+  "required_pull_request_reviews": {
+    "dismiss_stale_reviews": true,
+    "require_code_owner_reviews": true,
+    "required_approving_review_count": 1,
+    "require_last_push_approval": false
+  },
+  "restrictions": null,
+  "required_linear_history": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "block_creations": false,
+  "required_conversation_resolution": true,
+  "lock_branch": false,
+  "allow_fork_syncing": true
+}
+EOF
 
 echo ""
 echo "✓ Branch protection rules configured successfully!"
