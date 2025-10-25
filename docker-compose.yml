@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: jacommander
     ports:
-      - "8080:8080"
+      - '8080:8080'
     volumes:
       # Data volumes
       - ./data:/data
@@ -48,10 +48,10 @@ services:
       # ONEDRIVE_REFRESH_TOKEN: "your-refresh-token"
 
       # Performance settings
-      MAX_UPLOAD_SIZE: 5368709120  # 5GB
-      CHUNK_SIZE: 8388608          # 8MB
+      MAX_UPLOAD_SIZE: 5368709120 # 5GB
+      CHUNK_SIZE: 8388608 # 8MB
       WORKER_THREADS: 4
-      CACHE_ENABLED: "true"
+      CACHE_ENABLED: 'true'
       CACHE_SIZE_MB: 256
 
       # Logging
@@ -62,7 +62,7 @@ services:
     networks:
       - jacommander-network
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/storages"]
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8080/api/storages']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -72,10 +72,10 @@ services:
   jacommander-dev:
     build:
       context: .
-      dockerfile: Dockerfile.dev  # Use development Dockerfile if exists
+      dockerfile: Dockerfile.dev # Use development Dockerfile if exists
     container_name: jacommander-dev
     ports:
-      - "8081:8080"
+      - '8081:8080'
     volumes:
       # Mount source code for development
       - ./backend:/app/backend

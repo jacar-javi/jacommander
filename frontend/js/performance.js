@@ -480,7 +480,9 @@ export class PerformanceOptimizer {
     }
 
     startMemoryMonitoring() {
-        if (!performance.memory) {return;}
+        if (!performance.memory) {
+            return;
+        }
 
         setInterval(() => {
             const memory = performance.memory.usedJSHeapSize / 1048576; // Convert to MB
@@ -513,7 +515,9 @@ export class PerformanceOptimizer {
     }
 
     updateMetricDisplay(type, value) {
-        if (!this.perfPanel) {return;}
+        if (!this.perfPanel) {
+            return;
+        }
 
         const element = this.perfPanel.querySelector(`#${type}-value`);
         if (element) {
@@ -565,7 +569,9 @@ export class PerformanceOptimizer {
     }
 
     async processBatch() {
-        if (this.isProcessing || this.batchQueue.length === 0) {return;}
+        if (this.isProcessing || this.batchQueue.length === 0) {
+            return;
+        }
 
         this.isProcessing = true;
         const batch = this.batchQueue.splice(0, this.settings.batchSize);
@@ -697,7 +703,9 @@ export class PerformanceOptimizer {
 
     observePanelScrolling(panel) {
         const scrollElement = panel.contentElement;
-        if (!scrollElement) {return;}
+        if (!scrollElement) {
+            return;
+        }
 
         let scrollTimeout;
         scrollElement.addEventListener('scroll', () => {
@@ -799,10 +807,14 @@ export class PerformanceOptimizer {
     }
 
     lazyLoad(element) {
-        if (element.dataset.loaded === 'true') {return;}
+        if (element.dataset.loaded === 'true') {
+            return;
+        }
 
         const src = element.dataset.src;
-        if (!src) {return;}
+        if (!src) {
+            return;
+        }
 
         // Load content
         if (element.tagName === 'IMG') {
@@ -1031,7 +1043,7 @@ export class PerformanceOptimizer {
 
     throttle(func, limit) {
         let inThrottle;
-        return function(...args) {
+        return function (...args) {
             if (!inThrottle) {
                 func.apply(this, args);
                 inThrottle = true;
@@ -1078,7 +1090,9 @@ export class PerformanceOptimizer {
     }
 
     getAverage(arr) {
-        if (arr.length === 0) {return 0;}
+        if (arr.length === 0) {
+            return 0;
+        }
         return arr.reduce((sum, val) => sum + val, 0) / arr.length;
     }
 

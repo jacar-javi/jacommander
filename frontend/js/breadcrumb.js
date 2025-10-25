@@ -73,7 +73,9 @@ export class BreadcrumbNav {
      * Update breadcrumb for a panel
      */
     updateBreadcrumb(panel, path, storage) {
-        if (!this.breadcrumbs[panel]) {return;}
+        if (!this.breadcrumbs[panel]) {
+            return;
+        }
 
         const list = this.breadcrumbs[panel].list;
         list.innerHTML = '';

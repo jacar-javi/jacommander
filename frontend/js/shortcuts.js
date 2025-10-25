@@ -126,11 +126,17 @@ export class ShortcutManager {
 
         parts.forEach((part) => {
             part = part.trim();
-            if (part === 'ctrl' || part === 'control') {modifiers.push('ctrl');}
-            else if (part === 'alt') {modifiers.push('alt');}
-            else if (part === 'shift') {modifiers.push('shift');}
-            else if (part === 'meta' || part === 'cmd' || part === 'command') {modifiers.push('meta');}
-            else {keys.push(part);}
+            if (part === 'ctrl' || part === 'control') {
+                modifiers.push('ctrl');
+            } else if (part === 'alt') {
+                modifiers.push('alt');
+            } else if (part === 'shift') {
+                modifiers.push('shift');
+            } else if (part === 'meta' || part === 'cmd' || part === 'command') {
+                modifiers.push('meta');
+            } else {
+                keys.push(part);
+            }
         });
 
         modifiers.sort();
@@ -165,20 +171,34 @@ export class ShortcutManager {
      */
     getKeyCombo(e) {
         const parts = [];
-        if (e.ctrlKey) {parts.push('Ctrl');}
-        if (e.altKey) {parts.push('Alt');}
-        if (e.shiftKey) {parts.push('Shift');}
-        if (e.metaKey) {parts.push('Meta');}
+        if (e.ctrlKey) {
+            parts.push('Ctrl');
+        }
+        if (e.altKey) {
+            parts.push('Alt');
+        }
+        if (e.shiftKey) {
+            parts.push('Shift');
+        }
+        if (e.metaKey) {
+            parts.push('Meta');
+        }
 
         // Get the key name
         let key = e.key;
-        if (key === ' ') {key = 'Space';}
-        else if (key === 'ArrowUp') {key = 'ArrowUp';}
-        else if (key === 'ArrowDown') {key = 'ArrowDown';}
-        else if (key === 'ArrowLeft') {key = 'ArrowLeft';}
-        else if (key === 'ArrowRight') {key = 'ArrowRight';}
-        else if (key.length === 1) {key = key.toUpperCase();}
-        else if (e.code.startsWith('F') && /F\d+/.test(e.code)) {
+        if (key === ' ') {
+            key = 'Space';
+        } else if (key === 'ArrowUp') {
+            key = 'ArrowUp';
+        } else if (key === 'ArrowDown') {
+            key = 'ArrowDown';
+        } else if (key === 'ArrowLeft') {
+            key = 'ArrowLeft';
+        } else if (key === 'ArrowRight') {
+            key = 'ArrowRight';
+        } else if (key.length === 1) {
+            key = key.toUpperCase();
+        } else if (e.code.startsWith('F') && /F\d+/.test(e.code)) {
             key = e.code;
         }
 
@@ -467,7 +487,9 @@ export class ShortcutManager {
         e.stopPropagation();
 
         const kbd = document.querySelector(`kbd[data-action="${this.recordingAction}"]`);
-        if (!kbd) {return;}
+        if (!kbd) {
+            return;
+        }
 
         // Handle Delete key to remove custom shortcut
         if (e.key === 'Delete') {
@@ -531,7 +553,9 @@ export class ShortcutManager {
         const normalized = this.normalizeKey(keyCombo);
 
         for (const [name, config] of Object.entries(this.defaultShortcuts)) {
-            if (name === excludeAction) {continue;}
+            if (name === excludeAction) {
+                continue;
+            }
 
             const currentKey = this.customShortcuts[name] || config.key;
             if (this.normalizeKey(currentKey) === normalized) {
@@ -595,7 +619,9 @@ export class ShortcutManager {
 
         input.addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if (!file) {return;}
+            if (!file) {
+                return;
+            }
 
             try {
                 const text = await file.text();

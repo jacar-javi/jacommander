@@ -130,7 +130,9 @@ export class FileUploader {
 
         // Show confirmation modal
         const confirmed = await this.showUploadConfirmation(validFiles, targetPath);
-        if (!confirmed) {return;}
+        if (!confirmed) {
+            return;
+        }
 
         // Add files to upload queue
         for (const file of validFiles) {
@@ -180,14 +182,14 @@ export class FileUploader {
                         </div>
                         <div class="file-list-preview" style="max-height: 200px; overflow-y: auto;">
                             ${files
-        .map(
-            (file) => `
+                                .map(
+                                    (file) => `
                                 <div style="padding: 4px 0;">
                                     📄 ${file.name} (${formatSize(file.size)})
                                 </div>
                             `
-        )
-        .join('')}
+                                )
+                                .join('')}
                         </div>
                         <p style="margin-top: 10px;">
                             <strong>Total size:</strong> ${formatSize(totalSize)}
@@ -241,7 +243,9 @@ export class FileUploader {
             }
 
             const upload = this.uploadQueue.find((u) => u.status === 'pending');
-            if (!upload) {break;}
+            if (!upload) {
+                break;
+            }
 
             upload.status = 'uploading';
             this.uploadFile(upload);
@@ -389,8 +393,12 @@ export class FileUploader {
         if (item) {
             const bar = item.querySelector('.upload-progress-bar');
             const text = item.querySelector('.upload-progress-text');
-            if (bar) {bar.style.width = `${percent}%`;}
-            if (text) {text.textContent = `${Math.round(percent)}%`;}
+            if (bar) {
+                bar.style.width = `${percent}%`;
+            }
+            if (text) {
+                text.textContent = `${Math.round(percent)}%`;
+            }
         }
     }
 

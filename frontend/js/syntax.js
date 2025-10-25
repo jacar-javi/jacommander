@@ -270,7 +270,9 @@ export class SyntaxHighlighter {
      * Apply syntax highlighting to text
      */
     highlight(text, language) {
-        if (!text) {return '';}
+        if (!text) {
+            return '';
+        }
 
         // First escape HTML to prevent XSS
         let highlighted = this.escapeHtml(text);

@@ -268,13 +268,13 @@ export class FilePreview {
                     <span class="info-value">${this.formatFileSize(file.size)}</span>
                 </div>
                 ${
-    file.size > this.maxFileSize
-        ? `
+                    file.size > this.maxFileSize
+                        ? `
                 <div class="info-note">
                     File too large for preview (>${this.formatFileSize(this.maxFileSize)})
                 </div>`
-        : ''
-}
+                        : ''
+                }
             </div>
         `;
         contentElement.classList.remove('highlighted');
@@ -518,7 +518,9 @@ export class FilePreview {
      * Format file size
      */
     formatFileSize(bytes) {
-        if (bytes === 0) {return '0 B';}
+        if (bytes === 0) {
+            return '0 B';
+        }
         const k = 1024;
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -529,7 +531,9 @@ export class FilePreview {
      * Format date
      */
     formatDate(dateString) {
-        if (!dateString) {return 'Unknown';}
+        if (!dateString) {
+            return 'Unknown';
+        }
 
         const date = new Date(dateString);
         const now = new Date();

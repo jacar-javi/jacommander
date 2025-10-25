@@ -316,7 +316,9 @@ export class SimpleI18n {
         const trigger = document.getElementById('dropdown-trigger');
         const menu = document.getElementById('dropdown-menu');
 
-        if (!trigger || !menu) {return;}
+        if (!trigger || !menu) {
+            return;
+        }
 
         // Clear and rebuild the dropdown menu with all languages
         menu.innerHTML = '';
@@ -400,8 +402,12 @@ export class SimpleI18n {
         const flag = document.querySelector('.dropdown-flag');
         const text = document.querySelector('.dropdown-text');
 
-        if (flag) {flag.textContent = langData.flag;}
-        if (text) {text.textContent = langData.code;}
+        if (flag) {
+            flag.textContent = langData.flag;
+        }
+        if (text) {
+            text.textContent = langData.code;
+        }
     }
 
     openDropdown(trigger, menu) {
@@ -450,16 +456,24 @@ export class SimpleI18n {
 
         // Update header buttons
         const menuBtn = document.getElementById('menu-btn');
-        if (menuBtn) {menuBtn.title = `${this.translate('menu')} (F9)`;}
+        if (menuBtn) {
+            menuBtn.title = `${this.translate('menu')} (F9)`;
+        }
 
         const shortcutsBtn = document.getElementById('shortcuts-btn');
-        if (shortcutsBtn) {shortcutsBtn.title = `${this.translate('keyboard.shortcuts')} (Ctrl+K)`;}
+        if (shortcutsBtn) {
+            shortcutsBtn.title = `${this.translate('keyboard.shortcuts')} (Ctrl+K)`;
+        }
 
         const configBtn = document.getElementById('config-btn');
-        if (configBtn) {configBtn.title = this.translate('configuration');}
+        if (configBtn) {
+            configBtn.title = this.translate('configuration');
+        }
 
         const themeBtn = document.getElementById('theme-btn');
-        if (themeBtn) {themeBtn.title = this.translate('toggle.theme');}
+        if (themeBtn) {
+            themeBtn.title = this.translate('toggle.theme');
+        }
 
         // Update table headers
         document.querySelectorAll('th.col-name').forEach((th) => {

@@ -469,15 +469,15 @@ export class I18n {
             </button>
             <div class="lang-dropdown">
                 ${this.supportedLanguages
-        .map(
-            (lang) => `
+                    .map(
+                        (lang) => `
                     <div class="lang-option ${lang.code === this.currentLang ? 'active' : ''}" data-lang="${lang.code}">
                         <span class="lang-flag">${lang.flag}</span>
                         <span class="lang-name">${lang.name}</span>
                     </div>
                 `
-        )
-        .join('')}
+                    )
+                    .join('')}
             </div>
         `;
 
@@ -783,13 +783,27 @@ export class I18n {
         const diff = now - date;
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-        if (days === 0) {return this.t('time.today');}
-        if (days === 1) {return this.t('time.yesterday');}
-        if (days < 7) {return this.t('time.this_week');}
-        if (days < 14) {return this.t('time.last_week');}
-        if (days < 30) {return this.t('time.this_month');}
-        if (days < 60) {return this.t('time.last_month');}
-        if (days < 365) {return this.t('time.this_year');}
+        if (days === 0) {
+            return this.t('time.today');
+        }
+        if (days === 1) {
+            return this.t('time.yesterday');
+        }
+        if (days < 7) {
+            return this.t('time.this_week');
+        }
+        if (days < 14) {
+            return this.t('time.last_week');
+        }
+        if (days < 30) {
+            return this.t('time.this_month');
+        }
+        if (days < 60) {
+            return this.t('time.last_month');
+        }
+        if (days < 365) {
+            return this.t('time.this_year');
+        }
 
         return this.formatDate(date);
     }
