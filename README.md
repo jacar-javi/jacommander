@@ -30,7 +30,6 @@
 
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/jacar-javi/jacommander)](https://github.com/jacar-javi/jacommander)
 [![GitHub repo size](https://img.shields.io/github/repo-size/jacar-javi/jacommander)](https://github.com/jacar-javi/jacommander)
-[![Lines of code](https://img.shields.io/tokei/lines/github/jacar-javi/jacommander)](https://github.com/jacar-javi/jacommander)
 [![GitHub all releases](https://img.shields.io/github/downloads/jacar-javi/jacommander/total)](https://github.com/jacar-javi/jacommander/releases)
 [![GitHub contributors](https://img.shields.io/github/contributors/jacar-javi/jacommander)](https://github.com/jacar-javi/jacommander/graphs/contributors)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/jacar-javi/jacommander)](https://github.com/jacar-javi/jacommander/commits/main)
