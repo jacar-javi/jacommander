@@ -262,7 +262,9 @@ export class CloudStorageManager {
 
     getStorageConfig() {
         const storageType = document.getElementById('storage-type').value;
-        if (!storageType) {return null;}
+        if (!storageType) {
+            return null;
+        }
 
         const config = {
             type: storageType,
@@ -277,7 +279,9 @@ export class CloudStorageManager {
                 const accessKey = document.getElementById('s3-access-key')?.value;
                 const secretKey = document.getElementById('s3-secret-key')?.value;
 
-                if (!bucket || !accessKey || !secretKey) {return null;}
+                if (!bucket || !accessKey || !secretKey) {
+                    return null;
+                }
 
                 config.id = `s3-${bucket}`;
                 config.config = {
@@ -332,7 +336,9 @@ export class CloudStorageManager {
 
     refreshStorageList() {
         const listContainer = document.getElementById('storage-list');
-        if (!listContainer) {return;}
+        if (!listContainer) {
+            return;
+        }
 
         if (this.storages.length === 0) {
             listContainer.innerHTML = '<div class="empty-state">No cloud storages configured</div>';
@@ -351,13 +357,13 @@ export class CloudStorageManager {
                 <div class="storage-actions">
                     ${storage.is_default ? '<span class="default-badge">Default</span>' : ''}
                     ${
-    storage.id !== 'local'
-        ? `
+                        storage.id !== 'local'
+                            ? `
                         <button class="btn-small" onclick="cloudStorage.setDefault('${storage.id}')">Set Default</button>
                         <button class="btn-small btn-danger" onclick="cloudStorage.removeStorage('${storage.id}')">Remove</button>
                     `
-        : ''
-}
+                            : ''
+                    }
                 </div>
             </div>
         `
@@ -391,7 +397,9 @@ export class CloudStorageManager {
     }
 
     async removeStorage(storageId) {
-        if (!confirm('Are you sure you want to remove this storage?')) {return;}
+        if (!confirm('Are you sure you want to remove this storage?')) {
+            return;
+        }
 
         try {
             const response = await fetch(`/api/storages/${storageId}`, {

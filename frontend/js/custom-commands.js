@@ -906,7 +906,9 @@ export class CustomCommands {
     }
 
     async executeCommand(command) {
-        if (this.executing) {return;}
+        if (this.executing) {
+            return;
+        }
 
         // Check for confirmation
         if (command.options.confirm) {
@@ -987,7 +989,9 @@ export class CustomCommands {
         for (const match of inputs) {
             const prompt = match[1];
             const value = await this.promptForInput(prompt);
-            if (value === null) {return null;} // User cancelled
+            if (value === null) {
+                return null;
+            } // User cancelled
             result = result.replace(match[0], value);
         }
 
@@ -1188,7 +1192,9 @@ export class CustomCommands {
 
     editCommand(id) {
         const cmd = this.commands.find((c) => c.id === id);
-        if (!cmd) {return;}
+        if (!cmd) {
+            return;
+        }
 
         this.settings.querySelector('#cmd-id').value = cmd.id;
         this.settings.querySelector('#cmd-name').value = cmd.name;
@@ -1204,7 +1210,9 @@ export class CustomCommands {
     }
 
     deleteCommand(id) {
-        if (!confirm('Delete this command?')) {return;}
+        if (!confirm('Delete this command?')) {
+            return;
+        }
 
         this.commands = this.commands.filter((cmd) => cmd.id !== id);
         this.saveCommandsToStorage();
@@ -1311,10 +1319,18 @@ export class CustomCommands {
 
     getHotkeyString(e) {
         const parts = [];
-        if (e.ctrlKey) {parts.push('Ctrl');}
-        if (e.altKey) {parts.push('Alt');}
-        if (e.shiftKey) {parts.push('Shift');}
-        if (e.metaKey) {parts.push('Meta');}
+        if (e.ctrlKey) {
+            parts.push('Ctrl');
+        }
+        if (e.altKey) {
+            parts.push('Alt');
+        }
+        if (e.shiftKey) {
+            parts.push('Shift');
+        }
+        if (e.metaKey) {
+            parts.push('Meta');
+        }
 
         const key = e.key.length === 1 ? e.key.toUpperCase() : e.key;
         parts.push(key);
@@ -1329,7 +1345,9 @@ export class CustomCommands {
 
         input.addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if (!file) {return;}
+            if (!file) {
+                return;
+            }
 
             try {
                 const text = await file.text();

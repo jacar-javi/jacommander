@@ -399,7 +399,9 @@ export class NavigationHistory {
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (!this.panel.isActive) {return;}
+            if (!this.panel.isActive) {
+                return;
+            }
 
             if (e.altKey) {
                 switch (e.key) {
@@ -433,7 +435,9 @@ export class NavigationHistory {
     }
 
     addToHistory(path) {
-        if (this.isNavigating) {return;}
+        if (this.isNavigating) {
+            return;
+        }
 
         // Remove any forward history when navigating to new path
         if (this.currentIndex < this.history.length - 1) {
@@ -491,7 +495,9 @@ export class NavigationHistory {
 
     navigateToParent() {
         const currentPath = this.panel.currentPath;
-        if (currentPath === '/') {return;}
+        if (currentPath === '/') {
+            return;
+        }
 
         const parentPath = currentPath.substring(0, currentPath.lastIndexOf('/')) || '/';
         this.panel.navigate(parentPath);
@@ -503,10 +509,14 @@ export class NavigationHistory {
     }
 
     updateBreadcrumbs() {
-        if (!this.breadcrumbs || this.currentIndex < 0) {return;}
+        if (!this.breadcrumbs || this.currentIndex < 0) {
+            return;
+        }
 
         const currentEntry = this.history[this.currentIndex];
-        if (!currentEntry) {return;}
+        if (!currentEntry) {
+            return;
+        }
 
         const path = currentEntry.path;
         const parts = path === '/' ? [''] : path.split('/').filter(Boolean);
@@ -613,16 +623,26 @@ export class NavigationHistory {
     formatTimeAgo(timestamp) {
         const seconds = Math.floor((Date.now() - timestamp) / 1000);
 
-        if (seconds < 60) {return 'just now';}
-        if (seconds < 3600) {return `${Math.floor(seconds / 60)}m ago`;}
-        if (seconds < 86400) {return `${Math.floor(seconds / 3600)}h ago`;}
-        if (seconds < 604800) {return `${Math.floor(seconds / 86400)}d ago`;}
+        if (seconds < 60) {
+            return 'just now';
+        }
+        if (seconds < 3600) {
+            return `${Math.floor(seconds / 60)}m ago`;
+        }
+        if (seconds < 86400) {
+            return `${Math.floor(seconds / 3600)}h ago`;
+        }
+        if (seconds < 604800) {
+            return `${Math.floor(seconds / 86400)}d ago`;
+        }
 
         return new Date(timestamp).toLocaleDateString();
     }
 
     getDirectoryName(path) {
-        if (path === '/') {return 'Root';}
+        if (path === '/') {
+            return 'Root';
+        }
         return path.split('/').pop() || 'Unknown';
     }
 
@@ -646,7 +666,9 @@ export class NavigationHistory {
     }
 
     clearHistory() {
-        if (!confirm('Clear all navigation history?')) {return;}
+        if (!confirm('Clear all navigation history?')) {
+            return;
+        }
 
         this.history = [];
         this.currentIndex = -1;
@@ -698,7 +720,9 @@ export class NavigationHistory {
 
     // Path prediction based on history
     predictNextPath() {
-        if (this.history.length < 2) {return null;}
+        if (this.history.length < 2) {
+            return null;
+        }
 
         const currentPath = this.history[this.currentIndex]?.path;
         const frequencies = this.getVisitFrequencies();

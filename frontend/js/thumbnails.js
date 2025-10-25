@@ -92,7 +92,9 @@ export class ThumbnailManager {
     }
 
     async processQueue() {
-        if (this.isProcessing || this.loadingQueue.length === 0) {return;}
+        if (this.isProcessing || this.loadingQueue.length === 0) {
+            return;
+        }
 
         this.isProcessing = true;
 
@@ -221,7 +223,9 @@ export class ThumbnailManager {
     }
 
     async getFromDB(key) {
-        if (!this.db) {return null;}
+        if (!this.db) {
+            return null;
+        }
 
         return new Promise((resolve) => {
             const transaction = this.db.transaction([this.storeName], 'readonly');
@@ -245,7 +249,9 @@ export class ThumbnailManager {
     }
 
     async saveToDB(key, path, thumbnail) {
-        if (!this.db) {return;}
+        if (!this.db) {
+            return;
+        }
 
         const transaction = this.db.transaction([this.storeName], 'readwrite');
         const store = transaction.objectStore(this.storeName);
@@ -269,7 +275,9 @@ export class ThumbnailManager {
     }
 
     async cleanOldCache() {
-        if (!this.db) {return;}
+        if (!this.db) {
+            return;
+        }
 
         const transaction = this.db.transaction([this.storeName], 'readwrite');
         const store = transaction.objectStore(this.storeName);
