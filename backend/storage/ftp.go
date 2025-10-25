@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"path"
 	"strings"
-	"time"
 
 	"github.com/jlaffaye/ftp"
 	"github.com/pkg/sftp"

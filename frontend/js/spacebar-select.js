@@ -29,10 +29,14 @@ export class SpacebarSelect {
 
     async handleSpacebarPress() {
         const panel = this.app.focusedPanel === 'right' ? this.app.rightPanel : this.app.leftPanel;
-        if (!panel) {return;}
+        if (!panel) {
+            return;
+        }
 
         const selectedFile = panel.getCurrentFile();
-        if (!selectedFile) {return;}
+        if (!selectedFile) {
+            return;
+        }
 
         // Toggle selection
         const isSelected = panel.toggleFileSelection(selectedFile);
@@ -53,7 +57,9 @@ export class SpacebarSelect {
         const folderPath = folder.path;
 
         // Check if already calculating
-        if (this.calculating.has(folderPath)) {return;}
+        if (this.calculating.has(folderPath)) {
+            return;
+        }
 
         // Check cache first
         if (this.sizeCache.has(folderPath)) {
@@ -104,7 +110,9 @@ export class SpacebarSelect {
 
     showCalculatingIndicator(folder, panel) {
         const fileRow = this.findFileRow(folder, panel);
-        if (!fileRow) {return;}
+        if (!fileRow) {
+            return;
+        }
 
         const sizeCell = fileRow.querySelector('.file-size');
         if (sizeCell) {
@@ -119,7 +127,9 @@ export class SpacebarSelect {
 
     displayFolderSize(folder, sizeInfo, panel) {
         const fileRow = this.findFileRow(folder, panel);
-        if (!fileRow) {return;}
+        if (!fileRow) {
+            return;
+        }
 
         const sizeCell = fileRow.querySelector('.file-size');
         if (sizeCell) {
@@ -139,7 +149,9 @@ export class SpacebarSelect {
 
     showSizeError(folder, panel) {
         const fileRow = this.findFileRow(folder, panel);
-        if (!fileRow) {return;}
+        if (!fileRow) {
+            return;
+        }
 
         const sizeCell = fileRow.querySelector('.file-size');
         if (sizeCell) {
@@ -161,7 +173,9 @@ export class SpacebarSelect {
 
     updateFileDisplay(file, panel, isSelected) {
         const fileRow = this.findFileRow(file, panel);
-        if (!fileRow) {return;}
+        if (!fileRow) {
+            return;
+        }
 
         // Update checkbox
         const checkbox = fileRow.querySelector('.file-select-checkbox');
@@ -227,7 +241,9 @@ export class SpacebarSelect {
     }
 
     formatSize(bytes) {
-        if (bytes === 0) {return '0 B';}
+        if (bytes === 0) {
+            return '0 B';
+        }
 
         const units = ['B', 'KB', 'MB', 'GB', 'TB'];
         const k = 1024;
