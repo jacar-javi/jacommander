@@ -46,11 +46,11 @@ jobs:
       - name: Format frontend code
         run: prettier --write "frontend/**/*.{js,css,html,json}"
 
-      # Format YAML files
+      # Format YAML files (exclude workflow files to avoid permission issues)
       - name: Format YAML files
         run: |
           npm install -g js-yaml
-          find . -name "*.yml" -o -name "*.yaml" | xargs -I {} prettier --write {}
+          find . -name "*.yml" -o -name "*.yaml" | grep -v ".github/workflows" | xargs -I {} prettier --write {}
 
       # Commit changes if any
       - name: Check for changes
