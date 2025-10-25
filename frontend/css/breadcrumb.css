@@ -1,0 +1,344 @@
+/**
+ * Breadcrumb Navigation Styles
+ * Visual path navigation for panels
+ */
+
+/* Breadcrumb container */
+.breadcrumb-container {
+  position: relative;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 0 8px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Breadcrumb navigation */
+.breadcrumb-nav {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.breadcrumb-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Breadcrumb list */
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  white-space: nowrap;
+  height: 100%;
+}
+
+/* Breadcrumb item */
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+/* Breadcrumb link */
+.breadcrumb-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+  max-width: 200px;
+}
+
+.breadcrumb-link:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.breadcrumb-link:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.breadcrumb-link:active {
+  background: var(--active-bg);
+}
+
+/* Breadcrumb current item */
+.breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 200px;
+}
+
+/* Breadcrumb text */
+.breadcrumb-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Breadcrumb icon */
+.breadcrumb-icon {
+  margin-right: 6px;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* Breadcrumb separator */
+.breadcrumb-separator {
+  color: var(--text-disabled);
+  padding: 0 4px;
+  font-size: 12px;
+  opacity: 0.5;
+  user-select: none;
+}
+
+/* Scroll buttons */
+.breadcrumb-scroll {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.breadcrumb-scroll:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.breadcrumb-scroll:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.breadcrumb-scroll-left {
+  left: 4px;
+}
+
+.breadcrumb-scroll-right {
+  right: 4px;
+}
+
+/* Gradient fade effect for overflow */
+.breadcrumb-container::before,
+.breadcrumb-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.breadcrumb-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-secondary), transparent);
+}
+
+.breadcrumb-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-secondary), transparent);
+}
+
+/* Animation for navigation */
+@keyframes breadcrumbSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.breadcrumb-item {
+  animation: breadcrumbSlide 0.2s ease-out;
+}
+
+/* Theme-specific styles */
+.theme-dark {
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --active-bg: rgba(255, 255, 255, 0.2);
+  --text-disabled: #666;
+}
+
+.theme-light {
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --active-bg: rgba(0, 0, 0, 0.1);
+  --text-disabled: #999;
+}
+
+.theme-high-contrast {
+  --hover-bg: rgba(255, 255, 0, 0.2);
+  --active-bg: rgba(255, 255, 0, 0.3);
+  --text-disabled: #888;
+}
+
+/* High contrast mode adjustments */
+.theme-high-contrast .breadcrumb-link {
+  border: 1px solid transparent;
+}
+
+.theme-high-contrast .breadcrumb-link:hover {
+  border-color: var(--primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .breadcrumb-container {
+    height: 28px;
+  }
+
+  .breadcrumb-link,
+  .breadcrumb-current {
+    padding: 4px 8px;
+    font-size: 12px;
+    max-width: 150px;
+  }
+
+  .breadcrumb-icon {
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  .breadcrumb-separator {
+    padding: 0 2px;
+  }
+
+  .breadcrumb-scroll {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+}
+
+/* Compact mode */
+.compact-mode .breadcrumb-container {
+  height: 26px;
+}
+
+.compact-mode .breadcrumb-link,
+.compact-mode .breadcrumb-current {
+  padding: 3px 6px;
+  font-size: 11px;
+}
+
+/* Accessibility */
+.breadcrumb-link:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Tooltip for truncated paths */
+.breadcrumb-link[title],
+.breadcrumb-current[title] {
+  position: relative;
+}
+
+.breadcrumb-link[title]:hover::after,
+.breadcrumb-current[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Loading state */
+.breadcrumb-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.breadcrumb-loading::after {
+  content: '...';
+  animation: loadingDots 1s infinite;
+}
+
+@keyframes loadingDots {
+  0%,
+  20% {
+    content: '.';
+  }
+  40% {
+    content: '..';
+  }
+  60%,
+  100% {
+    content: '...';
+  }
+}
+
+/* Error state */
+.breadcrumb-error {
+  background: var(--error-bg);
+  color: var(--error);
+}
+
+/* Copy path button */
+.breadcrumb-copy {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.breadcrumb-copy:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.breadcrumb-copy:active {
+  transform: translateY(-50%) scale(0.95);
+}

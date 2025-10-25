@@ -1,0 +1,43 @@
+# Git files
+.git
+.gitignore
+
+# Documentation
+*.md
+LICENSE
+
+# Development files
+.devcontainer/
+.vscode/
+.idea/
+
+# Test files
+*_test.go
+test/
+
+# Build artifacts
+jacommander
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Data directories (will be mounted as volumes)
+data/
+uploads/
+downloads/
+data-dev/

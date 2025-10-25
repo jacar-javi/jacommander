@@ -1,0 +1,12 @@
+[
+  {
+    "id": "local",
+    "type": "local",
+    "display_name": "Local Storage",
+    "icon": "💾",
+    "config": {
+      "root_path": "/"
+    },
+    "is_default": true
+  }
+]

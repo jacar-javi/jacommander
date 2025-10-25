@@ -1,0 +1,21 @@
+{
+  "name": "jacommander-integration-tests",
+  "version": "1.0.0",
+  "description": "Integration tests for JaCommander",
+  "scripts": {
+    "test": "npm run test:backend && npm run test:frontend && npm run test:integration",
+    "test:backend": "cd ../backend && go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...",
+    "test:frontend": "cd ../frontend && npm test",
+    "test:integration": "go test -v ./...",
+    "test:e2e": "playwright test",
+    "coverage": "npm run coverage:backend && npm run coverage:frontend",
+    "coverage:backend": "cd ../backend && go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out -o coverage.html",
+    "coverage:frontend": "cd ../frontend && npm run test:coverage"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
+  }
+}

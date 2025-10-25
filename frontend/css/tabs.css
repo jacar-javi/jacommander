@@ -1,0 +1,422 @@
+/**
+ * Multi-Tab Support Styles
+ * Tab bar and tab management UI
+ */
+
+/* Tab bar container */
+.tab-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  height: 36px;
+  padding: 0 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tab list */
+.tab-list {
+  display: flex;
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  gap: 2px;
+  padding: 4px 0;
+}
+
+.tab-list::-webkit-scrollbar {
+  height: 3px;
+}
+
+.tab-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+
+/* Individual tab */
+.tab {
+  display: flex;
+  align-items: center;
+  min-width: 100px;
+  max-width: 200px;
+  height: 28px;
+  padding: 0 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  position: relative;
+  white-space: nowrap;
+  gap: 4px;
+}
+
+.tab:hover {
+  background: var(--hover-bg);
+  border-color: var(--primary-light, var(--primary));
+}
+
+/* Active tab */
+.tab.active {
+  background: var(--bg-primary);
+  border-color: var(--primary);
+  border-bottom-color: var(--bg-primary);
+  z-index: 2;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--primary);
+}
+
+/* Tab icon */
+.tab-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Tab title */
+.tab-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.tab.active .tab-title {
+  font-weight: 600;
+}
+
+/* Tab close button */
+.tab-close {
+  display: none;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 2px;
+  flex-shrink: 0;
+  margin-left: 4px;
+  transition: all 0.2s;
+}
+
+.tab:hover .tab-close,
+.tab.active .tab-close {
+  display: block;
+}
+
+.tab-close:hover {
+  background: var(--error-bg, rgba(255, 0, 0, 0.1));
+  color: var(--error);
+}
+
+/* Tab actions */
+.tab-actions {
+  display: flex;
+  gap: 2px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+
+/* New tab button */
+.tab-new,
+.tab-menu {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.tab-new:hover,
+.tab-menu:hover {
+  background: var(--hover-bg);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+.tab-new:active,
+.tab-menu:active {
+  transform: scale(0.95);
+}
+
+/* Tab context menu */
+.tab-context-menu {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 4px 0;
+  min-width: 150px;
+  z-index: 10000;
+}
+
+.tab-context-menu .menu-item {
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-context-menu .menu-item:hover {
+  background: var(--hover-bg);
+}
+
+.tab-context-menu .menu-separator {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 0;
+}
+
+/* Dragging state */
+.tab.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+.tab-list.drag-over {
+  background: var(--primary-bg-alpha, rgba(0, 123, 255, 0.05));
+}
+
+/* Tab number indicators */
+.tab[data-index='0']::before {
+  content: '1';
+}
+.tab[data-index='1']::before {
+  content: '2';
+}
+.tab[data-index='2']::before {
+  content: '3';
+}
+.tab[data-index='3']::before {
+  content: '4';
+}
+.tab[data-index='4']::before {
+  content: '5';
+}
+.tab[data-index='5']::before {
+  content: '6';
+}
+.tab[data-index='6']::before {
+  content: '7';
+}
+.tab[data-index='7']::before {
+  content: '8';
+}
+.tab[data-index='8']::before {
+  content: '9';
+}
+
+.tab::before {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 9px;
+  color: var(--text-disabled, var(--text-secondary));
+  opacity: 0.5;
+  font-weight: 600;
+}
+
+.tab:hover::before {
+  opacity: 0.8;
+}
+
+/* Animation for new tabs */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.tab {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Panel adjustments with tabs */
+.panel-header {
+  border-bottom: none;
+}
+
+.panel-content {
+  height: calc(100% - 120px); /* Adjusted for tab bar */
+}
+
+/* Tab overflow indicator */
+.tab-bar.has-overflow::after {
+  content: '';
+  position: absolute;
+  right: 60px;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, transparent, var(--bg-secondary));
+  pointer-events: none;
+}
+
+/* Theme-specific styles */
+.theme-dark {
+  --hover-bg: rgba(255, 255, 255, 0.1);
+  --primary-bg-alpha: rgba(0, 123, 255, 0.1);
+  --error-bg: rgba(255, 0, 0, 0.1);
+}
+
+.theme-light {
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --primary-bg-alpha: rgba(0, 123, 255, 0.05);
+  --error-bg: rgba(255, 0, 0, 0.05);
+}
+
+.theme-high-contrast .tab {
+  border-width: 2px;
+}
+
+.theme-high-contrast .tab.active {
+  background: var(--bg-primary);
+  border-color: yellow;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .tab {
+    min-width: 80px;
+    max-width: 150px;
+    padding: 0 6px;
+  }
+
+  .tab-title {
+    font-size: 11px;
+  }
+
+  .tab-bar {
+    height: 32px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Accessibility */
+.tab:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+.tab-new:focus-visible,
+.tab-menu:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 0;
+}
+
+/* Loading state */
+.tab.loading::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  animation: loading 1.5s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Tab tooltip */
+.tab[title] {
+  position: relative;
+}
+
+.tab[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+  margin-bottom: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Maximum tabs warning */
+.tab-bar.max-tabs .tab-new {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Tab badge (for notifications) */
+.tab-badge {
+  position: absolute;
+  top: 2px;
+  right: 20px;
+  width: 8px;
+  height: 8px;
+  background: var(--error);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

@@ -1,0 +1,322 @@
+/**
+ * File Upload Styles
+ * Drag and drop upload styling
+ */
+
+/* Drop zone overlay */
+.panel.drop-hover {
+  position: relative;
+  outline: 2px dashed var(--primary);
+  outline-offset: -2px;
+  background: var(--primary-bg-alpha, rgba(0, 123, 255, 0.05));
+}
+
+.panel.drop-hover::after {
+  content: '📥 Drop files here to upload';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary);
+  background: var(--bg-primary);
+  padding: 20px 30px;
+  border-radius: 8px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 1000;
+  white-space: nowrap;
+  animation: dropPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dropPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Upload progress container */
+#upload-progress-container {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  width: 320px;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 10000;
+}
+
+/* Upload progress item */
+.upload-progress-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.upload-progress-item:hover {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Upload header */
+.upload-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.upload-progress-filename {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.upload-progress-close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px;
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.upload-progress-close:hover {
+  opacity: 1;
+  color: var(--error);
+}
+
+/* Progress bar container */
+.upload-progress-bar-container {
+  background: var(--bg-secondary);
+  border-radius: 2px;
+  height: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Progress bar */
+.upload-progress-bar {
+  background: linear-gradient(90deg, var(--primary), var(--primary-light, var(--primary)));
+  height: 100%;
+  width: 0%;
+  transition: width 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Progress text */
+.upload-progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.upload-progress-text {
+  font-weight: 600;
+}
+
+.upload-progress-speed {
+  margin-left: auto;
+}
+
+/* Upload success state */
+.upload-progress-item.success {
+  border-color: var(--success);
+  background: var(--success-bg, var(--bg-primary));
+}
+
+.upload-progress-item.success .upload-progress-bar {
+  background: var(--success);
+}
+
+/* Upload error state */
+.upload-progress-item.error {
+  border-color: var(--error);
+  background: var(--error-bg, var(--bg-primary));
+}
+
+.upload-progress-item.error .upload-progress-bar {
+  background: var(--error);
+}
+
+/* Upload modal styles */
+.upload-confirmation-modal .file-list-preview {
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 15px 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px;
+  background: var(--bg-secondary);
+}
+
+.upload-confirmation-modal .file-item {
+  display: flex;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-light, var(--border));
+}
+
+.upload-confirmation-modal .file-item:last-child {
+  border-bottom: none;
+}
+
+.upload-confirmation-modal .file-icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.upload-confirmation-modal .file-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.upload-confirmation-modal .file-size {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+/* Theme-specific adjustments */
+.theme-dark {
+  --primary-bg-alpha: rgba(0, 123, 255, 0.1);
+  --success-bg: rgba(46, 204, 113, 0.1);
+  --error-bg: rgba(231, 76, 60, 0.1);
+}
+
+.theme-light {
+  --primary-bg-alpha: rgba(0, 123, 255, 0.05);
+  --success-bg: rgba(46, 204, 113, 0.05);
+  --error-bg: rgba(231, 76, 60, 0.05);
+}
+
+.theme-high-contrast .panel.drop-hover {
+  outline: 3px solid var(--primary);
+  background: rgba(255, 255, 0, 0.1);
+}
+
+.theme-high-contrast .panel.drop-hover::after {
+  border: 3px solid var(--primary);
+  background: var(--bg-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #upload-progress-container {
+    width: 280px;
+    right: 10px;
+    bottom: 50px;
+  }
+
+  .panel.drop-hover::after {
+    font-size: 16px;
+    padding: 15px 20px;
+  }
+
+  .upload-progress-item {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  #upload-progress-container {
+    width: calc(100% - 20px);
+    left: 10px;
+    right: 10px;
+  }
+
+  .panel.drop-hover::after {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .upload-progress-bar::after {
+    animation: none;
+  }
+
+  @keyframes dropPulse {
+    from,
+    to {
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  .upload-progress-item {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .panel.drop-hover {
+    outline-width: 3px;
+  }
+
+  .upload-progress-item {
+    border-width: 2px;
+  }
+
+  .upload-progress-bar-container {
+    border: 1px solid var(--border);
+  }
+}

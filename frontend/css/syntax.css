@@ -1,0 +1,291 @@
+/**
+ * Syntax Highlighting Styles
+ * Supports multiple themes and languages
+ */
+
+/* Base syntax highlighting container */
+.syntax-highlighted {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  tab-size: 4;
+  overflow-x: auto;
+  padding: 16px;
+  border-radius: 4px;
+  background: var(--syntax-bg, #1e1e1e);
+  color: var(--syntax-default, #d4d4d4);
+  white-space: pre;
+}
+
+.syntax-highlighted code {
+  display: block;
+  font-family: inherit;
+}
+
+/* Line numbers */
+.line-number {
+  display: inline-block;
+  width: 4em;
+  padding-right: 1em;
+  text-align: right;
+  color: var(--syntax-line-number, #858585);
+  user-select: none;
+  opacity: 0.7;
+}
+
+.line-content {
+  padding-left: 0.5em;
+}
+
+/* Syntax classes for all themes */
+.syntax-keyword {
+  font-weight: 600;
+}
+.syntax-function {
+  font-style: italic;
+}
+.syntax-comment {
+  font-style: italic;
+  opacity: 0.8;
+}
+.syntax-string {
+}
+.syntax-number {
+}
+.syntax-operator {
+}
+.syntax-bracket {
+  font-weight: 600;
+}
+.syntax-type {
+}
+.syntax-decorator {
+  font-weight: 600;
+}
+.syntax-boolean {
+  font-weight: 600;
+}
+
+/* HTML/XML specific */
+.syntax-tag {
+  font-weight: 600;
+}
+.syntax-attribute {
+}
+.syntax-doctype {
+  font-weight: 600;
+}
+
+/* CSS specific */
+.syntax-selector {
+  font-weight: 600;
+}
+.syntax-property {
+}
+.syntax-value {
+}
+.syntax-color {
+  position: relative;
+  padding-left: 20px;
+}
+
+.syntax-color::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--syntax-default);
+  border-radius: 2px;
+  background: currentColor;
+}
+
+/* JSON specific */
+.syntax-key {
+  font-weight: 600;
+}
+
+/* Markdown specific */
+.syntax-header {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.syntax-bold {
+  font-weight: 700;
+}
+.syntax-italic {
+  font-style: italic;
+}
+.syntax-code {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+.syntax-codeblock {
+  display: block;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  margin: 4px 0;
+  border-radius: 3px;
+}
+.syntax-link {
+  text-decoration: underline;
+}
+.syntax-list {
+  font-weight: 600;
+}
+.syntax-blockquote {
+  border-left: 3px solid currentColor;
+  padding-left: 8px;
+  opacity: 0.8;
+}
+
+/* YAML specific */
+.syntax-array {
+  font-weight: 600;
+}
+
+/* Dark theme overrides (default) */
+[data-theme='dark'] .syntax-highlighted,
+.syntax-highlighted {
+  --syntax-bg: #1e1e1e;
+  --syntax-default: #d4d4d4;
+  --syntax-line-number: #858585;
+}
+
+/* Light theme overrides */
+[data-theme='light'] .syntax-highlighted {
+  --syntax-bg: #ffffff;
+  --syntax-default: #000000;
+  --syntax-line-number: #237893;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #e0e0e0;
+}
+
+/* High contrast theme overrides */
+[data-theme='high-contrast'] .syntax-highlighted {
+  --syntax-bg: #000000;
+  --syntax-default: #ffffff;
+  --syntax-line-number: #ffffff;
+  background: #000000;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+/* Viewer/Editor modal syntax highlighting */
+.modal-content .syntax-highlighted {
+  margin: 0;
+  height: 100%;
+  padding: 0;
+  border-radius: 0;
+}
+
+.modal-content .syntax-highlighted code {
+  padding: 16px;
+  height: 100%;
+  overflow: auto;
+}
+
+/* Textarea for editing with monospace font */
+.modal textarea {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  tab-size: 4;
+}
+
+/* Language badge in file viewer */
+.language-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  z-index: 10;
+}
+
+/* Hover effects for interactive elements */
+.syntax-highlighted .syntax-function:hover,
+.syntax-highlighted .syntax-key:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Selection styling */
+.syntax-highlighted ::selection {
+  background: rgba(33, 150, 243, 0.3);
+}
+
+.syntax-highlighted ::-moz-selection {
+  background: rgba(33, 150, 243, 0.3);
+}
+
+/* Scrollbar styling for syntax highlighted areas */
+.syntax-highlighted::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.syntax-highlighted::-webkit-scrollbar-track {
+  background: var(--syntax-bg);
+}
+
+.syntax-highlighted::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.5);
+  border-radius: 6px;
+}
+
+.syntax-highlighted::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.7);
+}
+
+/* Animation for syntax loading */
+@keyframes syntaxFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.syntax-highlighted {
+  animation: syntaxFadeIn 0.3s ease-out;
+}
+
+/* Print styles */
+@media print {
+  .syntax-highlighted {
+    background: white !important;
+    color: black !important;
+    border: 1px solid #ccc;
+  }
+
+  .line-number {
+    color: #666 !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .syntax-highlighted {
+    font-size: 12px;
+    padding: 12px;
+  }
+
+  .line-number {
+    width: 3em;
+    padding-right: 0.5em;
+  }
+}

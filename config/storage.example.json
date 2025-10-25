@@ -1,0 +1,42 @@
+[
+  {
+    "id": "local",
+    "type": "local",
+    "display_name": "Local Storage",
+    "icon": "💾",
+    "config": {
+      "root_path": "/"
+    },
+    "is_default": true
+  },
+  {
+    "id": "s3-mycompany",
+    "type": "s3",
+    "display_name": "Company S3 Bucket",
+    "icon": "☁️",
+    "config": {
+      "bucket": "my-company-files",
+      "region": "us-east-1",
+      "access_key": "AKIAIOSFODNN7EXAMPLE",
+      "secret_key": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+      "prefix": "jacommander/",
+      "endpoint": ""
+    },
+    "is_default": false
+  },
+  {
+    "id": "s3-minio",
+    "type": "s3",
+    "display_name": "MinIO Storage",
+    "icon": "🗄️",
+    "config": {
+      "bucket": "documents",
+      "region": "us-east-1",
+      "access_key": "minioadmin",
+      "secret_key": "minioadmin",
+      "prefix": "",
+      "endpoint": "http://localhost:9000"
+    },
+    "is_default": false
+  }
+]

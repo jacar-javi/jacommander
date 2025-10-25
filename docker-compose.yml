@@ -1,0 +1,105 @@
+services:
+  jacommander:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jacommander
+    ports:
+      - "8080:8080"
+    volumes:
+      # Data volumes
+      - ./data:/data
+      - ./uploads:/uploads
+      - ./downloads:/downloads
+
+      # For development - mount source code
+      # Uncomment these lines for hot reload during development
+      # - ./backend:/app/backend:ro
+      # - ./frontend:/app/frontend:ro
+
+    environment:
+      # Server configuration
+      PORT: 8080
+      HOST: 0.0.0.0
+
+      # Local storage paths
+      LOCAL_STORAGE_1: /data
+      LOCAL_STORAGE_2: /uploads
+      LOCAL_STORAGE_3: /downloads
+
+      # Optional: S3 configuration
+      # S3_ENABLED: "true"
+      # S3_ENDPOINT: "https://s3.amazonaws.com"
+      # S3_ACCESS_KEY: "your-access-key"
+      # S3_SECRET_KEY: "your-secret-key"
+      # S3_BUCKETS: "bucket1,bucket2"
+      # S3_REGION: "us-east-1"
+
+      # Optional: Google Drive configuration
+      # GDRIVE_ENABLED: "true"
+      # GDRIVE_CLIENT_ID: "your-client-id"
+      # GDRIVE_CLIENT_SECRET: "your-client-secret"
+      # GDRIVE_REFRESH_TOKEN: "your-refresh-token"
+
+      # Optional: OneDrive configuration
+      # ONEDRIVE_ENABLED: "true"
+      # ONEDRIVE_CLIENT_ID: "your-client-id"
+      # ONEDRIVE_CLIENT_SECRET: "your-client-secret"
+      # ONEDRIVE_REFRESH_TOKEN: "your-refresh-token"
+
+      # Performance settings
+      MAX_UPLOAD_SIZE: 5368709120  # 5GB
+      CHUNK_SIZE: 8388608          # 8MB
+      WORKER_THREADS: 4
+      CACHE_ENABLED: "true"
+      CACHE_SIZE_MB: 256
+
+      # Logging
+      LOG_LEVEL: info
+      LOG_FORMAT: json
+
+    restart: unless-stopped
+    networks:
+      - jacommander-network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/storages"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Development version with live reload
+  jacommander-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # Use development Dockerfile if exists
+    container_name: jacommander-dev
+    ports:
+      - "8081:8080"
+    volumes:
+      # Mount source code for development
+      - ./backend:/app/backend
+      - ./frontend:/app/frontend
+      - ./data-dev:/data
+      - ./go.mod:/app/go.mod
+      - ./go.sum:/app/go.sum
+    environment:
+      PORT: 8080
+      HOST: 0.0.0.0
+      LOCAL_STORAGE_1: /data
+      LOG_LEVEL: debug
+    command: go run ./backend
+    profiles:
+      - dev
+    networks:
+      - jacommander-network
+
+networks:
+  jacommander-network:
+    driver: bridge
+
+volumes:
+  data:
+  uploads:
+  downloads:
+  data-dev:

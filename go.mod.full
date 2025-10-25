@@ -1,0 +1,20 @@
+module github.com/jacommander/jacommander
+
+go 1.21
+
+require (
+	github.com/gorilla/mux v1.8.1
+	github.com/gorilla/websocket v1.5.1
+	github.com/aws/aws-sdk-go-v2 v1.24.0
+	github.com/aws/aws-sdk-go-v2/config v1.26.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.47.5
+	github.com/go-redis/redis/v8 v8.11.5
+	github.com/jlaffaye/ftp v0.2.0
+	github.com/pkg/sftp v1.13.6
+	golang.org/x/crypto v0.17.0
+	golang.org/x/oauth2 v0.15.0
+	google.golang.org/api v0.154.0
+)
+
+// Note: This is the full go.mod with all dependencies needed for advanced storage backends.
+// Rename this to go.mod and run 'go mod tidy' when you're ready to use all storage features.
