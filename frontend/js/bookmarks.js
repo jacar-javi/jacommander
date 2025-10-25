@@ -673,7 +673,9 @@ export class BookmarksManager {
 
     addCurrentDirectory() {
         const activePanel = this.app.panels[this.app.activePanel];
-        if (!activePanel) {return;}
+        if (!activePanel) {
+            return;
+        }
 
         const path = activePanel.currentPath;
         const name = path === '/' ? 'Root' : path.split('/').pop();
@@ -770,7 +772,9 @@ export class BookmarksManager {
     }
 
     deleteBookmark(id) {
-        if (!confirm('Delete this bookmark?')) {return;}
+        if (!confirm('Delete this bookmark?')) {
+            return;
+        }
 
         this.bookmarks = this.bookmarks.filter((b) => b.id !== id);
         this.saveBookmarksToStorage();
@@ -780,7 +784,9 @@ export class BookmarksManager {
 
     editBookmark(id) {
         const bookmark = this.bookmarks.find((b) => b.id === id);
-        if (!bookmark) {return;}
+        if (!bookmark) {
+            return;
+        }
 
         this.modal.querySelector('#bookmark-id').value = bookmark.id;
         this.modal.querySelector('#bookmark-name').value = bookmark.name;
@@ -811,8 +817,12 @@ export class BookmarksManager {
 
         // Sort bookmarks
         const sorted = [...this.bookmarks].sort((a, b) => {
-            if (a.pinned && !b.pinned) {return -1;}
-            if (!a.pinned && b.pinned) {return 1;}
+            if (a.pinned && !b.pinned) {
+                return -1;
+            }
+            if (!a.pinned && b.pinned) {
+                return 1;
+            }
             return a.name.localeCompare(b.name);
         });
 
@@ -998,7 +1008,9 @@ export class BookmarksManager {
 
         input.addEventListener('change', async (e) => {
             const file = e.target.files[0];
-            if (!file) {return;}
+            if (!file) {
+                return;
+            }
 
             try {
                 const text = await file.text();

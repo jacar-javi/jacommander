@@ -171,7 +171,9 @@ export class TabManager {
      */
     saveTabState(panel) {
         const currentTab = this.tabs[panel][this.activeTab[panel]];
-        if (!currentTab) {return;}
+        if (!currentTab) {
+            return;
+        }
 
         const panelData = this.app.panels.panels[panel];
         currentTab.state = {
@@ -239,12 +241,12 @@ export class TabManager {
                 <span class="tab-icon">📁</span>
                 <span class="tab-title">${tab.title}</span>
                 ${
-    tabs.length > 1
-        ? `
+                    tabs.length > 1
+                        ? `
                     <button class="tab-close" data-panel="${panel}" data-index="${index}" title="Close Tab">×</button>
                 `
-        : ''
-}
+                        : ''
+                }
             </div>
         `
             )

@@ -395,7 +395,9 @@ export class TerminalIntegration {
     }
 
     formatSize(bytes) {
-        if (bytes === 0) {return '0 B';}
+        if (bytes === 0) {
+            return '0 B';
+        }
         const k = 1024;
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
@@ -444,7 +446,9 @@ export class TerminalIntegration {
     }
 
     showSearchDialog() {
-        if (!this.searchAddon) {return;}
+        if (!this.searchAddon) {
+            return;
+        }
 
         const searchTerm = prompt('Search in terminal:');
         if (searchTerm) {
@@ -476,7 +480,9 @@ export class TerminalIntegration {
         });
 
         document.addEventListener('mousemove', (e) => {
-            if (!isResizing) {return;}
+            if (!isResizing) {
+                return;
+            }
 
             const deltaY = startY - e.clientY;
             const newHeight = Math.min(Math.max(startHeight + deltaY, 150), window.innerHeight - 100);
@@ -540,7 +546,9 @@ export class TerminalIntegration {
     }
 
     show() {
-        if (!this.container) {return;}
+        if (!this.container) {
+            return;
+        }
 
         this.container.classList.add('visible');
         this.isVisible = true;
@@ -564,7 +572,9 @@ export class TerminalIntegration {
     }
 
     hide() {
-        if (!this.container) {return;}
+        if (!this.container) {
+            return;
+        }
 
         this.container.classList.remove('visible');
         this.isVisible = false;
@@ -584,7 +594,9 @@ export class TerminalIntegration {
 
     injectTerminalStyles() {
         const styleId = 'terminal-integration-styles';
-        if (document.getElementById(styleId)) {return;}
+        if (document.getElementById(styleId)) {
+            return;
+        }
 
         const style = document.createElement('style');
         style.id = styleId;

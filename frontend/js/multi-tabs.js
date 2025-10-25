@@ -57,7 +57,9 @@ export class TabManager {
 
     injectTabStyles() {
         const styleId = 'multi-tabs-styles';
-        if (document.getElementById(styleId)) {return;}
+        if (document.getElementById(styleId)) {
+            return;
+        }
 
         const style = document.createElement('style');
         style.id = styleId;
@@ -333,7 +335,9 @@ export class TabManager {
 
     activateTab(tabId) {
         const tab = this.tabs.find((t) => t.id === tabId);
-        if (!tab) {return;}
+        if (!tab) {
+            return;
+        }
 
         // Save current tab state
         if (this.activeTabId) {
@@ -355,7 +359,9 @@ export class TabManager {
 
     closeTab(tabId) {
         const tabIndex = this.tabs.findIndex((t) => t.id === tabId);
-        if (tabIndex === -1) {return;}
+        if (tabIndex === -1) {
+            return;
+        }
 
         // Don't close if it's the last tab
         if (this.tabs.length === 1) {
@@ -385,7 +391,9 @@ export class TabManager {
 
     saveTabState(tabId) {
         const tab = this.tabs.find((t) => t.id === tabId);
-        if (!tab) {return;}
+        if (!tab) {
+            return;
+        }
 
         // Save left panel state
         const leftPanel = this.app.leftPanel;
@@ -411,7 +419,9 @@ export class TabManager {
 
     restoreTabState(tabId) {
         const tab = this.tabs.find((t) => t.id === tabId);
-        if (!tab) {return;}
+        if (!tab) {
+            return;
+        }
 
         // Restore left panel
         const leftPanel = this.app.leftPanel;
@@ -458,7 +468,9 @@ export class TabManager {
     }
 
     updateActiveTabPath(panel, path) {
-        if (!this.activeTabId) {return;}
+        if (!this.activeTabId) {
+            return;
+        }
 
         const tab = this.tabs.find((t) => t.id === this.activeTabId);
         if (tab) {
@@ -498,14 +510,18 @@ export class TabManager {
 
         menu.addEventListener('click', (e) => {
             const action = e.target.dataset.action;
-            if (!action) {return;}
+            if (!action) {
+                return;
+            }
 
             switch (action) {
                 case 'duplicate':
                     this.duplicateTab(tabId);
                     break;
                 case 'close':
-                    if (!isOnlyTab) {this.closeTab(tabId);}
+                    if (!isOnlyTab) {
+                        this.closeTab(tabId);
+                    }
                     break;
                 case 'close-others':
                     this.closeOtherTabs(tabId);
@@ -549,7 +565,9 @@ export class TabManager {
 
     closeTabsToRight(tabId) {
         const tabIndex = this.tabs.findIndex((t) => t.id === tabId);
-        if (tabIndex === -1) {return;}
+        if (tabIndex === -1) {
+            return;
+        }
 
         const tabsToClose = this.tabs.slice(tabIndex + 1);
         tabsToClose.forEach((tab) => {
@@ -596,7 +614,9 @@ export class TabManager {
         const draggedIndex = this.tabs.findIndex((t) => t.id === draggedTabId);
         const targetIndex = this.tabs.findIndex((t) => t.id === targetTabId);
 
-        if (draggedIndex === -1 || targetIndex === -1) {return;}
+        if (draggedIndex === -1 || targetIndex === -1) {
+            return;
+        }
 
         // Reorder in array
         const draggedTab = this.tabs.splice(draggedIndex, 1)[0];
@@ -656,7 +676,9 @@ export class TabManager {
     }
 
     switchToNextTab() {
-        if (this.tabs.length <= 1) {return;}
+        if (this.tabs.length <= 1) {
+            return;
+        }
 
         const currentIndex = this.tabs.findIndex((t) => t.id === this.activeTabId);
         const nextIndex = (currentIndex + 1) % this.tabs.length;
@@ -664,7 +686,9 @@ export class TabManager {
     }
 
     switchToPrevTab() {
-        if (this.tabs.length <= 1) {return;}
+        if (this.tabs.length <= 1) {
+            return;
+        }
 
         const currentIndex = this.tabs.findIndex((t) => t.id === this.activeTabId);
         const prevIndex = (currentIndex - 1 + this.tabs.length) % this.tabs.length;
@@ -678,7 +702,9 @@ export class TabManager {
     }
 
     getDirectoryName(path) {
-        if (path === '/' || path === '') {return 'Home';}
+        if (path === '/' || path === '') {
+            return 'Home';
+        }
         const parts = path.split('/').filter((p) => p);
         return parts[parts.length - 1] || 'Home';
     }
@@ -701,7 +727,9 @@ export class TabManager {
 
     restoreSession() {
         const sessionData = localStorage.getItem('jacommander-tabs-session');
-        if (!sessionData) {return false;}
+        if (!sessionData) {
+            return false;
+        }
 
         try {
             const session = JSON.parse(sessionData);

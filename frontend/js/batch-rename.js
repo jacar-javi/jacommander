@@ -291,27 +291,27 @@ export class BatchRename {
                 </thead>
                 <tbody>
                     ${files
-        .map((file, index) => {
-            const newName = newNames[index];
-            const hasConflict = this.checkNameConflict(newName, files, index);
-            return `
+                        .map((file, index) => {
+                            const newName = newNames[index];
+                            const hasConflict = this.checkNameConflict(newName, files, index);
+                            return `
                             <tr class="${hasConflict ? 'conflict' : ''}">
                                 <td class="original-name">${this.escapeHtml(file.name)}</td>
                                 <td class="arrow">→</td>
                                 <td class="new-name ${newName === file.name ? 'unchanged' : ''}">${this.escapeHtml(newName)}</td>
                                 <td class="status">
                                     ${
-    hasConflict
-        ? '<span class="error">⚠️ Conflict</span>'
-        : newName === file.name
-            ? '<span class="unchanged">No change</span>'
-            : '<span class="ok">✓</span>'
-}
+                                        hasConflict
+                                            ? '<span class="error">⚠️ Conflict</span>'
+                                            : newName === file.name
+                                              ? '<span class="unchanged">No change</span>'
+                                              : '<span class="ok">✓</span>'
+                                    }
                                 </td>
                             </tr>
                         `;
-        })
-        .join('')}
+                        })
+                        .join('')}
                 </tbody>
             </table>
         `;
@@ -399,7 +399,9 @@ export class BatchRename {
                         ext = '';
                         break;
                     case 'add':
-                        if (!ext) {ext = options.extValue;}
+                        if (!ext) {
+                            ext = options.extValue;
+                        }
                         break;
                     case 'replace':
                         ext = options.extValue;
@@ -470,7 +472,9 @@ export class BatchRename {
     checkNameConflict(newName, files, currentIndex) {
         // Check if the new name conflicts with other files
         return files.some((file, index) => {
-            if (index === currentIndex) {return false;}
+            if (index === currentIndex) {
+                return false;
+            }
             const otherNewNames = this.calculateNewNames(files);
             return otherNewNames[index] === newName;
         });

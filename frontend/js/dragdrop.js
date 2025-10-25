@@ -79,7 +79,9 @@ export class DragDropManager {
      */
     attachPanelHandlers(panel) {
         const tbody = document.getElementById(`files-${panel}`);
-        if (!tbody) {return;}
+        if (!tbody) {
+            return;
+        }
 
         // Make file rows draggable
         tbody.querySelectorAll('tr').forEach((row) => {
@@ -95,7 +97,9 @@ export class DragDropManager {
      */
     attachToFileRow(row, panel) {
         const fileName = row.dataset.name;
-        if (!fileName || fileName === '..') {return;}
+        if (!fileName || fileName === '..') {
+            return;
+        }
 
         // Make row draggable
         row.draggable = true;
@@ -148,7 +152,9 @@ export class DragDropManager {
      */
     setupPanelDropZone(panel) {
         const panelElement = document.querySelector(`[data-panel="${panel}"]`);
-        if (!panelElement) {return;}
+        if (!panelElement) {
+            return;
+        }
 
         // Drag over panel
         panelElement.addEventListener('dragover', (e) => {
@@ -216,7 +222,9 @@ export class DragDropManager {
      * Handle drag over
      */
     handleDragOver(e, element, panel) {
-        if (!this.isDragging) {return;}
+        if (!this.isDragging) {
+            return;
+        }
 
         e.preventDefault();
         e.dataTransfer.dropEffect = this.getDropEffect(e);
@@ -317,7 +325,9 @@ export class DragDropManager {
      */
     getFileFromRow(row, panel) {
         const fileName = row.dataset.name;
-        if (!fileName) {return null;}
+        if (!fileName) {
+            return null;
+        }
 
         const panelData = this.app.panels.panels[panel];
         return panelData.files.find((f) => f.name === fileName);

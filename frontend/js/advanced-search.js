@@ -623,7 +623,9 @@ export class AdvancedSearch {
     }
 
     async startSearch() {
-        if (this.isSearching) {return;}
+        if (this.isSearching) {
+            return;
+        }
 
         this.isSearching = true;
         this.searchResults = [];
@@ -677,7 +679,9 @@ export class AdvancedSearch {
 
         while (true) {
             const { done, value } = await reader.read();
-            if (done) {break;}
+            if (done) {
+                break;
+            }
 
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
@@ -722,14 +726,14 @@ export class AdvancedSearch {
                 <span>${this.formatDate(result.modified)}</span>
             </div>
             ${
-    result.matches
-        ? `
+                result.matches
+                    ? `
                 <div class="result-match">
                     ${this.highlightMatches(result.matches)}
                 </div>
             `
-        : ''
-}
+                    : ''
+            }
         `;
 
         resultItem.addEventListener('click', () => {
@@ -851,7 +855,9 @@ export class AdvancedSearch {
     saveSearch() {
         const filters = this.collectFilters();
         const name = prompt('Enter name for saved search:');
-        if (!name) {return;}
+        if (!name) {
+            return;
+        }
 
         const savedSearches = JSON.parse(localStorage.getItem('savedSearches') || '{}');
         savedSearches[name] = filters;
@@ -870,7 +876,9 @@ export class AdvancedSearch {
         }
 
         const name = prompt(`Select saved search:\n${names.join('\n')}`);
-        if (!name || !savedSearches[name]) {return;}
+        if (!name || !savedSearches[name]) {
+            return;
+        }
 
         const filters = savedSearches[name];
 
@@ -894,14 +902,18 @@ export class AdvancedSearch {
     }
 
     formatSize(bytes) {
-        if (!bytes) {return '0 B';}
+        if (!bytes) {
+            return '0 B';
+        }
         const units = ['B', 'KB', 'MB', 'GB'];
         const index = Math.floor(Math.log(bytes) / Math.log(1024));
         return `${(bytes / Math.pow(1024, index)).toFixed(1)} ${units[index]}`;
     }
 
     formatDate(timestamp) {
-        if (!timestamp) {return 'N/A';}
+        if (!timestamp) {
+            return 'N/A';
+        }
         const date = new Date(timestamp * 1000);
         return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
     }

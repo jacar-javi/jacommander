@@ -138,7 +138,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: jacarjavi/jacommander
-          short-description: "A modern, minimalist dual-panel file manager for the web"
+          short-description: 'A modern, minimalist dual-panel file manager for the web'
           readme-filepath: ./README.md
         continue-on-error: true
 
