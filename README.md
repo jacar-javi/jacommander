@@ -353,7 +353,9 @@ Want to contribute? Check out our [Contributing Guide](CONTRIBUTING.md)!
 
 If you find this project useful, please consider giving it a star! It helps others discover the project.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=jacar-javi/jacommander&type=Date)](https://star-history.com/#jacar-javi/jacommander&Date)
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=jacar-javi/jacommander&type=date&legend=top-left)](https://www.star-history.com/#jacar-javi/jacommander&type=date&legend=top-left)
 
 ---
 
