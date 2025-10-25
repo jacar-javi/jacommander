@@ -1,0 +1,349 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Create documentation site
+        run: |
+          mkdir -p _site
+
+          # Copy documentation files
+          cp -r docs/* _site/ 2>/dev/null || true
+
+          # Create index.html from README
+          cat > _site/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>JaCommander Documentation</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+                      line-height: 1.6;
+                      max-width: 1200px;
+                      margin: 0 auto;
+                      padding: 20px;
+                      background: #0d1117;
+                      color: #c9d1d9;
+                  }
+                  .markdown-body {
+                      box-sizing: border-box;
+                      min-width: 200px;
+                      max-width: 980px;
+                      margin: 0 auto;
+                      padding: 45px;
+                      background: #0d1117;
+                      color: #c9d1d9;
+                  }
+                  .nav {
+                      background: #161b22;
+                      padding: 15px;
+                      border-radius: 6px;
+                      margin-bottom: 30px;
+                  }
+                  .nav a {
+                      color: #58a6ff;
+                      text-decoration: none;
+                      margin-right: 20px;
+                      font-weight: 500;
+                  }
+                  .nav a:hover {
+                      text-decoration: underline;
+                  }
+                  @media (max-width: 767px) {
+                      .markdown-body {
+                          padding: 15px;
+                      }
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="nav">
+                  <a href="/">Home</a>
+                  <a href="https://github.com/jacar-javi/jacommander">GitHub</a>
+                  <a href="https://github.com/jacar-javi/jacommander/wiki">Wiki</a>
+                  <a href="api.html">API Docs</a>
+                  <a href="contributing.html">Contributing</a>
+                  <a href="security.html">Security</a>
+              </div>
+              <article class="markdown-body">
+          EOF
+
+          # Convert README.md to HTML and append
+          if command -v pandoc &> /dev/null; then
+              pandoc README.md -f markdown -t html >> _site/index.html
+          else
+              # Fallback: use marked-cli or just copy the markdown
+              cat README.md | sed 's/</\&lt;/g' | sed 's/>/\&gt;/g' | sed 's/$/  /' > _site/readme.txt
+              echo "<pre>" >> _site/index.html
+              cat _site/readme.txt >> _site/index.html
+              echo "</pre>" >> _site/index.html
+          fi
+
+          cat >> _site/index.html << 'EOF'
+              </article>
+              <footer style="text-align: center; margin-top: 50px; padding: 20px; color: #8b949e;">
+                  <p>Made with ❤️ by Javier Cañete Arroyo | <a href="https://github.com/jacar-javi/jacommander" style="color: #58a6ff;">View on GitHub</a></p>
+              </footer>
+          </body>
+          </html>
+          EOF
+
+      - name: Create API documentation page
+        run: |
+          cat > _site/api.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>JaCommander API Documentation</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+              <style>
+                  body {
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+                      background: #0d1117;
+                      color: #c9d1d9;
+                      margin: 0;
+                      padding: 20px;
+                  }
+                  .markdown-body {
+                      max-width: 980px;
+                      margin: 0 auto;
+                      padding: 45px;
+                      background: #0d1117;
+                  }
+                  .nav {
+                      background: #161b22;
+                      padding: 15px;
+                      border-radius: 6px;
+                      margin-bottom: 30px;
+                      max-width: 980px;
+                      margin-left: auto;
+                      margin-right: auto;
+                  }
+                  .nav a {
+                      color: #58a6ff;
+                      text-decoration: none;
+                      margin-right: 20px;
+                      font-weight: 500;
+                  }
+                  .endpoint {
+                      background: #161b22;
+                      padding: 15px;
+                      margin: 15px 0;
+                      border-radius: 6px;
+                      border-left: 3px solid #58a6ff;
+                  }
+                  .method {
+                      display: inline-block;
+                      padding: 4px 8px;
+                      border-radius: 3px;
+                      font-weight: bold;
+                      font-size: 12px;
+                      margin-right: 10px;
+                  }
+                  .get { background: #238636; color: white; }
+                  .post { background: #1f6feb; color: white; }
+                  .delete { background: #da3633; color: white; }
+              </style>
+          </head>
+          <body>
+              <div class="nav">
+                  <a href="/">Home</a>
+                  <a href="https://github.com/jacar-javi/jacommander">GitHub</a>
+                  <a href="api.html">API Docs</a>
+              </div>
+              <article class="markdown-body">
+                  <h1>JaCommander API Documentation</h1>
+
+                  <h2>Base URL</h2>
+                  <pre><code>http://localhost:8080/api</code></pre>
+
+                  <h2>File Operations</h2>
+
+                  <div class="endpoint">
+                      <span class="method get">GET</span>
+                      <code>/fs/list</code>
+                      <p>List directory contents</p>
+                      <p><strong>Query Parameters:</strong></p>
+                      <ul>
+                          <li><code>path</code> (string): Directory path to list</li>
+                      </ul>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method post">POST</span>
+                      <code>/fs/mkdir</code>
+                      <p>Create a new directory</p>
+                      <p><strong>Body:</strong></p>
+                      <pre><code>{ "path": "/path/to/new/directory" }</code></pre>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method post">POST</span>
+                      <code>/fs/copy</code>
+                      <p>Copy files or directories</p>
+                      <p><strong>Body:</strong></p>
+                      <pre><code>{ "source": "/path/to/source", "destination": "/path/to/dest" }</code></pre>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method post">POST</span>
+                      <code>/fs/move</code>
+                      <p>Move or rename files/directories</p>
+                      <p><strong>Body:</strong></p>
+                      <pre><code>{ "source": "/path/to/source", "destination": "/path/to/dest" }</code></pre>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method delete">DELETE</span>
+                      <code>/fs/delete</code>
+                      <p>Delete files or directories</p>
+                      <p><strong>Body:</strong></p>
+                      <pre><code>{ "path": "/path/to/delete" }</code></pre>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method get">GET</span>
+                      <code>/fs/download</code>
+                      <p>Download a file</p>
+                      <p><strong>Query Parameters:</strong></p>
+                      <ul>
+                          <li><code>path</code> (string): File path to download</li>
+                      </ul>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method post">POST</span>
+                      <code>/fs/upload</code>
+                      <p>Upload a file</p>
+                      <p><strong>Body:</strong> multipart/form-data with file</p>
+                  </div>
+
+                  <h2>Compression</h2>
+
+                  <div class="endpoint">
+                      <span class="method post">POST</span>
+                      <code>/fs/compress</code>
+                      <p>Create an archive</p>
+                      <p><strong>Body:</strong></p>
+                      <pre><code>{ "files": ["/path/file1", "/path/file2"], "archive": "/path/output.zip" }</code></pre>
+                  </div>
+
+                  <div class="endpoint">
+                      <span class="method post">POST</span>
+                      <code>/fs/decompress</code>
+                      <p>Extract an archive</p>
+                      <p><strong>Body:</strong></p>
+                      <pre><code>{ "archive": "/path/archive.zip", "destination": "/path/dest" }</code></pre>
+                  </div>
+
+                  <h2>WebSocket</h2>
+
+                  <div class="endpoint">
+                      <span class="method get">WS</span>
+                      <code>/ws</code>
+                      <p>Real-time progress updates for long-running operations</p>
+                  </div>
+              </article>
+          </body>
+          </html>
+          EOF
+
+      - name: Create additional documentation pages
+        run: |
+          # Contributing page
+          if [ -f "CONTRIBUTING.md" ]; then
+              cat > _site/contributing.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Contributing to JaCommander</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+              <style>
+                  body { background: #0d1117; color: #c9d1d9; margin: 0; padding: 20px; }
+                  .markdown-body { max-width: 980px; margin: 0 auto; padding: 45px; background: #0d1117; }
+                  .nav { background: #161b22; padding: 15px; border-radius: 6px; margin-bottom: 30px; max-width: 980px; margin-left: auto; margin-right: auto; }
+                  .nav a { color: #58a6ff; text-decoration: none; margin-right: 20px; font-weight: 500; }
+              </style>
+          </head>
+          <body>
+              <div class="nav"><a href="/">Home</a><a href="https://github.com/jacar-javi/jacommander">GitHub</a></div>
+              <article class="markdown-body"><pre>
+          EOF
+              cat CONTRIBUTING.md >> _site/contributing.html
+              echo "</pre></article></body></html>" >> _site/contributing.html
+          fi
+
+          # Security page
+          if [ -f "SECURITY.md" ]; then
+              cat > _site/security.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>JaCommander Security Policy</title>
+              <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+              <style>
+                  body { background: #0d1117; color: #c9d1d9; margin: 0; padding: 20px; }
+                  .markdown-body { max-width: 980px; margin: 0 auto; padding: 45px; background: #0d1117; }
+                  .nav { background: #161b22; padding: 15px; border-radius: 6px; margin-bottom: 30px; max-width: 980px; margin-left: auto; margin-right: auto; }
+                  .nav a { color: #58a6ff; text-decoration: none; margin-right: 20px; font-weight: 500; }
+              </style>
+          </head>
+          <body>
+              <div class="nav"><a href="/">Home</a><a href="https://github.com/jacar-javi/jacommander">GitHub</a></div>
+              <article class="markdown-body"><pre>
+          EOF
+              cat SECURITY.md >> _site/security.html
+              echo "</pre></article></body></html>" >> _site/security.html
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    name: Deploy to GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
