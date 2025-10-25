@@ -218,10 +218,10 @@ export class DockerManager {
                 <td class="container-name">
                     <strong>${container.Names[0]?.replace('/', '') || container.Id.substr(0, 12)}</strong>
                     ${
-    container.Labels?.['com.docker.compose.project']
-        ? `<small class="compose-project">${container.Labels['com.docker.compose.project']}</small>`
-        : ''
-}
+                        container.Labels?.['com.docker.compose.project']
+                            ? `<small class="compose-project">${container.Labels['com.docker.compose.project']}</small>`
+                            : ''
+                    }
                 </td>
                 <td class="container-image" title="${container.Image}">
                     ${container.Image.length > 30 ? `${container.Image.substr(0, 30)}...` : container.Image}
@@ -464,7 +464,9 @@ export class DockerManager {
 
     showContainerDetails(containerId) {
         const container = this.containers.find((c) => c.Id === containerId);
-        if (!container) {return;}
+        if (!container) {
+            return;
+        }
 
         const detailsPanel = this.modal.querySelector('#container-details');
         const detailsContent = this.modal.querySelector('#details-content');
@@ -498,10 +500,10 @@ export class DockerManager {
 
                 <dt>Mounts:</dt>
                 <dd>${
-    container.Mounts?.length
-        ? container.Mounts.map((m) => `${m.Source} → ${m.Destination}`).join('<br>')
-        : 'None'
-}</dd>
+                    container.Mounts?.length
+                        ? container.Mounts.map((m) => `${m.Source} → ${m.Destination}`).join('<br>')
+                        : 'None'
+                }</dd>
             </dl>
         `;
 
@@ -519,10 +521,10 @@ export class DockerManager {
             const status = row.classList.contains('running')
                 ? 'running'
                 : row.classList.contains('stopped')
-                    ? 'stopped'
-                    : row.classList.contains('paused')
-                        ? 'paused'
-                        : '';
+                  ? 'stopped'
+                  : row.classList.contains('paused')
+                    ? 'paused'
+                    : '';
 
             const matchesSearch = !searchTerm || name.includes(searchTerm) || image.includes(searchTerm);
             const matchesStatus = !statusFilter || status === statusFilter;
@@ -561,8 +563,12 @@ export class DockerManager {
     }
 
     getContainerStatus(container) {
-        if (container.State === 'running') {return 'running';}
-        if (container.State === 'paused') {return 'paused';}
+        if (container.State === 'running') {
+            return 'running';
+        }
+        if (container.State === 'paused') {
+            return 'paused';
+        }
         return 'stopped';
     }
 
@@ -580,7 +586,9 @@ export class DockerManager {
     }
 
     formatPorts(ports) {
-        if (!ports || ports.length === 0) {return '-';}
+        if (!ports || ports.length === 0) {
+            return '-';
+        }
         return ports
             .map((p) => {
                 if (p.PublicPort) {
@@ -596,9 +604,15 @@ export class DockerManager {
         const now = new Date();
         const diff = now - date;
 
-        if (diff < 60000) {return 'Just now';}
-        if (diff < 3600000) {return `${Math.floor(diff / 60000)}m ago`;}
-        if (diff < 86400000) {return `${Math.floor(diff / 3600000)}h ago`;}
+        if (diff < 60000) {
+            return 'Just now';
+        }
+        if (diff < 3600000) {
+            return `${Math.floor(diff / 60000)}m ago`;
+        }
+        if (diff < 86400000) {
+            return `${Math.floor(diff / 3600000)}h ago`;
+        }
         return `${Math.floor(diff / 86400000)}d ago`;
     }
 
@@ -613,7 +627,9 @@ export class DockerManager {
     }
 
     startAutoRefresh() {
-        if (this.refreshInterval) {return;}
+        if (this.refreshInterval) {
+            return;
+        }
 
         this.refreshInterval = setInterval(() => {
             this.loadContainers();

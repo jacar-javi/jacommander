@@ -286,7 +286,9 @@ export class HexEditor {
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
-            if (!this.container.contains(document.activeElement)) {return;}
+            if (!this.container.contains(document.activeElement)) {
+                return;
+            }
 
             if (e.ctrlKey) {
                 switch (e.key) {
@@ -332,7 +334,9 @@ export class HexEditor {
     async loadFromPath(path, storageId) {
         try {
             const response = await fetch(`/api/fs/download?storage=${storageId}&path=${encodeURIComponent(path)}`);
-            if (!response.ok) {throw new Error('Failed to load file');}
+            if (!response.ok) {
+                throw new Error('Failed to load file');
+            }
 
             const blob = await response.blob();
             this.file = new File([blob], path.split('/').pop());
@@ -351,7 +355,9 @@ export class HexEditor {
     }
 
     render() {
-        if (!this.data) {return;}
+        if (!this.data) {
+            return;
+        }
 
         const bytesPerPage = this.bytesPerRow * this.rowsPerPage;
         const startOffset = this.offset;
@@ -521,7 +527,9 @@ export class HexEditor {
     }
 
     handleKeyPress(e) {
-        if (this.readOnly) {return;}
+        if (this.readOnly) {
+            return;
+        }
 
         const key = e.key;
         if (this.editMode === 'hex') {
@@ -614,7 +622,9 @@ export class HexEditor {
     }
 
     modifyByte(offset, value) {
-        if (offset < 0 || offset >= this.data.length) {return;}
+        if (offset < 0 || offset >= this.data.length) {
+            return;
+        }
 
         // Save to undo stack
         const oldValue = this.getByteValue(offset);
@@ -654,7 +664,9 @@ export class HexEditor {
     }
 
     undo() {
-        if (this.undoStack.length === 0) {return;}
+        if (this.undoStack.length === 0) {
+            return;
+        }
 
         const action = this.undoStack.pop();
         this.redoStack.push(action);
@@ -670,7 +682,9 @@ export class HexEditor {
     }
 
     redo() {
-        if (this.redoStack.length === 0) {return;}
+        if (this.redoStack.length === 0) {
+            return;
+        }
 
         const action = this.redoStack.pop();
         this.undoStack.push(action);
@@ -681,7 +695,9 @@ export class HexEditor {
     }
 
     async save() {
-        if (this.modifications.size === 0) {return;}
+        if (this.modifications.size === 0) {
+            return;
+        }
 
         // Apply modifications to data
         const newData = new Uint8Array(this.data);
@@ -720,7 +736,9 @@ export class HexEditor {
         const searchText = this.elements.searchInput.value;
         const searchType = this.elements.searchType.value;
 
-        if (!searchText) {return;}
+        if (!searchText) {
+            return;
+        }
 
         let searchBytes;
         if (searchType === 'hex') {
@@ -744,7 +762,9 @@ export class HexEditor {
         const searchText = this.elements.searchInput.value;
         const searchType = this.elements.searchType.value;
 
-        if (!searchText) {return;}
+        if (!searchText) {
+            return;
+        }
 
         let searchBytes;
         if (searchType === 'hex') {
@@ -782,13 +802,17 @@ export class HexEditor {
                     break;
                 }
             }
-            if (match) {return i;}
+            if (match) {
+                return i;
+            }
         }
         return -1;
     }
 
     findBytesReverse(needle, startOffset) {
-        if (startOffset === undefined) {startOffset = this.data.length - needle.length;}
+        if (startOffset === undefined) {
+            startOffset = this.data.length - needle.length;
+        }
 
         for (let i = startOffset; i >= 0; i--) {
             let match = true;
@@ -798,7 +822,9 @@ export class HexEditor {
                     break;
                 }
             }
-            if (match) {return i;}
+            if (match) {
+                return i;
+            }
         }
         return -1;
     }
@@ -812,7 +838,9 @@ export class HexEditor {
 
     showGoTo() {
         const offsetStr = prompt('Enter offset (decimal or hex with 0x prefix):');
-        if (!offsetStr) {return;}
+        if (!offsetStr) {
+            return;
+        }
 
         let offset;
         if (offsetStr.startsWith('0x')) {
