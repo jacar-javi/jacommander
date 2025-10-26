@@ -144,6 +144,12 @@ pnpm-debug.log*
 docs/_build/
 docs/.doctrees/
 
+# Generated screenshots
+screenshots/
+*.png
+!docs/**/*.png
+!frontend/**/*.png
+
 # Python
 __pycache__/
 *.py[cod]

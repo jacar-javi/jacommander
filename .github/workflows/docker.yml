@@ -138,8 +138,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: jacarjavi/jacommander
-          short-description: 'A modern, minimalist dual-panel file manager for the web'
-          readme-filepath: ./README.md
+          short-description: 'Modern dual-panel web file manager with cloud storage support (S3, Google Drive, OneDrive)'
+          readme-filepath: ./.docker/README.md
         continue-on-error: true
 
   security-scan:
