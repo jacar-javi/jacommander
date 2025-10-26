@@ -12,12 +12,14 @@ import (
 // CloudManager stub for basic build
 type CloudManager struct {
 	*Manager
+	configs map[string]*StorageConfig
 }
 
 // NewCloudManager creates a basic storage manager (stub for basic build)
 func NewCloudManager() *CloudManager {
 	return &CloudManager{
 		Manager: NewManager(),
+		configs: make(map[string]*StorageConfig),
 	}
 }
 
@@ -35,6 +37,18 @@ func (cm *CloudManager) LoadConfig(path string) error {
 	}
 	localFS := NewLocalStorage(homeDir)
 	cm.Register("local", localFS)
+
+	// Track the default config
+	cm.configs["local"] = &StorageConfig{
+		ID:          "local",
+		Type:        "local",
+		DisplayName: "Local Storage",
+		Icon:        "💾",
+		Config: map[string]interface{}{
+			"root_path": homeDir,
+		},
+		IsDefault: true,
+	}
 	return nil
 }
 
@@ -52,19 +66,46 @@ func (cm *CloudManager) SetAllowLocalIPs(allow bool) error {
 
 // ListStorages returns list of available storages
 func (cm *CloudManager) ListStorages() []map[string]interface{} {
-	return []map[string]interface{}{
-		{
-			"id":           "local",
-			"type":         "local",
-			"display_name": "Local Storage",
-			"is_default":   true,
-		},
+	var storages []map[string]interface{}
+	for _, cfg := range cm.configs {
+		storages = append(storages, map[string]interface{}{
+			"id":           cfg.ID,
+			"type":         cfg.Type,
+			"display_name": cfg.DisplayName,
+			"icon":         cfg.Icon,
+			"is_default":   cfg.IsDefault,
+		})
 	}
+	return storages
 }
 
-// AddStorage stub (not supported in basic build)
+// GetStorage retrieves a storage backend by ID
+func (cm *CloudManager) GetStorage(id string) (FileSystem, error) {
+	fs, ok := cm.storages[id]
+	if !ok {
+		return nil, fmt.Errorf("storage %s not found", id)
+	}
+	return fs, nil
+}
+
+// AddStorage adds local storage (cloud storage not supported in basic build)
 func (cm *CloudManager) AddStorage(config StorageConfig) error {
-	return fmt.Errorf("adding cloud storage not supported in basic build")
+	// Only support local storage in basic build
+	if config.Type != "local" {
+		return fmt.Errorf("only local storage supported in basic build")
+	}
+
+	rootPath := "/"
+	if rp, ok := config.Config["root_path"].(string); ok {
+		rootPath = rp
+	}
+
+	fs := NewLocalStorage(rootPath)
+	cm.Register(config.ID, fs)
+
+	// Save config for ListStorages
+	cm.configs[config.ID] = &config
+	return nil
 }
 
 // RemoveStorage stub
@@ -101,7 +142,7 @@ type StorageConfig struct {
 // Stub functions for basic build without external dependencies
 
 func NewGDriveAdapter(credentialsJSON, clientID, clientSecret string) (FileSystem, error) {
-	return nil, fmt.Errorf("Google Drive storage not available in basic build")
+	return nil, fmt.Errorf("google Drive storage not available in basic build")
 }
 
 func NewOneDriveAdapter(accessToken, driveID string) (FileSystem, error) {
@@ -121,7 +162,7 @@ func NewNFSStorage(server, exportPath, mountPoint string, readOnly bool) (FileSy
 }
 
 func NewRDBStorage(address, password string, db int, namespace string) (FileSystem, error) {
-	return nil, fmt.Errorf("Redis storage not available in basic build")
+	return nil, fmt.Errorf("redis storage not available in basic build")
 }
 
 // Stub implementations for additional functions

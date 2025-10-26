@@ -56,14 +56,15 @@ The workflows are configured to handle missing dependencies gracefully:
 ## GitHub Actions Versions
 
 All actions have been updated to their latest versions to avoid deprecation warnings:
-- CodeQL Action: v3
-- actions/checkout: v4
-- actions/setup-go: v5
-- actions/setup-node: v4
+- CodeQL Action: v4
+- actions/checkout: v5
+- actions/setup-go: v6
+- actions/setup-node: v6
 - docker/setup-buildx-action: v3
 - docker/login-action: v3
-- docker/build-push-action: v5
-- codecov/codecov-action: v4
+- docker/build-push-action: v6
+- codecov/codecov-action: v5
+- golangci-lint: v1.62.2
 
 ## Troubleshooting
 

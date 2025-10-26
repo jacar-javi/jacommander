@@ -21,14 +21,15 @@ export class KeyboardHandler {
     }
 
     handleKeyDown(e) {
-        // Check if a modal is open (except for ESC key)
+        // Check if a modal is open
         const modalOpen = Array.from(document.querySelectorAll('.modal')).some(
             (modal) => modal.style.display !== 'none'
         );
 
-        if (modalOpen && e.key !== 'Escape') {
-            // Handle modal-specific keys
+        if (modalOpen) {
+            // Only handle modal-specific keys when modal is open
             this.handleModalKeys(e);
+            // Prevent all other shortcuts from executing
             return;
         }
 
@@ -144,6 +145,13 @@ export class KeyboardHandler {
             return;
         }
 
+        // Space - Toggle selection (without moving down)
+        if (e.key === ' ' && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+            e.preventDefault();
+            this.toggleSelection(panel);
+            return;
+        }
+
         // Delete - Delete files (alias for F8)
         if (e.key === 'Delete') {
             e.preventDefault();
@@ -219,8 +227,17 @@ export class KeyboardHandler {
     }
 
     handleModalKeys(e) {
+        // Get active element first
+        const activeElement = document.activeElement;
+        const isInInputField =
+            activeElement &&
+            (activeElement.tagName === 'INPUT' ||
+                activeElement.tagName === 'TEXTAREA' ||
+                activeElement.isContentEditable);
+
         // ESC closes modal
         if (e.key === 'Escape') {
+            e.preventDefault();
             this.app.closeAllModals();
             return;
         }
@@ -228,25 +245,64 @@ export class KeyboardHandler {
         // Ctrl+S in edit modal saves
         if ((e.ctrlKey || e.metaKey) && e.key === 's') {
             const editModal = document.getElementById('edit-modal');
-            if (editModal.style.display !== 'none') {
+            if (editModal && editModal.style.display !== 'none') {
                 e.preventDefault();
                 document.getElementById('edit-save').click();
+                return;
             }
         }
 
-        // Enter in input modals confirms
-        if (e.key === 'Enter') {
+        // Enter in input modals confirms (but not in textareas)
+        if (e.key === 'Enter' && !isInInputField) {
             const activeModal = Array.from(document.querySelectorAll('.modal')).find(
                 (modal) => modal.style.display !== 'none'
             );
 
             if (activeModal) {
                 const confirmBtn = activeModal.querySelector('.btn-primary');
-                if (confirmBtn && document.activeElement.tagName !== 'TEXTAREA') {
+                if (confirmBtn) {
                     e.preventDefault();
                     confirmBtn.click();
+                    return;
                 }
             }
+        }
+
+        // If focused on input field, allow ALL keys to work normally for editing
+        if (isInInputField) {
+            // Allow all standard editing shortcuts
+            if (e.ctrlKey || e.metaKey) {
+                const allowedCtrlKeys = ['c', 'v', 'x', 'a', 'z', 'y', 's']; // Copy, Paste, Cut, Select All, Undo, Redo, Save
+                if (allowedCtrlKeys.includes(e.key.toLowerCase())) {
+                    return; // Allow these shortcuts
+                }
+            }
+            // Allow all other keys (typing, arrows, delete, backspace, etc.)
+            return;
+        }
+
+        // Tab navigation is allowed in modals for accessibility
+        if (e.key === 'Tab') {
+            return;
+        }
+
+        // Allow navigation keys even when not in input (for scrolling in viewer)
+        const navigationKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'];
+
+        if (navigationKeys.includes(e.key)) {
+            return; // Allow these keys for scrolling
+        }
+
+        // Prevent function keys F1-F12 when modal is open
+        if (e.key.startsWith('F') && e.key.length <= 3) {
+            e.preventDefault();
+            return;
+        }
+
+        // Block other Ctrl/Cmd shortcuts that aren't handled above
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            return;
         }
     }
 
@@ -261,14 +317,26 @@ export class KeyboardHandler {
     }
 
     // F3 - View File
+    // F3 - View File
     viewFile(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
-        if (selectedFiles.length === 0) {
-            this.app.showNotification('No file selected', 'warning');
-            return;
-        }
+        const panelData = this.app.panels.panels[panel];
 
-        const file = this.app.panels.panels[panel].files.find((f) => f.name === selectedFiles[0]);
+        // If no files selected, use the focused file
+        let file;
+        if (selectedFiles.length === 0) {
+            // Get the focused file
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                file = panelData.files[panelData.focusedIndex];
+            }
+
+            if (!file) {
+                this.app.showNotification('No file selected', 'warning');
+                return;
+            }
+        } else {
+            file = panelData.files.find((f) => f.name === selectedFiles[0]);
+        }
 
         if (file && !file.is_dir) {
             this.app.fileOps.viewFile(panel, file);
@@ -276,14 +344,26 @@ export class KeyboardHandler {
     }
 
     // F4 - Edit File
+    // F4 - Edit File
     editFile(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
-        if (selectedFiles.length === 0) {
-            this.app.showNotification('No file selected', 'warning');
-            return;
-        }
+        const panelData = this.app.panels.panels[panel];
 
-        const file = this.app.panels.panels[panel].files.find((f) => f.name === selectedFiles[0]);
+        // If no files selected, use the focused file
+        let file;
+        if (selectedFiles.length === 0) {
+            // Get the focused file
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                file = panelData.files[panelData.focusedIndex];
+            }
+
+            if (!file) {
+                this.app.showNotification('No file selected', 'warning');
+                return;
+            }
+        } else {
+            file = panelData.files.find((f) => f.name === selectedFiles[0]);
+        }
 
         if (file && !file.is_dir) {
             this.app.fileOps.editFile(panel, file);
@@ -296,9 +376,30 @@ export class KeyboardHandler {
     }
 
     // F5 - Copy Files
+    // F5 - Copy Files
+    // F5 - Copy Files
     copyFiles(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
+        const panelData = this.app.panels.panels[panel];
+
+        // If no files selected, use the focused file
         if (selectedFiles.length === 0) {
+            // Get the focused file and select it
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                const focusedFile = panelData.files[panelData.focusedIndex];
+                if (focusedFile && !focusedFile.is_dir) {
+                    // Select the focused file for the copy operation
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.copyFiles(panel);
+                    return;
+                } else if (focusedFile && focusedFile.is_dir) {
+                    // Can copy directories too
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.copyFiles(panel);
+                    return;
+                }
+            }
+
             this.app.showNotification('No files selected', 'warning');
             return;
         }
@@ -307,14 +408,30 @@ export class KeyboardHandler {
     }
 
     // Shift+F5 - Copy with Options
-    copyWithOptions(panel) {
+    copyWithOptions(_panel) {
         this.app.showNotification('Copy with options not implemented yet', 'info');
     }
 
     // Alt+F5 - Compress Files
+    // Alt+F5 - Compress Files
+    // Alt+F5 - Compress Files
     compressFiles(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
+        const panelData = this.app.panels.panels[panel];
+
+        // If no files selected, use the focused file
         if (selectedFiles.length === 0) {
+            // Get the focused file and select it
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                const focusedFile = panelData.files[panelData.focusedIndex];
+                if (focusedFile) {
+                    // Select the focused file for the compress operation
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.compressFiles(panel);
+                    return;
+                }
+            }
+
             this.app.showNotification('No files selected', 'warning');
             return;
         }
@@ -323,9 +440,25 @@ export class KeyboardHandler {
     }
 
     // F6 - Move Files
+    // F6 - Move Files
+    // F6 - Move Files
     moveFiles(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
+        const panelData = this.app.panels.panels[panel];
+
+        // If no files selected, use the focused file
         if (selectedFiles.length === 0) {
+            // Get the focused file and select it
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                const focusedFile = panelData.files[panelData.focusedIndex];
+                if (focusedFile) {
+                    // Select the focused file for the move operation
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.moveFiles(panel);
+                    return;
+                }
+            }
+
             this.app.showNotification('No files selected', 'warning');
             return;
         }
@@ -334,8 +467,29 @@ export class KeyboardHandler {
     }
 
     // Shift+F6 - Rename File
+    // Shift+F6 - Rename File
+    // Shift+F6 - Rename File
     renameFile(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
+        const panelData = this.app.panels.panels[panel];
+
+        // If no files selected, use the focused file
+        if (selectedFiles.length === 0) {
+            // Get the focused file and select it
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                const focusedFile = panelData.files[panelData.focusedIndex];
+                if (focusedFile) {
+                    // Select the focused file for the rename operation
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.renameFile(panel);
+                    return;
+                }
+            }
+
+            this.app.showNotification('Select exactly one file to rename', 'warning');
+            return;
+        }
+
         if (selectedFiles.length !== 1) {
             this.app.showNotification('Select exactly one file to rename', 'warning');
             return;
@@ -345,8 +499,29 @@ export class KeyboardHandler {
     }
 
     // Alt+F6 - Decompress File
+    // Alt+F6 - Decompress File
+    // Alt+F6 - Decompress File
     decompressFile(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
+        const panelData = this.app.panels.panels[panel];
+
+        // If no files selected, use the focused file
+        if (selectedFiles.length === 0) {
+            // Get the focused file and select it
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                const focusedFile = panelData.files[panelData.focusedIndex];
+                if (focusedFile) {
+                    // Select the focused file for the decompress operation
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.decompressFile(panel);
+                    return;
+                }
+            }
+
+            this.app.showNotification('Select exactly one archive to decompress', 'warning');
+            return;
+        }
+
         if (selectedFiles.length !== 1) {
             this.app.showNotification('Select exactly one archive to decompress', 'warning');
             return;
@@ -361,9 +536,25 @@ export class KeyboardHandler {
     }
 
     // F8 - Delete Files
+    // F8 - Delete Files
+    // F8 - Delete Files
     deleteFiles(panel) {
         const selectedFiles = this.app.panels.getSelectedFiles(panel);
+        const panelData = this.app.panels.panels[panel];
+
+        // If no files selected, use the focused file
         if (selectedFiles.length === 0) {
+            // Get the focused file and select it
+            if (panelData.focusedIndex >= 0 && panelData.focusedIndex < panelData.files.length) {
+                const focusedFile = panelData.files[panelData.focusedIndex];
+                if (focusedFile) {
+                    // Select the focused file for the delete operation
+                    this.app.panels.toggleSelection(panel, focusedFile.name);
+                    this.app.fileOps.deleteFiles(panel);
+                    return;
+                }
+            }
+
             this.app.showNotification('No files selected', 'warning');
             return;
         }
@@ -377,8 +568,15 @@ export class KeyboardHandler {
     }
 
     // F10 - Exit
-    exitApplication() {
-        if (confirm('Are you sure you want to exit JaCommander?')) {
+    async exitApplication() {
+        const confirmed = await this.app.confirmAction({
+            title: 'Exit JaCommander',
+            message: 'Are you sure you want to exit JaCommander?',
+            confirmText: 'Exit',
+            cancelText: 'Cancel'
+        });
+
+        if (confirmed) {
             window.close();
             // If window.close() doesn't work (e.g., not opened by script)
             this.app.showNotification('Please close the browser tab to exit', 'info');
@@ -396,6 +594,15 @@ export class KeyboardHandler {
         }
     }
 
+    toggleSelection(panel) {
+        const panelData = this.app.panels.panels[panel];
+        const currentFile = panelData.files[panelData.focusedIndex];
+
+        if (currentFile) {
+            this.app.panels.toggleSelection(panel, currentFile.name);
+        }
+    }
+
     navigateToParent(panel) {
         const currentPath = this.app.panels.getCurrentPath(panel);
         if (currentPath !== '/') {
@@ -408,6 +615,15 @@ export class KeyboardHandler {
 
     openSelectedItem(panel) {
         const panelData = this.app.panels.panels[panel];
+
+        // Handle ".." (parent directory) - focusedIndex is -1
+        if (panelData.focusedIndex === -1) {
+            const currentPath = this.app.panels.getCurrentPath(panel);
+            const parentPath = currentPath.substring(0, currentPath.lastIndexOf('/')) || '/';
+            this.app.panels.loadDirectory(panel, parentPath);
+            return;
+        }
+
         const focusedFile = panelData.files[panelData.focusedIndex];
 
         if (focusedFile) {
@@ -422,7 +638,9 @@ export class KeyboardHandler {
 
     pageUp(panel) {
         const panelData = this.app.panels.panels[panel];
-        panelData.focusedIndex = Math.max(0, panelData.focusedIndex - 10);
+        const hasParentDir = panelData.currentPath !== '/';
+        const minIndex = hasParentDir ? -1 : 0;
+        panelData.focusedIndex = Math.max(minIndex, panelData.focusedIndex - 10);
         this.app.panels.updateFocus(panel);
     }
 
@@ -434,7 +652,8 @@ export class KeyboardHandler {
 
     jumpToFirst(panel) {
         const panelData = this.app.panels.panels[panel];
-        panelData.focusedIndex = 0;
+        const hasParentDir = panelData.currentPath !== '/';
+        panelData.focusedIndex = hasParentDir ? -1 : 0;
         this.app.panels.updateFocus(panel);
     }
 

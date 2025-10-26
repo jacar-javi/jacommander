@@ -33,14 +33,12 @@ jobs:
 
       - name: Install golangci-lint
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.54.2
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.62.2
           echo "$(go env GOPATH)/bin" >> $GITHUB_PATH
 
-      - name: Run Go linter
+      - name: Run golangci-lint
         run: |
-          cd backend
-          go vet -tags=basic ./... || true
-        continue-on-error: true
+          golangci-lint run ./backend/...
 
       - name: Check Go formatting
         run: |
@@ -51,16 +49,22 @@ jobs:
           fi
 
       # JavaScript Linting
-      - name: Install ESLint
-        run: npm install -g eslint@8 prettier
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
 
       - name: Run ESLint
-        run: eslint frontend/js --ext .js || true
-        continue-on-error: true
+        run: |
+          cd frontend
+          npm run lint
+        continue-on-error: true  # Frontend linting can be fixed later
 
       - name: Check JavaScript formatting with Prettier
-        run: prettier --check "frontend/**/*.{js,css,html}" || true
-        continue-on-error: true
+        run: |
+          cd frontend
+          npm run format:check
+        continue-on-error: true  # Frontend formatting can be fixed later
 
   # Backend Tests
   backend-tests:
@@ -84,8 +88,7 @@ jobs:
       - name: Run tests
         run: |
           cd backend
-          go test -v -race -coverprofile=coverage.txt -covermode=atomic -tags=basic ./handlers ./security || true
-        continue-on-error: true
+          go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5

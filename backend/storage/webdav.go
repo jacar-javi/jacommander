@@ -7,7 +7,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -109,10 +109,14 @@ func (w *WebDAVStorage) List(dirPath string) ([]FileInfo, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusMultiStatus {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return nil, fmt.Errorf("unexpected status code: %d, body: %s", resp.StatusCode, body)
 	}
 
@@ -189,7 +193,11 @@ func (w *WebDAVStorage) Stat(filePath string) (FileInfo, error) {
 	if err != nil {
 		return FileInfo{}, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusMultiStatus {
 		return FileInfo{}, fmt.Errorf("file not found: %s", filePath)
@@ -236,7 +244,11 @@ func (w *WebDAVStorage) Read(filePath string) (io.ReadCloser, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		resp.Body.Close()
+		func() {
+			if err := resp.Body.Close(); err != nil {
+				log.Printf("Error closing response body: %v", err)
+			}
+		}()
 		return nil, fmt.Errorf("failed to read file: %s (status %d)", filePath, resp.StatusCode)
 	}
 
@@ -251,7 +263,9 @@ func (w *WebDAVStorage) Write(filePath string, data io.Reader) error {
 	// Ensure parent directory exists
 	parentDir := path.Dir(fullPath)
 	if parentDir != "/" && parentDir != "." {
-		w.ensureDir(parentDir)
+		if err := w.ensureDir(parentDir); err != nil {
+			log.Printf("Error ensuring dir: %v", err)
+		}
 	}
 
 	req, err := http.NewRequest("PUT", fullURL, data)
@@ -265,10 +279,14 @@ func (w *WebDAVStorage) Write(filePath string, data io.Reader) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("failed to write file: %s (status %d): %s", filePath, resp.StatusCode, body)
 	}
 
@@ -291,7 +309,11 @@ func (w *WebDAVStorage) Delete(filePath string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to delete: %s (status %d)", filePath, resp.StatusCode)
@@ -321,7 +343,11 @@ func (w *WebDAVStorage) MkDir(dirPath string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("failed to create directory: %s (status %d)", dirPath, resp.StatusCode)
@@ -351,7 +377,11 @@ func (w *WebDAVStorage) Move(src, dst string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("failed to move file: %s to %s (status %d)", src, dst, resp.StatusCode)
@@ -369,7 +399,7 @@ func (w *WebDAVStorage) Copy(src, dst string, progress ProgressCallback) error {
 	}
 
 	if progress != nil {
-		progress(0, info.Size, src)
+		progress(0, info.Size)
 	}
 
 	srcPath := w.getFullPath(src)
@@ -391,14 +421,18 @@ func (w *WebDAVStorage) Copy(src, dst string, progress ProgressCallback) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusNoContent {
 		return fmt.Errorf("failed to copy file: %s to %s (status %d)", src, dst, resp.StatusCode)
 	}
 
 	if progress != nil {
-		progress(info.Size, info.Size, src)
+		progress(info.Size, info.Size)
 	}
 
 	return nil
@@ -440,7 +474,11 @@ func (w *WebDAVStorage) GetAvailableSpace() (available, total int64, err error) 
 	if err != nil {
 		return -1, -1, nil
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusMultiStatus {
 		return -1, -1, nil
@@ -473,9 +511,13 @@ func (w *WebDAVStorage) GetFileContent(filePath string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing reader: %v", err)
+		}
+	}()
 
-	return ioutil.ReadAll(reader)
+	return io.ReadAll(reader)
 }
 
 // PutFileContent writes file content

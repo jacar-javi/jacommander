@@ -25,7 +25,6 @@ vendor/
 
 # IDE specific files
 .idea/
-.vscode/
 *.swp
 *.swo
 *~
@@ -33,6 +32,21 @@ vendor/
 .settings/
 *.sublime-project
 *.sublime-workspace
+
+# Ignore all dot folders except necessary ones
+.*
+!.git
+!.github
+!.devcontainer
+!.docker
+!.gitignore
+!.gitattributes
+!.editorconfig
+!.eslintrc*
+!.prettierrc*
+!.dockerignore
+!.golangci.yml
+!.vscode
 
 # OS specific files
 .DS_Store
@@ -73,6 +87,7 @@ dist/
 build/
 out/
 target/
+bin/
 
 # Temporary files
 tmp/

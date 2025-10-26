@@ -218,10 +218,10 @@ export class DockerManager {
                 <td class="container-name">
                     <strong>${container.Names[0]?.replace('/', '') || container.Id.substr(0, 12)}</strong>
                     ${
-                        container.Labels?.['com.docker.compose.project']
-                            ? `<small class="compose-project">${container.Labels['com.docker.compose.project']}</small>`
-                            : ''
-                    }
+    container.Labels?.['com.docker.compose.project']
+        ? `<small class="compose-project">${container.Labels['com.docker.compose.project']}</small>`
+        : ''
+}
                 </td>
                 <td class="container-image" title="${container.Image}">
                     ${container.Image.length > 30 ? `${container.Image.substr(0, 30)}...` : container.Image}
@@ -309,11 +309,19 @@ export class DockerManager {
             case 'unpause':
                 await this.unpauseContainer(containerId);
                 break;
-            case 'remove':
-                if (confirm(`Remove container ${containerName}?`)) {
+            case 'remove': {
+                const confirmed = await this.app.confirmAction({
+                    title: 'Remove Container',
+                    message: `Remove container ${containerName}?`,
+                    confirmText: 'Remove',
+                    cancelText: 'Cancel',
+                    dangerAction: true
+                });
+                if (confirmed) {
                     await this.removeContainer(containerId);
                 }
                 break;
+            }
             case 'logs':
                 this.showContainerLogs(containerId);
                 break;
@@ -500,10 +508,10 @@ export class DockerManager {
 
                 <dt>Mounts:</dt>
                 <dd>${
-                    container.Mounts?.length
-                        ? container.Mounts.map((m) => `${m.Source} → ${m.Destination}`).join('<br>')
-                        : 'None'
-                }</dd>
+    container.Mounts?.length
+        ? container.Mounts.map((m) => `${m.Source} → ${m.Destination}`).join('<br>')
+        : 'None'
+}</dd>
             </dl>
         `;
 
@@ -521,10 +529,10 @@ export class DockerManager {
             const status = row.classList.contains('running')
                 ? 'running'
                 : row.classList.contains('stopped')
-                  ? 'stopped'
-                  : row.classList.contains('paused')
-                    ? 'paused'
-                    : '';
+                    ? 'stopped'
+                    : row.classList.contains('paused')
+                        ? 'paused'
+                        : '';
 
             const matchesSearch = !searchTerm || name.includes(searchTerm) || image.includes(searchTerm);
             const matchesStatus = !statusFilter || status === statusFilter;
@@ -553,7 +561,15 @@ export class DockerManager {
 
     async removeStoppedContainers() {
         const stopped = this.containers.filter((c) => c.State === 'exited');
-        if (confirm(`Remove ${stopped.length} stopped containers?`)) {
+        const confirmed = await this.app.confirmAction({
+            title: 'Remove Stopped Containers',
+            message: `Remove ${stopped.length} stopped containers?`,
+            confirmText: 'Remove',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (confirmed) {
             for (const container of stopped) {
                 await this.removeContainer(container.Id);
             }

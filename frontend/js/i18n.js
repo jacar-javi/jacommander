@@ -469,15 +469,15 @@ export class I18n {
             </button>
             <div class="lang-dropdown">
                 ${this.supportedLanguages
-                    .map(
-                        (lang) => `
+        .map(
+            (lang) => `
                     <div class="lang-option ${lang.code === this.currentLang ? 'active' : ''}" data-lang="${lang.code}">
                         <span class="lang-flag">${lang.flag}</span>
                         <span class="lang-name">${lang.name}</span>
                     </div>
                 `
-                    )
-                    .join('')}
+        )
+        .join('')}
             </div>
         `;
 
@@ -733,8 +733,6 @@ export class I18n {
 
     // Format date according to current locale
     formatDate(date, format = 'short') {
-        const dateFormat = this.dateFormats[this.currentLang] || this.dateFormats.en;
-
         if (!(date instanceof Date)) {
             date = new Date(date);
         }
@@ -750,8 +748,6 @@ export class I18n {
 
     // Format number according to current locale
     formatNumber(number, decimals = 0) {
-        const format = this.numberFormats[this.currentLang] || this.numberFormats.en;
-
         // Use Intl.NumberFormat for proper localization
         return new Intl.NumberFormat(this.currentLang, {
             minimumFractionDigits: decimals,

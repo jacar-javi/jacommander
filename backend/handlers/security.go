@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/jacommander/jacommander/backend/security"
@@ -30,7 +31,9 @@ func (h *SecurityHandler) GetSecurityConfig(w http.ResponseWriter, r *http.Reque
 	config := h.storage.GetSecurityConfig()
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(config)
+	if err := json.NewEncoder(w).Encode(config); err != nil {
+		log.Printf("Error encoding config response: %v", err)
+	}
 }
 
 // SetSecurityConfig updates the security configuration
@@ -57,7 +60,9 @@ func (h *SecurityHandler) SetSecurityConfig(w http.ResponseWriter, r *http.Reque
 	// Return updated configuration
 	config := h.storage.GetSecurityConfig()
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(config)
+	if err := json.NewEncoder(w).Encode(config); err != nil {
+		log.Printf("Error encoding config response: %v", err)
+	}
 }
 
 // ValidateEndpoint validates if an endpoint can be connected to
@@ -94,5 +99,7 @@ func (h *SecurityHandler) ValidateEndpoint(w http.ResponseWriter, r *http.Reques
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Error encoding validation response: %v", err)
+	}
 }

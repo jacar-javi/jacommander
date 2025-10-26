@@ -1,0 +1,43 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start JaCommander Server",
+      "type": "shell",
+      "command": "DEBUG=true PORT=8080 HOST=0.0.0.0 LOCAL_STORAGE_1=./data LOCAL_STORAGE_2=./uploads LOCAL_STORAGE_3=./downloads LOG_LEVEL=debug go run backend/main.go",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "group": "server"
+      }
+    },
+    {
+      "label": "Open Browser",
+      "type": "shell",
+      "command": "sleep 5 && python3 -m webbrowser http://localhost:8080",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "Build JaCommander",
+      "type": "shell",
+      "command": "go build -o bin/jacommander backend/main.go",
+      "problemMatcher": ["$go"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Start Everything",
+      "dependsOn": [
+        "Start JaCommander Server"
+      ],
+      "problemMatcher": []
+    }
+  ]
+}

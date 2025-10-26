@@ -201,7 +201,7 @@
 .language-badge {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 50px;
   background: var(--primary);
   color: white;
   padding: 4px 12px;

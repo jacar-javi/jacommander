@@ -677,6 +677,7 @@ export class AdvancedSearch {
         const decoder = new TextDecoder();
         let buffer = '';
 
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             const { done, value } = await reader.read();
             if (done) {
@@ -726,14 +727,14 @@ export class AdvancedSearch {
                 <span>${this.formatDate(result.modified)}</span>
             </div>
             ${
-                result.matches
-                    ? `
+    result.matches
+        ? `
                 <div class="result-match">
                     ${this.highlightMatches(result.matches)}
                 </div>
             `
-                    : ''
-            }
+        : ''
+}
         `;
 
         resultItem.addEventListener('click', () => {
@@ -824,23 +825,26 @@ export class AdvancedSearch {
                 fromInput.value = today.toISOString().split('T')[0];
                 toInput.value = today.toISOString().split('T')[0];
                 break;
-            case 'week':
+            case 'week': {
                 const weekAgo = new Date(today - 7 * 24 * 60 * 60 * 1000);
                 fromInput.value = weekAgo.toISOString().split('T')[0];
                 toInput.value = today.toISOString().split('T')[0];
                 break;
-            case 'month':
+            }
+            case 'month': {
                 const monthAgo = new Date(today);
                 monthAgo.setMonth(monthAgo.getMonth() - 1);
                 fromInput.value = monthAgo.toISOString().split('T')[0];
                 toInput.value = today.toISOString().split('T')[0];
                 break;
-            case 'year':
+            }
+            case 'year': {
                 const yearAgo = new Date(today);
                 yearAgo.setFullYear(yearAgo.getFullYear() - 1);
                 fromInput.value = yearAgo.toISOString().split('T')[0];
                 toInput.value = today.toISOString().split('T')[0];
                 break;
+            }
         }
     }
 

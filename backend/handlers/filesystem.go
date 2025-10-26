@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -48,6 +49,7 @@ func (h *FileHandlers) ListDirectory(w http.ResponseWriter, r *http.Request) {
 	// Get parameters
 	storageID := r.URL.Query().Get("storage")
 	path := r.URL.Query().Get("path")
+	calcSizes := r.URL.Query().Get("calc_sizes") == "true"
 	if path == "" {
 		path = "/"
 	}
@@ -60,7 +62,21 @@ func (h *FileHandlers) ListDirectory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// List directory
-	files, err := fs.List(path)
+	var files []storage.FileInfo
+	var err error
+
+	// Check if storage supports directory size calculation
+	if calcSizes {
+		if localFS, ok := fs.(*storage.LocalStorage); ok {
+			files, err = localFS.ListWithDirSizes(path)
+		} else {
+			// Fallback to regular list for other storage types
+			files, err = fs.List(path)
+		}
+	} else {
+		files, err = fs.List(path)
+	}
+
 	if err != nil {
 		errorResponse(w, fmt.Sprintf("Failed to list directory: %v", err), http.StatusInternalServerError)
 		return
@@ -176,7 +192,11 @@ func (h *FileHandlers) CopyFiles(w http.ResponseWriter, r *http.Request) {
 					errorResponse(w, fmt.Sprintf("Failed to read %s: %v", file, err), http.StatusInternalServerError)
 					return
 				}
-				defer reader.Close()
+				defer func() {
+					if err := reader.Close(); err != nil {
+						log.Printf("Error closing reader: %v", err)
+					}
+				}()
 
 				if err := dstFS.Write(dstPath, reader); err != nil {
 					errorResponse(w, fmt.Sprintf("Failed to write %s: %v", file, err), http.StatusInternalServerError)
@@ -221,7 +241,11 @@ func (h *FileHandlers) copyDirectoryCrossStorage(srcFS, dstFS storage.FileSystem
 			if err != nil {
 				return err
 			}
-			defer reader.Close()
+			defer func() {
+				if err := reader.Close(); err != nil {
+					log.Printf("Error closing reader in copyDirectoryCrossStorage: %v", err)
+				}
+			}()
 
 			if err := dstFS.Write(dstFilePath, reader); err != nil {
 				return err
@@ -299,7 +323,11 @@ func (h *FileHandlers) MoveFiles(w http.ResponseWriter, r *http.Request) {
 					errorResponse(w, fmt.Sprintf("Failed to read %s: %v", file, err), http.StatusInternalServerError)
 					return
 				}
-				defer reader.Close()
+				defer func() {
+					if err := reader.Close(); err != nil {
+						log.Printf("Error closing reader: %v", err)
+					}
+				}()
 
 				if err := dstFS.Write(dstPath, reader); err != nil {
 					errorResponse(w, fmt.Sprintf("Failed to write %s: %v", file, err), http.StatusInternalServerError)
@@ -401,7 +429,11 @@ func (h *FileHandlers) DownloadFile(w http.ResponseWriter, r *http.Request) {
 		errorResponse(w, fmt.Sprintf("Failed to read file: %v", err), http.StatusInternalServerError)
 		return
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing decompression reader: %v", err)
+		}
+	}()
 
 	// Set headers
 	w.Header().Set("Content-Type", info.MimeType)
@@ -440,7 +472,11 @@ func (h *FileHandlers) UploadFile(w http.ResponseWriter, r *http.Request) {
 		errorResponse(w, "No file provided", http.StatusBadRequest)
 		return
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Error closing uploaded file: %v", err)
+		}
+	}()
 
 	// Construct full path
 	fullPath := filepath.Join(path, header.Filename)
@@ -462,19 +498,23 @@ func (h *FileHandlers) UploadFile(w http.ResponseWriter, r *http.Request) {
 // Helper functions for responses
 func successResponse(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]interface{}{
+	if err := json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": true,
 		"data":    data,
-	})
+	}); err != nil {
+		log.Printf("Error encoding JSON response: %v", err)
+	}
 }
 
 func errorResponse(w http.ResponseWriter, message string, code int) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(map[string]interface{}{
+	if err := json.NewEncoder(w).Encode(map[string]interface{}{
 		"success": false,
 		"error": map[string]string{
 			"message": message,
 		},
-	})
+	}); err != nil {
+		log.Printf("Error encoding error response: %v", err)
+	}
 }

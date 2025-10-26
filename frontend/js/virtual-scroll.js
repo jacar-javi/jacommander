@@ -89,7 +89,7 @@ export class VirtualScroll {
         );
     }
 
-    handleScroll(e) {
+    handleScroll(_e) {
         this.scrollTop = this.viewport.scrollTop;
         this.calculateVisibleRange();
 

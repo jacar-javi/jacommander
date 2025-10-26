@@ -10,6 +10,9 @@
   background: var(--header-bg);
   border-bottom: 1px solid var(--border-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: visible !important;
+  position: relative;
+  z-index: 100;
 }
 
 .header-left,
@@ -18,6 +21,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  overflow: visible !important;
 }
 
 .header-left {
@@ -37,21 +41,23 @@
 /* Custom Language Dropdown Styling */
 .custom-dropdown {
   position: relative;
-  min-width: 100px;
+  overflow: visible !important;
 }
 
 .dropdown-trigger {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  width: 36px;
   height: 36px;
   background: var(--panel-bg);
   border: 1px solid var(--border-color);
   border-radius: 6px;
   color: var(--text-primary);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 18px;
+  line-height: 1;
   cursor: pointer;
   transition: all 0.2s ease;
   user-select: none;
@@ -71,6 +77,23 @@
 .dropdown-flag {
   font-size: 18px;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown-flag img.emoji {
+  height: 18px;
+  width: 18px;
+  margin: 0;
+  vertical-align: middle;
+  filter: grayscale(100%);
+  transition: filter 0.2s ease;
+}
+
+.dropdown-trigger:hover .dropdown-flag img.emoji,
+.dropdown-trigger.active .dropdown-flag img.emoji {
+  filter: grayscale(0%);
 }
 
 .dropdown-text {
@@ -78,13 +101,7 @@
 }
 
 .dropdown-arrow {
-  font-size: 10px;
-  margin-left: auto;
-  transition: transform 0.2s ease;
-}
-
-.dropdown-trigger.active .dropdown-arrow {
-  transform: rotate(180deg);
+  display: none; /* Hide arrow when showing only flag */
 }
 
 /* Dropdown Menu */
@@ -92,7 +109,7 @@
   position: absolute;
   top: calc(100% + 4px);
   right: 0;
-  min-width: 160px;
+  min-width: 200px;
   max-height: 400px;
   background: var(--panel-bg);
   border: 1px solid var(--border-color);
@@ -101,16 +118,20 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.2s ease;
-  z-index: 1000;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s;
+  z-index: 99999 !important;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 .dropdown-menu.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  display: block !important;
 }
 
 .dropdown-item {
@@ -150,6 +171,15 @@
 .item-flag {
   font-size: 20px;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.item-flag img.emoji {
+  height: 1.3em;
+  width: 1.3em;
+  margin: 0;
+  vertical-align: middle;
 }
 
 .item-text {
@@ -180,7 +210,7 @@
   width: 1px;
   height: 24px;
   background: var(--border-color);
-  margin: 0 8px;
+  margin: 0 -6px;
   opacity: 0.5;
 }
 
@@ -192,22 +222,76 @@
   width: 36px;
   height: 36px;
   padding: 0;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   color: var(--text-primary);
   font-size: 18px;
+  line-height: 0;
   cursor: pointer;
   transition: all 0.2s ease;
+  vertical-align: middle;
 }
 
 .header-btn:hover {
   background: var(--hover-bg);
-  border-color: var(--border-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header-btn:active {
   transform: translateY(1px);
+}
+
+/* Fix specific icon alignment issues */
+#theme-btn {
+  font-size: 20px;
+}
+
+/* Connection Status Indicator */
+.connection-status {
+  position: relative;
+}
+
+.connection-status .status-indicator {
+  font-size: 24px;
+  line-height: 0;
+  transition: color 0.3s ease;
+}
+
+/* Connection states */
+.connection-status[data-status='connected'] .status-indicator {
+  color: #28a745;
+  animation: pulse-connected 2s ease-in-out infinite;
+}
+
+.connection-status[data-status='disconnected'] .status-indicator {
+  color: #dc3545;
+}
+
+.connection-status[data-status='connecting'] .status-indicator {
+  color: #ffc107;
+  animation: pulse-connecting 1s ease-in-out infinite;
+}
+
+@keyframes pulse-connected {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulse-connecting {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* App Title */
@@ -248,24 +332,9 @@
 /* Panel Headers - Aligned */
 .panel-header {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
   background: var(--panel-header-bg);
   border-bottom: 1px solid var(--border-color);
   min-height: 44px;
-}
-
-.storage-selector {
-  flex: 0 0 auto;
-  min-width: 120px;
-  padding: 6px 8px;
-  background: var(--input-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  color: var(--text-primary);
-  font-size: 13px;
-  cursor: pointer;
 }
 
 .panel-path {
@@ -326,11 +395,13 @@
 .col-select {
   width: 40px;
   text-align: center;
+  vertical-align: middle;
 }
 
 .col-name {
   min-width: 200px;
   max-width: 100%;
+  text-align: left;
 }
 
 .col-size {
@@ -340,6 +411,7 @@
 
 .col-modified {
   width: 150px;
+  text-align: right;
 }
 
 /* Panel Footer - Aligned Info */
@@ -426,29 +498,27 @@
   z-index: 1000;
 }
 
-/* Modal Alignment */
-.modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 2000;
+/* Modal Alignment - Apply centering styles */
+/* When modal is shown via JavaScript, ensure it uses flexbox for centering */
+.modal[style*='display: flex'],
+.modal[style*='display: block'] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .modal-content {
   background: var(--panel-bg);
   border-radius: 8px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-  max-width: 90%;
-  max-height: 90%;
+  width: fit-content;
+  min-width: 25vw;
+  max-width: 90vw;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin: auto;
 }
 
 .modal-header {
@@ -464,6 +534,7 @@
   flex: 1;
   padding: 20px;
   overflow: auto;
+  color: var(--text-primary);
 }
 
 /* Context Menu - Aligned */

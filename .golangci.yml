@@ -1,0 +1,70 @@
+# golangci-lint configuration for JaCommander
+# Simplified for golangci-lint v2.x
+version: 2
+
+run:
+  timeout: 5m
+  tests: true
+  build-tags:
+    - basic
+
+output:
+  formats:
+    colored-line-number:
+      path: stdout
+  print-issued-lines: true
+  print-linter-name: true
+  sort-results: true
+
+linters:
+  enable:
+    # Core linters that are definitely available
+    - errcheck      # Check for unchecked errors
+    - govet         # Standard Go vet
+    - ineffassign   # Detect ineffectual assignments
+    - staticcheck   # Advanced static analysis
+    - unused        # Find unused code
+    - misspell      # Spell checker
+    - unconvert     # Remove unnecessary type conversions
+    # gosec disabled - 26 warnings are all acceptable for a file manager (see CHANGELOG_IMPROVEMENTS.md)
+
+  fast: false
+
+linters-settings:
+  errcheck:
+    check-type-assertions: false
+    check-blank: false
+
+  staticcheck:
+    checks: ["all"]
+
+  misspell:
+    locale: US
+    ignore-words:
+      - jacommander
+      - webdav
+      - sftp
+
+issues:
+  exclude-dirs:
+    - vendor
+    - node_modules
+    - tests
+
+  exclude-rules:
+    # Exclude some linters from running on test files
+    - path: _test\.go
+      linters:
+        - errcheck
+
+    # Allow mock functions to be unused
+    - source: "^func new.*Mock"
+      linters:
+        - unused
+
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  new: false
+
+severity:
+  default-severity: warning

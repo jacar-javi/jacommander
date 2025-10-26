@@ -169,6 +169,31 @@ ALLOWED_IPS=192.168.1.0/24,10.0.0.0/8,172.16.0.0/12
 BLOCKED_IPS=203.0.113.0/24,198.51.100.0/24
 ```
 
+### ALLOWED_ORIGIN
+**CORS (Cross-Origin Resource Sharing) allowed origin**
+
+- **Type**: String (URL or wildcard)
+- **Default**: `*` (allow all origins)
+- **Required**: No
+
+**Example:**
+```env
+# Allow all origins (development only)
+ALLOWED_ORIGIN=*
+
+# Single specific origin
+ALLOWED_ORIGIN=https://app.example.com
+
+# Production domain
+ALLOWED_ORIGIN=https://jacommander.example.com
+```
+
+**Best practices:**
+- Use `*` only in development
+- In production, specify exact origin (e.g., `https://app.example.com`)
+- Include protocol (https://) and port if non-standard
+- Do not use wildcard in production environments
+
 ---
 
 ## Local Storage Configuration
@@ -452,6 +477,59 @@ FTP_SERVERS=sftp.example.com:22:user:pass
 **Security note:**
 Use SFTP (port 22) instead of FTP (port 21) when possible.
 
+### SSH_KNOWN_HOSTS
+**Path to SSH known_hosts file for SFTP host key verification**
+
+- **Type**: String (filesystem path)
+- **Default**: `~/.ssh/known_hosts`
+- **Required**: No
+
+**Example:**
+```env
+SSH_KNOWN_HOSTS=/home/user/.ssh/known_hosts
+SSH_KNOWN_HOSTS=/etc/ssh/ssh_known_hosts
+SSH_KNOWN_HOSTS=/run/secrets/known_hosts
+```
+
+**Purpose:**
+- Verifies SFTP server host keys to prevent man-in-the-middle attacks
+- If not set, defaults to user's `~/.ssh/known_hosts` file
+- If file doesn't exist and `SSH_INSECURE` is not enabled, SFTP connections will fail
+
+**Best practices:**
+- Always use host key verification in production
+- Pre-populate known_hosts file with trusted server keys
+- Use system-wide known_hosts for Docker deployments
+- Never disable verification in production (see `SSH_INSECURE`)
+
+### SSH_INSECURE
+**Disable SSH host key verification (DEVELOPMENT ONLY)**
+
+- **Type**: Boolean
+- **Default**: `false`
+- **Required**: No
+
+**Example:**
+```env
+# NEVER use in production
+SSH_INSECURE=true
+```
+
+**WARNING:**
+- **ONLY use in development/testing environments**
+- Disables SSH host key verification completely
+- Makes SFTP connections vulnerable to man-in-the-middle attacks
+- Logs warning message when enabled
+- **NEVER enable in production**
+
+**When to use:**
+- Local development with self-signed certificates
+- Testing environments with dynamic hosts
+- Proof-of-concept deployments
+
+**Security impact:**
+Setting `SSH_INSECURE=true` allows attackers to intercept SFTP connections. Always use proper host key verification in production by configuring `SSH_KNOWN_HOSTS` instead.
+
 ---
 
 ## WebDAV Configuration
@@ -667,6 +745,7 @@ ADMIN_PASS=$(cat /run/secrets/admin_password)
 JWT_SECRET=$(cat /run/secrets/jwt_secret)
 SESSION_TIMEOUT=7200
 ALLOWED_IPS=192.168.1.0/24,10.0.0.0/8
+ALLOWED_ORIGIN=https://jacommander.example.com
 
 # Local Storage
 LOCAL_STORAGE_1=/data
@@ -680,6 +759,12 @@ S3_ACCESS_KEY=$(cat /run/secrets/s3_access_key)
 S3_SECRET_KEY=$(cat /run/secrets/s3_secret_key)
 S3_BUCKETS=production-files,user-uploads
 S3_REGION=us-east-1
+
+# FTP/SFTP (with secure host key verification)
+FTP_ENABLED=true
+FTP_SERVERS=sftp.example.com:22:user:$(cat /run/secrets/sftp_password)
+SSH_KNOWN_HOSTS=/etc/ssh/ssh_known_hosts
+# SSH_INSECURE=false  # Never enable in production!
 
 # Performance
 MAX_UPLOAD_SIZE=10737418240

@@ -3,7 +3,7 @@ package storage
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"mime"
 	"os"
 	"path/filepath"
@@ -25,7 +25,7 @@ func NewLocalStorage(rootPath string) *LocalStorage {
 	}
 
 	// Create directory if it doesn't exist
-	os.MkdirAll(absPath, 0755)
+	_ = os.MkdirAll(absPath, 0755) // Ignore error - directory may already exist
 
 	return &LocalStorage{
 		rootPath: absPath,
@@ -74,16 +74,36 @@ func (ls *LocalStorage) JoinPath(parts ...string) string {
 
 // List returns the contents of a directory
 func (ls *LocalStorage) List(path string) ([]FileInfo, error) {
+	return ls.list(path, false)
+}
+
+// ListWithDirSizes lists directory contents and calculates directory sizes
+func (ls *LocalStorage) ListWithDirSizes(path string) ([]FileInfo, error) {
+	return ls.list(path, true)
+}
+
+func (ls *LocalStorage) list(path string, calcDirSizes bool) ([]FileInfo, error) {
 	fullPath := ls.ResolvePath(path)
 
-	entries, err := ioutil.ReadDir(fullPath)
+	entries, err := os.ReadDir(fullPath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read directory: %w", err)
 	}
 
 	var files []FileInfo
 	for _, entry := range entries {
-		info := ls.fileInfoFromOS(entry, filepath.Join(fullPath, entry.Name()))
+		// Get FileInfo from DirEntry
+		entryInfo, err := entry.Info()
+		if err != nil {
+			continue // Skip entries we can't stat
+		}
+
+		info := ls.fileInfoFromOS(entryInfo, filepath.Join(fullPath, entry.Name()))
+
+		// Calculate directory size if requested
+		if calcDirSizes && info.IsDir {
+			info.Size = ls.calculateDirSize(filepath.Join(fullPath, entry.Name()))
+		}
 
 		// Make path relative to root for response
 		relPath, _ := filepath.Rel(ls.rootPath, info.Path)
@@ -144,16 +164,22 @@ func (ls *LocalStorage) Write(path string, data io.Reader) error {
 
 	// Copy data to temporary file
 	_, err = io.Copy(tmpFile, data)
-	tmpFile.Close()
+	if closeErr := tmpFile.Close(); closeErr != nil {
+		log.Printf("Error closing temp file: %v", closeErr)
+	}
 
 	if err != nil {
-		os.Remove(tmpName)
+		if removeErr := os.Remove(tmpName); removeErr != nil {
+			log.Printf("Error removing temp file after write error: %v", removeErr)
+		}
 		return fmt.Errorf("failed to write data: %w", err)
 	}
 
 	// Rename temporary file to final name
 	if err := os.Rename(tmpName, fullPath); err != nil {
-		os.Remove(tmpName)
+		if removeErr := os.Remove(tmpName); removeErr != nil {
+			log.Printf("Error removing temp file after rename error: %v", removeErr)
+		}
 		return fmt.Errorf("failed to rename file: %w", err)
 	}
 
@@ -218,7 +244,9 @@ func (ls *LocalStorage) Move(src, dst string) error {
 
 	if err := ls.Delete(src); err != nil {
 		// Try to clean up the copy
-		ls.Delete(dst)
+		if cleanupErr := ls.Delete(dst); cleanupErr != nil {
+			log.Printf("Error cleaning up destination after failed source delete: %v", cleanupErr)
+		}
 		return fmt.Errorf("failed to delete source after copy: %w", err)
 	}
 
@@ -248,7 +276,11 @@ func (ls *LocalStorage) copyFile(src, dst string, size int64, progress ProgressC
 	if err != nil {
 		return fmt.Errorf("failed to open source file: %w", err)
 	}
-	defer srcFile.Close()
+	defer func() {
+		if err := srcFile.Close(); err != nil {
+			log.Printf("Error closing source file: %v", err)
+		}
+	}()
 
 	// Create destination directory if needed
 	dstDir := filepath.Dir(dst)
@@ -260,7 +292,11 @@ func (ls *LocalStorage) copyFile(src, dst string, size int64, progress ProgressC
 	if err != nil {
 		return fmt.Errorf("failed to create destination file: %w", err)
 	}
-	defer dstFile.Close()
+	defer func() {
+		if err := dstFile.Close(); err != nil {
+			log.Printf("Error closing destination file: %v", err)
+		}
+	}()
 
 	// Copy with progress callback if provided
 	if progress != nil {
@@ -275,7 +311,9 @@ func (ls *LocalStorage) copyFile(src, dst string, size int64, progress ProgressC
 	// Preserve file permissions
 	srcStat, _ := os.Stat(src)
 	if srcStat != nil {
-		os.Chmod(dst, srcStat.Mode())
+		if err := os.Chmod(dst, srcStat.Mode()); err != nil {
+			log.Printf("Warning: failed to preserve file permissions: %v", err)
+		}
 	}
 
 	return nil
@@ -316,7 +354,7 @@ func (ls *LocalStorage) copyDirectory(src, dst string, progress ProgressCallback
 	}
 
 	// Read source directory
-	entries, err := ioutil.ReadDir(src)
+	entries, err := os.ReadDir(src)
 	if err != nil {
 		return fmt.Errorf("failed to read source directory: %w", err)
 	}
@@ -331,7 +369,12 @@ func (ls *LocalStorage) copyDirectory(src, dst string, progress ProgressCallback
 				return err
 			}
 		} else {
-			if err := ls.copyFile(srcPath, dstPath, entry.Size(), progress); err != nil {
+			// Get file info to determine size
+			entryInfo, err := entry.Info()
+			if err != nil {
+				continue // Skip entries we can't stat
+			}
+			if err := ls.copyFile(srcPath, dstPath, entryInfo.Size(), progress); err != nil {
 				return err
 			}
 		}
@@ -340,7 +383,9 @@ func (ls *LocalStorage) copyDirectory(src, dst string, progress ProgressCallback
 	// Preserve directory permissions
 	srcStat, _ := os.Stat(src)
 	if srcStat != nil {
-		os.Chmod(dst, srcStat.Mode())
+		if err := os.Chmod(dst, srcStat.Mode()); err != nil {
+			log.Printf("Warning: failed to preserve directory permissions: %v", err)
+		}
 	}
 
 	return nil
@@ -355,14 +400,29 @@ func (ls *LocalStorage) GetAvailableSpace() (available, total int64, err error) 
 	}
 
 	// Available space = available blocks * block size
-	available = int64(stat.Bavail) * int64(stat.Bsize)
+	available = int64(stat.Bavail) * stat.Bsize
 	// Total space = total blocks * block size
-	total = int64(stat.Blocks) * int64(stat.Bsize)
+	total = int64(stat.Blocks) * stat.Bsize
 
 	return available, total, nil
 }
 
 // fileInfoFromOS converts os.FileInfo to our FileInfo
+// calculateDirSize recursively calculates the total size of a directory
+func (ls *LocalStorage) calculateDirSize(dirPath string) int64 {
+	var totalSize int64
+	_ = filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return nil // Skip files/dirs we can't access
+		}
+		if !info.IsDir() {
+			totalSize += info.Size()
+		}
+		return nil
+	})
+	return totalSize
+}
+
 func (ls *LocalStorage) fileInfoFromOS(info os.FileInfo, fullPath string) FileInfo {
 	fileInfo := FileInfo{
 		Name:        info.Name(),

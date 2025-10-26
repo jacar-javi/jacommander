@@ -1,0 +1,26 @@
+{
+  "recommendations": [
+    // Go Development
+    "golang.go",
+
+    // Frontend Development
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+
+    // Docker
+    "ms-azuretools.vscode-docker",
+
+    // Git
+    "eamodio.gitlens",
+
+    // Markdown
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+
+    // Utilities
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker",
+    "aaron-bond.better-comments"
+  ],
+  "unwantedRecommendations": []
+}

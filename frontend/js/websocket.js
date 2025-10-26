@@ -1,4 +1,5 @@
 // WebSocket Client Module for Progress Tracking
+/* eslint-disable no-console */
 
 export class WebSocketClient {
     constructor() {

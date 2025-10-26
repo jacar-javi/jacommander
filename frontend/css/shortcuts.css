@@ -4,7 +4,9 @@
 
 /* Shortcut modal specific styles */
 #shortcut-modal .modal-content {
-  max-width: 900px;
+  width: fit-content;
+  min-width: 25vw;
+  max-width: 90vw;
   max-height: 80vh;
 }
 
@@ -254,7 +256,9 @@
 /* Responsive design */
 @media (max-width: 768px) {
   #shortcut-modal .modal-content {
-    max-width: 95%;
+    width: fit-content;
+    min-width: 90vw;
+    max-width: 95vw;
   }
 
   .shortcut-categories {

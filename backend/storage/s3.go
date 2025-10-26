@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"log"
 	"path"
 	"regexp"
 	"strings"
@@ -158,7 +159,11 @@ func (s *S3Storage) Read(filePath string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %w", err)
 	}
-	defer result.Body.Close()
+	defer func() {
+		if err := result.Body.Close(); err != nil {
+			log.Printf("Error closing result body: %v", err)
+		}
+	}()
 
 	return io.ReadAll(result.Body)
 }

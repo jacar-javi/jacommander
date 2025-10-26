@@ -268,13 +268,13 @@ export class FilePreview {
                     <span class="info-value">${this.formatFileSize(file.size)}</span>
                 </div>
                 ${
-                    file.size > this.maxFileSize
-                        ? `
+    file.size > this.maxFileSize
+        ? `
                 <div class="info-note">
                     File too large for preview (>${this.formatFileSize(this.maxFileSize)})
                 </div>`
-                        : ''
-                }
+        : ''
+}
             </div>
         `;
         contentElement.classList.remove('highlighted');

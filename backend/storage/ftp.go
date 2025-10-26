@@ -6,13 +6,16 @@ package storage
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
+	"net"
+	"os"
 	"path"
 	"strings"
 
 	"github.com/jlaffaye/ftp"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/knownhosts"
 )
 
 // FTPStorage implements FileSystem interface for FTP/SFTP servers
@@ -62,12 +65,53 @@ func (f *FTPStorage) connectFTP() error {
 	}
 
 	if err := conn.Login(f.username, f.password); err != nil {
-		conn.Quit()
+		if quitErr := conn.Quit(); quitErr != nil {
+			log.Printf("Error closing FTP connection after login failure: %v", quitErr)
+		}
 		return fmt.Errorf("FTP login failed: %v", err)
 	}
 
 	f.ftpClient = conn
 	return nil
+}
+
+// getHostKeyCallback returns an appropriate SSH host key callback
+// based on environment configuration
+func getHostKeyCallback() ssh.HostKeyCallback {
+	// Check for SSH_INSECURE env var (for development/testing only)
+	if os.Getenv("SSH_INSECURE") == "true" {
+		log.Println("WARNING: SSH host key verification disabled (SSH_INSECURE=true)")
+		return ssh.InsecureIgnoreHostKey()
+	}
+
+	// Try to use known_hosts file for verification
+	knownHostsPath := os.Getenv("SSH_KNOWN_HOSTS")
+	if knownHostsPath == "" {
+		// Default to user's known_hosts file
+		homeDir, err := os.UserHomeDir()
+		if err == nil {
+			knownHostsPath = homeDir + "/.ssh/known_hosts"
+		}
+	}
+
+	// If known_hosts file exists, use it for verification
+	if knownHostsPath != "" {
+		if _, err := os.Stat(knownHostsPath); err == nil {
+			callback, err := knownhosts.New(knownHostsPath)
+			if err == nil {
+				log.Printf("Using SSH known_hosts file: %s", knownHostsPath)
+				return callback
+			}
+			log.Printf("Warning: Failed to load known_hosts file: %v", err)
+		}
+	}
+
+	// Fallback: Accept any key but log a warning
+	log.Println("WARNING: No SSH known_hosts file found, accepting any host key")
+	return func(hostname string, remote net.Addr, key ssh.PublicKey) error {
+		log.Printf("SSH: Accepting host key from %s (fingerprint: %s)", hostname, ssh.FingerprintSHA256(key))
+		return nil
+	}
 }
 
 func (f *FTPStorage) connectSFTP() error {
@@ -78,7 +122,7 @@ func (f *FTPStorage) connectSFTP() error {
 		Auth: []ssh.AuthMethod{
 			ssh.Password(f.password),
 		},
-		HostKeyCallback: ssh.InsecureIgnoreHostKey(), // In production, use proper host key verification
+		HostKeyCallback: getHostKeyCallback(),
 	}
 
 	sshClient, err := ssh.Dial("tcp", addr, config)
@@ -88,7 +132,9 @@ func (f *FTPStorage) connectSFTP() error {
 
 	sftpClient, err := sftp.NewClient(sshClient)
 	if err != nil {
-		sshClient.Close()
+		if err := sshClient.Close(); err != nil {
+			log.Printf("Error closing SSH client: %v", err)
+		}
 		return fmt.Errorf("failed to create SFTP client: %v", err)
 	}
 
@@ -223,7 +269,7 @@ func (f *FTPStorage) Write(filePath string, data io.Reader) error {
 
 func (f *FTPStorage) writeFTP(filePath string, data io.Reader) error {
 	// Read all data first (FTP requires this)
-	content, err := ioutil.ReadAll(data)
+	content, err := io.ReadAll(data)
 	if err != nil {
 		return err
 	}
@@ -241,7 +287,11 @@ func (f *FTPStorage) writeSFTP(filePath string, data io.Reader) error {
 	if err != nil {
 		return fmt.Errorf("failed to create file: %v", err)
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Error closing SFTP file: %v", err)
+		}
+	}()
 
 	_, err = io.Copy(file, data)
 	if err != nil {
@@ -306,7 +356,11 @@ func (f *FTPStorage) Copy(src, dst string, progress ProgressCallback) error {
 	if err != nil {
 		return err
 	}
-	defer srcReader.Close()
+	defer func() {
+		if err := srcReader.Close(); err != nil {
+			log.Printf("Error closing source reader: %v", err)
+		}
+	}()
 
 	// Get file size for progress
 	info, err := f.Stat(src)
@@ -316,18 +370,18 @@ func (f *FTPStorage) Copy(src, dst string, progress ProgressCallback) error {
 
 	// Report initial progress
 	if progress != nil {
-		progress(0, info.Size, src)
+		progress(0, info.Size)
 	}
 
 	// Read content
-	content, err := ioutil.ReadAll(srcReader)
+	content, err := io.ReadAll(srcReader)
 	if err != nil {
 		return err
 	}
 
 	// Report middle progress
 	if progress != nil {
-		progress(info.Size/2, info.Size, src)
+		progress(info.Size/2, info.Size)
 	}
 
 	// Write to destination
@@ -338,7 +392,7 @@ func (f *FTPStorage) Copy(src, dst string, progress ProgressCallback) error {
 
 	// Report completion
 	if progress != nil {
-		progress(info.Size, info.Size, src)
+		progress(info.Size, info.Size)
 	}
 
 	return nil
@@ -382,9 +436,13 @@ func (f *FTPStorage) GetFileContent(filePath string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing file reader: %v", err)
+		}
+	}()
 
-	return ioutil.ReadAll(reader)
+	return io.ReadAll(reader)
 }
 
 // PutFileContent writes file content
@@ -449,11 +507,15 @@ func (f *FTPStorage) Close() error {
 	}
 
 	if f.sftpClient != nil {
-		f.sftpClient.Close()
+		if err := f.sftpClient.Close(); err != nil {
+			log.Printf("Error closing SFTP client: %v", err)
+		}
 	}
 
 	if f.sshClient != nil {
-		f.sshClient.Close()
+		if err := f.sshClient.Close(); err != nil {
+			log.Printf("Error closing SSH client: %v", err)
+		}
 	}
 
 	return nil

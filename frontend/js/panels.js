@@ -12,7 +12,7 @@ export class PanelManager {
         this.dragDropManager = new DragDropManager(app);
         this.breadcrumbNav = new BreadcrumbNav(app);
         this.fileUploader = new FileUploader(app);
-        this.tabManager = new TabManager(app);
+        this.tabManager = null; // Will be initialized after panels are set up
         this.panels = {
             left: {
                 storage: null,
@@ -42,10 +42,11 @@ export class PanelManager {
             const leftPath = savedSession.left.path || '/';
             const rightPath = savedSession.right.path || '/';
 
-            await this.changeStorage('left', leftStorage);
+            // Skip loading directory in changeStorage since we'll load the saved path immediately after
+            await this.changeStorage('left', leftStorage, true);
             await this.loadDirectory('left', leftPath);
 
-            await this.changeStorage('right', rightStorage);
+            await this.changeStorage('right', rightStorage, true);
             await this.loadDirectory('right', rightPath);
 
             // Restore active panel
@@ -58,6 +59,9 @@ export class PanelManager {
             // Set left panel as active
             this.app.setActivePanel('left');
         }
+
+        // Initialize TabManager AFTER storage is set up
+        this.tabManager = new TabManager(this.app);
     }
 
     saveSession() {
@@ -107,7 +111,7 @@ export class PanelManager {
         }
     }
 
-    async changeStorage(panel, storageId) {
+    async changeStorage(panel, storageId, skipLoadDirectory = false) {
         this.panels[panel].storage = storageId;
         this.panels[panel].currentPath = '/';
         this.panels[panel].selectedFiles.clear();
@@ -123,7 +127,10 @@ export class PanelManager {
             })
         );
 
-        await this.loadDirectory(panel, '/');
+        // Skip loading directory if we're going to load a different path immediately after
+        if (!skipLoadDirectory) {
+            await this.loadDirectory(panel, '/');
+        }
     }
 
     async loadDirectory(panel, path) {
@@ -133,23 +140,45 @@ export class PanelManager {
         this.showLoading(panel, true);
 
         try {
-            const response = await fetch(`/api/fs/list?storage=${panelData.storage}&path=${encodeURIComponent(path)}`);
-            const data = await response.json();
+            // Use cached request via PerformanceOptimizer
+            const data = await this.app.performance.executeRequest({
+                url: `/api/fs/list?storage=${panelData.storage}&path=${encodeURIComponent(path)}&calc_sizes=true`,
+                options: {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            });
 
             if (data.success) {
                 panelData.files = data.data.files || [];
                 panelData.currentPath = path;
                 panelData.selectedFiles.clear();
-                panelData.focusedIndex = 0;
+                // Focus on ".." if not at root, otherwise focus on first file
+                panelData.focusedIndex = path !== '/' ? -1 : 0;
 
                 // Update tab manager
                 if (this.tabManager) {
                     this.tabManager.updateCurrentTabPath(panel, path);
                 }
 
+                // Apply current sort state (or default name sort) to newly loaded files
+                if (this.app.tableEnhancements) {
+                    this.app.tableEnhancements.applySortToPanel(panel);
+                }
+
                 // Update UI
                 this.renderFileList(panel);
                 this.updatePanelInfo(panel, data.data);
+
+                // Update sort indicators in header
+                if (this.app.tableEnhancements) {
+                    this.app.tableEnhancements.updateSortIndicators(panel);
+                }
+
+                // Set focus to first item
+                this.updateFocus(panel);
 
                 // Update path input
                 document.getElementById(`path-${panel}`).value = path;
@@ -201,13 +230,25 @@ export class PanelManager {
             tbody.appendChild(parentRow);
         }
 
-        // Sort files: directories first, then files, alphabetically
-        const sortedFiles = [...panelData.files].sort((a, b) => {
-            if (a.is_dir !== b.is_dir) {
-                return b.is_dir ? 1 : -1;
-            }
-            return a.name.localeCompare(b.name);
-        });
+        // Sort files: use custom sort if active, otherwise default alphabetical
+        let sortedFiles;
+        const hasCustomSort =
+            this.app.tableEnhancements &&
+            this.app.tableEnhancements.sortState[panel] &&
+            this.app.tableEnhancements.sortState[panel].column !== null;
+
+        if (hasCustomSort) {
+            // Use the already sorted files from sortByColumn
+            sortedFiles = [...panelData.files];
+        } else {
+            // Apply default sort: directories first, then files, alphabetically
+            sortedFiles = [...panelData.files].sort((a, b) => {
+                if (a.is_dir !== b.is_dir) {
+                    return b.is_dir ? 1 : -1;
+                }
+                return a.name.localeCompare(b.name);
+            });
+        }
 
         // Add file entries
         sortedFiles.forEach((file, index) => {
@@ -278,7 +319,12 @@ export class PanelManager {
         // Size cell
         const sizeCell = document.createElement('td');
         sizeCell.className = 'col-size';
-        sizeCell.textContent = file.is_dir ? '-' : this.app.formatFileSize(file.size);
+        // Show folder size if available (when calc_sizes=true was used), otherwise show formatted size for files
+        if (file.is_dir) {
+            sizeCell.textContent = file.size > 0 ? this.app.formatFileSize(file.size) : '-';
+        } else {
+            sizeCell.textContent = this.app.formatFileSize(file.size);
+        }
         row.appendChild(sizeCell);
 
         // Modified cell
@@ -366,17 +412,18 @@ export class PanelManager {
         if (event.ctrlKey || event.metaKey) {
             // Toggle selection
             this.toggleSelection(panel, file.name);
+            panelData.focusedIndex = index;
+            this.updateFocus(panel);
         } else if (event.shiftKey) {
             // Range selection
             this.selectRange(panel, panelData.focusedIndex, index);
-        } else {
-            // Single selection
-            panelData.selectedFiles.clear();
-            if (!file.isParent) {
-                panelData.selectedFiles.add(file.name);
-            }
             panelData.focusedIndex = index;
-            this.updateSelectionUI(panel);
+            this.updateFocus(panel);
+        } else {
+            // Just update focus, don't change selection
+            // (selection should only change via checkbox, Ctrl+Click, or Shift+Click)
+            panelData.focusedIndex = index;
+            this.updateFocus(panel);
         }
     }
 
@@ -586,7 +633,10 @@ export class PanelManager {
 
     navigateUp(panel) {
         const panelData = this.panels[panel];
-        if (panelData.focusedIndex > 0) {
+        const hasParentDir = panelData.currentPath !== '/';
+        const minIndex = hasParentDir ? -1 : 0;
+
+        if (panelData.focusedIndex > minIndex) {
             panelData.focusedIndex--;
             this.updateFocus(panel);
         }
@@ -603,14 +653,22 @@ export class PanelManager {
     updateFocus(panel) {
         const tbody = document.getElementById(`files-${panel}`);
         const rows = tbody.querySelectorAll('tr');
+        const panelData = this.panels[panel];
+        const hasParentDir = panelData.currentPath !== '/';
+
+        // Convert focusedIndex to DOM row index
+        // If ".." exists, it's at DOM row 0, and files start at row 1
+        // focusedIndex -1 = ".." = DOM row 0
+        // focusedIndex 0 = files[0] = DOM row 1 (if ".." exists) or row 0 (if no "..")
+        const domRowIndex = hasParentDir ? panelData.focusedIndex + 1 : panelData.focusedIndex;
 
         rows.forEach((row, index) => {
-            row.classList.toggle('focused', index === this.panels[panel].focusedIndex);
+            row.classList.toggle('focused', index === domRowIndex);
         });
 
         // Scroll into view if needed
-        if (rows[this.panels[panel].focusedIndex]) {
-            rows[this.panels[panel].focusedIndex].scrollIntoView({
+        if (rows[domRowIndex]) {
+            rows[domRowIndex].scrollIntoView({
                 block: 'nearest',
                 behavior: 'smooth'
             });
@@ -630,8 +688,14 @@ export class PanelManager {
     }
 
     refresh(panel) {
+        // Clear cache before refreshing to ensure fresh data
+        if (this.app.performance) {
+            this.app.performance.clearAllCaches();
+        }
+
         const currentPath = this.panels[panel].currentPath;
-        this.loadDirectory(panel, currentPath);
+        const storage = this.panels[panel].storage;
+        this.loadDirectory(panel, currentPath, storage);
     }
 
     refreshBoth() {

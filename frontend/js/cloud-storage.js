@@ -9,11 +9,10 @@ export class CloudStorageManager {
         this.storages = [];
         this.currentStorages = { left: 'local', right: 'local' };
         this.storageModal = null;
-        this.init();
     }
 
-    init() {
-        this.loadStorages();
+    async init() {
+        await this.loadStorages();
         this.createStorageModal();
         this.setupEventListeners();
         this.updateStorageSelectors();
@@ -24,7 +23,17 @@ export class CloudStorageManager {
             const response = await fetch('/api/storages');
             if (response.ok) {
                 this.storages = await response.json();
-                this.updateStorageSelectors();
+            } else {
+                // If API fails, use default local storage
+                this.storages = [
+                    {
+                        id: 'local',
+                        type: 'local',
+                        display_name: 'Local Storage',
+                        icon: '💾',
+                        is_default: true
+                    }
+                ];
             }
         } catch (error) {
             console.error('Failed to load storages:', error);
@@ -274,7 +283,7 @@ export class CloudStorageManager {
         };
 
         switch (storageType) {
-            case 's3':
+            case 's3': {
                 const bucket = document.getElementById('s3-bucket')?.value;
                 const accessKey = document.getElementById('s3-access-key')?.value;
                 const secretKey = document.getElementById('s3-secret-key')?.value;
@@ -293,6 +302,7 @@ export class CloudStorageManager {
                     endpoint: document.getElementById('s3-endpoint')?.value || ''
                 };
                 break;
+            }
         }
 
         return config;
@@ -357,13 +367,13 @@ export class CloudStorageManager {
                 <div class="storage-actions">
                     ${storage.is_default ? '<span class="default-badge">Default</span>' : ''}
                     ${
-                        storage.id !== 'local'
-                            ? `
+    storage.id !== 'local'
+        ? `
                         <button class="btn-small" onclick="cloudStorage.setDefault('${storage.id}')">Set Default</button>
                         <button class="btn-small btn-danger" onclick="cloudStorage.removeStorage('${storage.id}')">Remove</button>
                     `
-                            : ''
-                    }
+        : ''
+}
                 </div>
             </div>
         `
@@ -397,7 +407,15 @@ export class CloudStorageManager {
     }
 
     async removeStorage(storageId) {
-        if (!confirm('Are you sure you want to remove this storage?')) {
+        const confirmed = await this.app.confirmAction({
+            title: 'Remove Storage',
+            message: 'Are you sure you want to remove this storage?',
+            confirmText: 'Remove',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (!confirmed) {
             return;
         }
 

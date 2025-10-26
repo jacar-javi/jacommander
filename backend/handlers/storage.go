@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -25,7 +26,9 @@ func (h *StorageHandler) ListStorages(w http.ResponseWriter, r *http.Request) {
 	storages := h.manager.ListStorages()
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(storages)
+	if err := json.NewEncoder(w).Encode(storages); err != nil {
+		log.Printf("Error encoding storages response: %v", err)
+	}
 }
 
 // AddStorage adds a new storage backend
@@ -42,10 +45,12 @@ func (h *StorageHandler) AddStorage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]string{
+	if err := json.NewEncoder(w).Encode(map[string]string{
 		"status":  "success",
 		"message": "Storage added successfully",
-	})
+	}); err != nil {
+		log.Printf("Error encoding add storage response: %v", err)
+	}
 }
 
 // RemoveStorage removes a storage backend
@@ -59,10 +64,12 @@ func (h *StorageHandler) RemoveStorage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
+	if err := json.NewEncoder(w).Encode(map[string]string{
 		"status":  "success",
 		"message": "Storage removed successfully",
-	})
+	}); err != nil {
+		log.Printf("Error encoding remove storage response: %v", err)
+	}
 }
 
 // SetDefaultStorage sets a storage as the default
@@ -76,10 +83,12 @@ func (h *StorageHandler) SetDefaultStorage(w http.ResponseWriter, r *http.Reques
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
+	if err := json.NewEncoder(w).Encode(map[string]string{
 		"status":  "success",
 		"message": "Default storage updated",
-	})
+	}); err != nil {
+		log.Printf("Error encoding response: %v", err)
+	}
 }
 
 // TransferFiles transfers files between storage backends
@@ -111,10 +120,12 @@ func (h *StorageHandler) TransferFiles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]string{
+	if err := json.NewEncoder(w).Encode(map[string]string{
 		"status":  "success",
 		"message": "Transfer completed successfully",
-	})
+	}); err != nil {
+		log.Printf("Error encoding response: %v", err)
+	}
 }
 
 // TestConnection tests a storage configuration
@@ -159,5 +170,7 @@ func (h *StorageHandler) TestConnection(w http.ResponseWriter, r *http.Request) 
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(testResult)
+	if err := json.NewEncoder(w).Encode(testResult); err != nil {
+		log.Printf("Error encoding response: %v", err)
+	}
 }

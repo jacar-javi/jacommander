@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -11,8 +12,23 @@ import (
 
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
-		// Allow all origins for development
-		return true
+		// Get allowed origin from environment
+		allowedOrigin := os.Getenv("ALLOWED_ORIGIN")
+		if allowedOrigin == "" {
+			// Default to allowing all origins in development
+			// Set ALLOWED_ORIGIN env var in production
+			return true
+		}
+
+		// Validate the origin header matches allowed origin
+		origin := r.Header.Get("Origin")
+		if origin == allowedOrigin {
+			return true
+		}
+
+		// Log unauthorized WebSocket connection attempt
+		log.Printf("WebSocket: Blocked connection from unauthorized origin: %s (expected: %s)", origin, allowedOrigin)
+		return false
 	},
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
@@ -57,7 +73,6 @@ type Client struct {
 	send chan WebSocketMessage
 	hub  *Hub
 	id   string
-	mu   sync.Mutex
 }
 
 // Hub maintains the set of active clients
@@ -192,13 +207,15 @@ func (h *Hub) run() {
 func (c *Client) readPump() {
 	defer func() {
 		c.hub.unregister <- c
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil {
+			log.Printf("Error closing connection: %v", err)
+		}
 	}()
 
 	// Set read deadline and pong handler
-	c.conn.SetReadDeadline(time.Now().Add(60 * time.Second))
+	_ = c.conn.SetReadDeadline(time.Now().Add(60 * time.Second))
 	c.conn.SetPongHandler(func(string) error {
-		c.conn.SetReadDeadline(time.Now().Add(60 * time.Second))
+		_ = c.conn.SetReadDeadline(time.Now().Add(60 * time.Second))
 		return nil
 	})
 
@@ -236,16 +253,18 @@ func (c *Client) writePump() {
 	ticker := time.NewTicker(54 * time.Second)
 	defer func() {
 		ticker.Stop()
-		c.conn.Close()
+		if err := c.conn.Close(); err != nil {
+			log.Printf("Error closing connection: %v", err)
+		}
 	}()
 
 	for {
 		select {
 		case message, ok := <-c.send:
-			c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+			_ = c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
 			if !ok {
 				// The hub closed the channel
-				c.conn.WriteMessage(websocket.CloseMessage, []byte{})
+				_ = c.conn.WriteMessage(websocket.CloseMessage, []byte{})
 				return
 			}
 
@@ -254,7 +273,7 @@ func (c *Client) writePump() {
 			}
 
 		case <-ticker.C:
-			c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+			_ = c.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
 			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
 				return
 			}

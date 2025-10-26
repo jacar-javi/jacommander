@@ -749,12 +749,12 @@ export class PerformanceOptimizer {
         }
     }
 
-    async prefetchThumbnail(path) {
+    async prefetchThumbnail(_path) {
         // Implementation would fetch thumbnail in background
         // This is a placeholder
     }
 
-    async prefetchMetadata(path) {
+    async prefetchMetadata(_path) {
         // Implementation would fetch metadata in background
         // This is a placeholder
     }
@@ -868,7 +868,6 @@ export class PerformanceOptimizer {
 
     optimizeDOMChanges(mutations) {
         // Batch DOM changes
-        const fragment = document.createDocumentFragment();
         let needsReflow = false;
 
         mutations.forEach((mutation) => {
@@ -888,7 +887,6 @@ export class PerformanceOptimizer {
     optimizeReflow() {
         // Batch read/write operations
         const reads = [];
-        const writes = [];
 
         // Collect read operations
         document.querySelectorAll('.needs-measure').forEach((el) => {
@@ -919,7 +917,7 @@ export class PerformanceOptimizer {
         let totalSize = 0;
 
         // Clean expired cache entries
-        for (const [key, cache] of Object.entries(this.caches)) {
+        for (const cache of Object.values(this.caches)) {
             if (cache instanceof Map) {
                 for (const [cacheKey, value] of cache.entries()) {
                     if (value.timestamp && now - value.timestamp > this.settings.maxCacheAge) {
@@ -944,7 +942,7 @@ export class PerformanceOptimizer {
         // Get all cache entries with timestamps
         const allEntries = [];
 
-        for (const [key, cache] of Object.entries(this.caches)) {
+        for (const cache of Object.values(this.caches)) {
             if (cache instanceof Map) {
                 for (const [cacheKey, value] of cache.entries()) {
                     allEntries.push({
@@ -985,7 +983,7 @@ export class PerformanceOptimizer {
         setInterval(() => {
             let totalSize = 0;
 
-            for (const [key, cache] of Object.entries(this.caches)) {
+            for (const cache of Object.values(this.caches)) {
                 if (cache instanceof Map) {
                     totalSize += cache.size * 1000; // Approximate size
                 }
@@ -1043,7 +1041,7 @@ export class PerformanceOptimizer {
 
     throttle(func, limit) {
         let inThrottle;
-        return function (...args) {
+        return function(...args) {
             if (!inThrottle) {
                 func.apply(this, args);
                 inThrottle = true;

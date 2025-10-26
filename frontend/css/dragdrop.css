@@ -3,13 +3,18 @@
  * Visual feedback for drag and drop operations
  */
 
-/* Draggable files */
+/* Draggable files - keep pointer cursor, only show move cursor when dragging */
 .file-list tr.draggable {
-  cursor: move;
+  cursor: pointer;
 }
 
 .file-list tr.draggable:hover {
   background: var(--hover-bg);
+}
+
+/* Show move cursor when actually initiating drag */
+.file-list tr.draggable:active {
+  cursor: move;
 }
 
 /* Dragging state */

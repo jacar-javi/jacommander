@@ -35,8 +35,47 @@ export class BreadcrumbNav {
     createBreadcrumb(panel) {
         const panelHeader = document.querySelector(`#panel-${panel} .panel-header`);
         const pathInput = panelHeader.querySelector('.path-input');
+        const storageSelector = panelHeader.querySelector('.storage-selector');
 
-        // Create breadcrumb container
+        // Create storage selector row container (for storage dropdown + buttons)
+        const storageSelectorRow = document.createElement('div');
+        storageSelectorRow.className = 'storage-selector-row';
+        storageSelectorRow.id = `storage-row-${panel}`;
+
+        // Move storage selector into the row
+        storageSelector.parentElement.insertBefore(storageSelectorRow, storageSelector);
+        storageSelectorRow.appendChild(storageSelector);
+
+        // Create actions container (for refresh and tab buttons)
+        const actionsContainer = document.createElement('div');
+        actionsContainer.className = 'storage-actions';
+        actionsContainer.id = `storage-actions-${panel}`;
+
+        // Create refresh button
+        const refreshButton = document.createElement('button');
+        refreshButton.className = 'breadcrumb-refresh';
+        refreshButton.id = `breadcrumb-refresh-${panel}`;
+        refreshButton.innerHTML = '↻';
+        refreshButton.title = 'Refresh directory (F5)';
+        refreshButton.addEventListener('click', () => {
+            this.refreshDirectory(panel);
+        });
+
+        // Create sync button
+        const syncButton = document.createElement('button');
+        syncButton.className = 'breadcrumb-sync';
+        syncButton.id = `breadcrumb-sync-${panel}`;
+        syncButton.innerHTML = '⇄';
+        syncButton.title = 'Sync storage and path with other panel';
+        syncButton.addEventListener('click', () => {
+            this.syncWithOtherPanel(panel);
+        });
+
+        actionsContainer.appendChild(refreshButton);
+        actionsContainer.appendChild(syncButton);
+        storageSelectorRow.appendChild(actionsContainer);
+
+        // Create breadcrumb container (navigation only)
         const breadcrumbContainer = document.createElement('div');
         breadcrumbContainer.className = 'breadcrumb-container';
         breadcrumbContainer.id = `breadcrumb-${panel}`;
@@ -53,8 +92,8 @@ export class BreadcrumbNav {
         breadcrumbNav.appendChild(breadcrumbList);
         breadcrumbContainer.appendChild(breadcrumbNav);
 
-        // Insert before path input
-        panelHeader.insertBefore(breadcrumbContainer, pathInput.parentElement);
+        // Insert breadcrumb container after storage selector row
+        panelHeader.insertBefore(breadcrumbContainer, storageSelectorRow.nextSibling);
 
         // Hide original path input
         pathInput.parentElement.style.display = 'none';
@@ -62,7 +101,8 @@ export class BreadcrumbNav {
         // Store reference
         this.breadcrumbs[panel] = {
             container: breadcrumbContainer,
-            list: breadcrumbList
+            list: breadcrumbList,
+            actions: actionsContainer
         };
 
         // Add keyboard navigation
@@ -78,41 +118,155 @@ export class BreadcrumbNav {
         }
 
         const list = this.breadcrumbs[panel].list;
-        list.innerHTML = '';
 
         // Parse path into segments
         const segments = this.parsePath(path);
 
-        // Add storage/root item
-        const storageItem = this.createBreadcrumbItem(
-            {
-                label: storage || 'local',
-                path: '/',
-                isRoot: true,
-                isLast: segments.length === 0
-            },
-            panel
-        );
-        list.appendChild(storageItem);
+        // Calculate total items needed (root + segments)
+        const totalItems = segments.length + 1;
+        const existingItems = list.children;
 
-        // Add path segments
-        let currentPath = '';
-        segments.forEach((segment, index) => {
-            currentPath += `/${segment}`;
-            const item = this.createBreadcrumbItem(
+        // Update or create root item
+        if (existingItems.length > 0) {
+            this.updateBreadcrumbItem(
+                existingItems[0],
                 {
-                    label: segment,
-                    path: currentPath.replace('//', '/'),
-                    isRoot: false,
-                    isLast: index === segments.length - 1
+                    label: storage || 'local',
+                    path: '/',
+                    isRoot: true,
+                    isLast: segments.length === 0
                 },
                 panel
             );
-            list.appendChild(item);
+        } else {
+            const storageItem = this.createBreadcrumbItem(
+                {
+                    label: storage || 'local',
+                    path: '/',
+                    isRoot: true,
+                    isLast: segments.length === 0
+                },
+                panel
+            );
+            list.appendChild(storageItem);
+        }
+
+        // Update or create path segment items
+        let currentPath = '';
+        segments.forEach((segment, index) => {
+            currentPath += `/${segment}`;
+            const itemIndex = index + 1;
+
+            if (existingItems.length > itemIndex) {
+                // Update existing item
+                this.updateBreadcrumbItem(
+                    existingItems[itemIndex],
+                    {
+                        label: segment,
+                        path: currentPath.replace('//', '/'),
+                        isRoot: false,
+                        isLast: index === segments.length - 1
+                    },
+                    panel
+                );
+            } else {
+                // Create new item
+                const item = this.createBreadcrumbItem(
+                    {
+                        label: segment,
+                        path: currentPath.replace('//', '/'),
+                        isRoot: false,
+                        isLast: index === segments.length - 1
+                    },
+                    panel
+                );
+                list.appendChild(item);
+            }
         });
+
+        // Remove extra items if path is shorter
+        while (list.children.length > totalItems) {
+            list.removeChild(list.lastChild);
+        }
 
         // Add scroll buttons if needed
         this.checkOverflow(panel);
+    }
+
+    /**
+     * Update an existing breadcrumb item
+     */
+    updateBreadcrumbItem(itemElement, config, panel) {
+        const { label, path, isRoot, isLast } = config;
+
+        // Clear existing content
+        itemElement.innerHTML = '';
+        itemElement.className = 'breadcrumb-item';
+        if (isLast) {
+            itemElement.classList.add('current');
+        }
+
+        if (!isLast) {
+            // Create clickable link
+            const link = document.createElement('a');
+            link.href = '#';
+            link.className = 'breadcrumb-link';
+            link.setAttribute('data-path', path);
+            link.setAttribute('role', 'button');
+            link.setAttribute('aria-label', `Navigate to ${label}`);
+
+            if (isRoot) {
+                const icon = document.createElement('span');
+                icon.className = 'breadcrumb-icon';
+                icon.textContent = '🏠';
+                link.appendChild(icon);
+            }
+
+            const text = document.createElement('span');
+            text.className = 'breadcrumb-text';
+            text.textContent = label;
+            link.appendChild(text);
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.navigateToPath(panel, path);
+            });
+
+            link.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.navigateToPath(panel, path);
+                }
+            });
+
+            itemElement.appendChild(link);
+
+            // Add separator
+            const separator = document.createElement('span');
+            separator.className = 'breadcrumb-separator';
+            separator.textContent = '/';
+            separator.setAttribute('aria-hidden', 'true');
+            itemElement.appendChild(separator);
+        } else {
+            // Current item (not clickable)
+            const current = document.createElement('span');
+            current.className = 'breadcrumb-current';
+            current.setAttribute('aria-current', 'page');
+
+            if (isRoot) {
+                const icon = document.createElement('span');
+                icon.className = 'breadcrumb-icon';
+                icon.textContent = '🏠';
+                current.appendChild(icon);
+            }
+
+            const text = document.createElement('span');
+            text.className = 'breadcrumb-text';
+            text.textContent = label;
+            current.appendChild(text);
+
+            itemElement.appendChild(current);
+        }
     }
 
     /**
@@ -373,5 +527,54 @@ export class BreadcrumbNav {
                 console.error('Failed to copy path:', err);
                 this.app.showNotification('Failed to copy path', 'error');
             });
+    }
+
+    /**
+     * Refresh current directory, clearing cache
+     */
+    refreshDirectory(panel) {
+        if (!this.app.panels || !this.app.panels.refresh) {
+            console.warn('Panel refresh not available');
+            return;
+        }
+
+        // Show notification
+        this.app.showNotification('Refreshing directory...', 'info');
+
+        // Call panel refresh which will reload the directory
+        this.app.panels.refresh(panel);
+    }
+
+    async syncWithOtherPanel(panel) {
+        if (!this.app.panels) {
+            console.warn('Panels not available');
+            return;
+        }
+
+        // Determine the other panel
+        const otherPanel = panel === 'left' ? 'right' : 'left';
+
+        // Get other panel's storage and path
+        const otherStorage = this.app.panels.getCurrentStorage(otherPanel);
+        const otherPath = this.app.panels.getCurrentPath(otherPanel);
+
+        if (!otherStorage) {
+            this.app.showNotification('Other panel has no storage', 'error');
+            return;
+        }
+
+        try {
+            // Show notification
+            this.app.showNotification(`Syncing with ${otherPanel} panel...`, 'info');
+
+            // Change storage and load the same path
+            await this.app.panels.changeStorage(panel, otherStorage, true);
+            await this.app.panels.loadDirectory(panel, otherPath);
+
+            this.app.showNotification('Panels synced successfully', 'success');
+        } catch (error) {
+            console.error('Failed to sync panels:', error);
+            this.app.showNotification('Failed to sync panels', 'error');
+        }
     }
 }

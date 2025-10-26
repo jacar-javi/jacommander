@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"path"
 	"strings"
 )
@@ -38,12 +37,12 @@ func (s *S3FileSystem) Read(path string) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, err
 	}
-	return ioutil.NopCloser(bytes.NewReader(data)), nil
+	return io.NopCloser(bytes.NewReader(data)), nil
 }
 
 // Write writes data from an io.Reader to a file
 func (s *S3FileSystem) Write(path string, data io.Reader) error {
-	content, err := ioutil.ReadAll(data)
+	content, err := io.ReadAll(data)
 	if err != nil {
 		return fmt.Errorf("failed to read data: %w", err)
 	}

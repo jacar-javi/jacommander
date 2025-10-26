@@ -3,21 +3,58 @@
  * Visual path navigation for panels
  */
 
-/* Breadcrumb container */
+/* Storage selector row (contains dropdown + buttons) */
+.storage-selector-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 4px;
+  background: var(--header-bg);
+}
+
+.storage-selector-row .storage-selector {
+  flex: 1;
+  margin-right: 8px;
+}
+
+/* Storage actions container (right side of storage selector) */
+.storage-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Tab actions moved to storage actions when single tab */
+.storage-actions .tab-actions {
+  display: none;
+  gap: 4px;
+}
+
+.storage-actions.with-actions .tab-actions {
+  display: flex;
+}
+
+/* Breadcrumb container (navigation only) */
 .breadcrumb-container {
   position: relative;
-  background: var(--bg-secondary);
+  background: var(--header-bg);
   border-bottom: 1px solid var(--border);
-  padding: 0 8px;
+  padding-left: 12px;
+  padding-right: 4px;
   height: 32px;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   overflow: hidden;
 }
 
 /* Breadcrumb navigation */
 .breadcrumb-nav {
-  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
@@ -33,6 +70,7 @@
 .breadcrumb-list {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -52,7 +90,7 @@
 .breadcrumb-link {
   display: inline-flex;
   align-items: center;
-  padding: 6px 10px;
+  padding: 6px 4px;
   text-decoration: none;
   color: var(--text-secondary);
   font-size: 13px;
@@ -81,7 +119,7 @@
 .breadcrumb-current {
   display: inline-flex;
   align-items: center;
-  padding: 6px 10px;
+  padding: 6px 4px;
   color: var(--text-primary);
   font-size: 13px;
   font-weight: 600;
@@ -104,11 +142,12 @@
 
 /* Breadcrumb separator */
 .breadcrumb-separator {
-  color: var(--text-disabled);
-  padding: 0 4px;
-  font-size: 12px;
-  opacity: 0.5;
+  color: var(--text-primary);
+  padding: 0;
+  font-size: 13px;
+  opacity: 0.6;
   user-select: none;
+  font-weight: 500;
 }
 
 /* Scroll buttons */
@@ -163,12 +202,12 @@
 
 .breadcrumb-container::before {
   left: 0;
-  background: linear-gradient(to right, var(--bg-secondary), transparent);
+  background: linear-gradient(to right, var(--header-bg), transparent);
 }
 
 .breadcrumb-container::after {
   right: 0;
-  background: linear-gradient(to left, var(--bg-secondary), transparent);
+  background: linear-gradient(to left, var(--header-bg), transparent);
 }
 
 /* Animation for navigation */
@@ -206,6 +245,23 @@
   --text-disabled: #888;
 }
 
+/* Theme-specific separator highlighting */
+.theme-dark .breadcrumb-separator {
+  color: rgba(255, 255, 255, 0.8);
+  opacity: 0.7;
+}
+
+.theme-light .breadcrumb-separator {
+  color: rgba(0, 0, 0, 0.7);
+  opacity: 0.8;
+}
+
+.theme-high-contrast .breadcrumb-separator {
+  color: yellow;
+  opacity: 1;
+  font-weight: 700;
+}
+
 /* High contrast mode adjustments */
 .theme-high-contrast .breadcrumb-link {
   border: 1px solid transparent;
@@ -223,18 +279,18 @@
 
   .breadcrumb-link,
   .breadcrumb-current {
-    padding: 4px 8px;
+    padding: 4px 3px;
     font-size: 12px;
     max-width: 150px;
   }
 
   .breadcrumb-icon {
     font-size: 12px;
-    margin-right: 4px;
+    margin-right: 6px;
   }
 
   .breadcrumb-separator {
-    padding: 0 2px;
+    padding: 0;
   }
 
   .breadcrumb-scroll {
@@ -251,7 +307,7 @@
 
 .compact-mode .breadcrumb-link,
 .compact-mode .breadcrumb-current {
-  padding: 3px 6px;
+  padding: 3px 3px;
   font-size: 11px;
 }
 
@@ -341,4 +397,59 @@
 
 .breadcrumb-copy:active {
   transform: translateY(-50%) scale(0.95);
+}
+
+/* Refresh button */
+.breadcrumb-refresh {
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+}
+
+.breadcrumb-refresh:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  transform: rotate(180deg);
+}
+
+.breadcrumb-refresh:active {
+  transform: scale(0.95) rotate(180deg);
+}
+
+/* Sync button */
+.breadcrumb-sync {
+  padding: 4px 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  margin-left: 4px;
+}
+
+.breadcrumb-sync:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  transform: scale(1.1);
+}
+
+.breadcrumb-sync:active {
+  transform: scale(0.95);
 }

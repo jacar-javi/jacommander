@@ -569,8 +569,16 @@ export class ShortcutManager {
     /**
      * Reset to default shortcuts
      */
-    resetToDefaults() {
-        if (confirm('Reset all shortcuts to defaults? This will remove all customizations.')) {
+    async resetToDefaults() {
+        const confirmed = await this.app.confirmAction({
+            title: 'Reset Shortcuts',
+            message: 'Reset all shortcuts to defaults? This will remove all customizations.',
+            confirmText: 'Reset',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (confirmed) {
             this.customShortcuts = {};
             localStorage.removeItem('jacommander-shortcuts');
             this.mergeShortcuts();
@@ -648,7 +656,7 @@ export class ShortcutManager {
      * Get shortcut for action
      */
     getShortcutForAction(action) {
-        for (const [key, shortcut] of this.shortcuts.entries()) {
+        for (const shortcut of this.shortcuts.values()) {
             if (shortcut.action === action) {
                 return shortcut.key;
             }

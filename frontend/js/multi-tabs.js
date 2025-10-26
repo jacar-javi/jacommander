@@ -498,7 +498,6 @@ export class TabManager {
         menu.style.left = `${event.pageX}px`;
         menu.style.top = `${event.pageY}px`;
 
-        const tabIndex = this.tabs.findIndex((t) => t.id === tabId);
         const isOnlyTab = this.tabs.length === 1;
 
         menu.innerHTML = `

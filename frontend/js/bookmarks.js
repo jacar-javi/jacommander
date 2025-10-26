@@ -2,6 +2,7 @@
  * Bookmarks/Favorites Module
  * Manages user bookmarks for quick access to favorite directories
  */
+/* eslint-disable no-console */
 
 export class BookmarksManager {
     constructor(app) {
@@ -771,8 +772,16 @@ export class BookmarksManager {
         this.showNotification('Bookmark saved successfully');
     }
 
-    deleteBookmark(id) {
-        if (!confirm('Delete this bookmark?')) {
+    async deleteBookmark(id) {
+        const confirmed = await this.app.confirmAction({
+            title: 'Delete Bookmark',
+            message: 'Delete this bookmark?',
+            confirmText: 'Delete',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (!confirmed) {
             return;
         }
 
@@ -1054,8 +1063,16 @@ export class BookmarksManager {
         URL.revokeObjectURL(url);
     }
 
-    clearAllBookmarks() {
-        if (!confirm('Are you sure you want to delete all bookmarks? This cannot be undone.')) {
+    async clearAllBookmarks() {
+        const confirmed = await this.app.confirmAction({
+            title: 'Clear All Bookmarks',
+            message: 'Are you sure you want to delete all bookmarks? This cannot be undone.',
+            confirmText: 'Delete All',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (!confirmed) {
             return;
         }
 

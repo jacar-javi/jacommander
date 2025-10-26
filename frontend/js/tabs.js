@@ -27,6 +27,7 @@ export class TabManager {
         this.loadSavedTabs();
         this.setupKeyboardShortcuts();
         this.setupDragAndDrop();
+        this.setupBreadcrumbSync();
     }
 
     /**
@@ -82,11 +83,21 @@ export class TabManager {
             return null;
         }
 
+        // Get storage safely - handle case where storage might not be initialized yet
+        let tabStorage = storage;
+        if (!tabStorage && this.app.panels && typeof this.app.panels.getCurrentStorage === 'function') {
+            tabStorage = this.app.panels.getCurrentStorage(panel);
+        }
+        if (!tabStorage) {
+            // Fallback to default storage if available
+            tabStorage = 'local';
+        }
+
         const tab = {
             id: ++this.tabIdCounter,
             panel,
             path,
-            storage: storage || this.app.panels.getCurrentStorage(panel),
+            storage: tabStorage,
             title: this.getTabTitle(path),
             state: {
                 selectedFiles: new Set(),
@@ -96,7 +107,7 @@ export class TabManager {
         };
 
         this.tabs[panel].push(tab);
-        this.renderTabs(panel);
+        this.renderTabs(panel, true); // Force full render when adding tabs
         this.switchToTab(panel, this.tabs[panel].length - 1);
         this.saveTabs();
 
@@ -128,7 +139,7 @@ export class TabManager {
             this.activeTab[panel]--;
         }
 
-        this.renderTabs(panel);
+        this.renderTabs(panel, true); // Force full render when closing tabs
         this.switchToTab(panel, this.activeTab[panel]);
         this.saveTabs();
     }
@@ -148,8 +159,10 @@ export class TabManager {
         this.activeTab[panel] = index;
         const tab = this.tabs[panel][index];
 
-        // Load tab directory
-        this.app.panels.loadDirectory(panel, tab.path, tab.storage);
+        // Load tab directory - only if panels are initialized
+        if (this.app.panels && typeof this.app.panels.loadDirectory === 'function') {
+            this.app.panels.loadDirectory(panel, tab.path, tab.storage);
+        }
 
         // Restore tab state
         this.restoreTabState(panel, tab);
@@ -175,6 +188,11 @@ export class TabManager {
             return;
         }
 
+        // Check if panels are initialized
+        if (!this.app.panels || !this.app.panels.panels || !this.app.panels.panels[panel]) {
+            return;
+        }
+
         const panelData = this.app.panels.panels[panel];
         currentTab.state = {
             selectedFiles: new Set(panelData.selectedFiles),
@@ -192,15 +210,22 @@ export class TabManager {
      * Restore tab state
      */
     restoreTabState(panel, tab) {
+        // Check if panels are initialized
+        if (!this.app.panels || !this.app.panels.panels || !this.app.panels.panels[panel]) {
+            return;
+        }
+
         const panelData = this.app.panels.panels[panel];
 
         // Restore selection and focus
         panelData.selectedFiles = new Set(tab.state.selectedFiles);
         panelData.focusedIndex = tab.state.focusedIndex;
 
-        // Restore scroll position (after content loads)
+        // Restore scroll position and focus (after content loads)
         setTimeout(() => {
             this.setScrollPosition(panel, tab.state.scrollPosition);
+            this.app.panels.updateFocus(panel);
+            this.app.panels.updateSelectionUI(panel);
         }, 100);
     }
 
@@ -225,13 +250,22 @@ export class TabManager {
     /**
      * Render tabs for a panel
      */
-    renderTabs(panel) {
+    renderTabs(panel, forceFullRender = false) {
         const tabList = document.getElementById(`tab-list-${panel}`);
         const tabs = this.tabs[panel];
+        const existingTabs = Array.from(tabList.querySelectorAll('.tab'));
 
-        tabList.innerHTML = tabs
-            .map(
-                (tab, index) => `
+        // Check if we need a full render
+        const needsFullRender =
+            forceFullRender ||
+            existingTabs.length !== tabs.length ||
+            existingTabs.some((tabEl, index) => tabEl.dataset.tabId !== tabs[index]?.id);
+
+        if (needsFullRender) {
+            // Full render: recreate all tabs
+            tabList.innerHTML = tabs
+                .map(
+                    (tab, index) => `
             <div class="tab ${index === this.activeTab[panel] ? 'active' : ''}"
                  data-panel="${panel}"
                  data-index="${index}"
@@ -241,49 +275,103 @@ export class TabManager {
                 <span class="tab-icon">📁</span>
                 <span class="tab-title">${tab.title}</span>
                 ${
-                    tabs.length > 1
-                        ? `
+    tabs.length > 1
+        ? `
                     <button class="tab-close" data-panel="${panel}" data-index="${index}" title="Close Tab">×</button>
                 `
-                        : ''
-                }
+        : ''
+}
             </div>
         `
-            )
-            .join('');
+                )
+                .join('');
 
-        // Add event listeners
-        tabList.querySelectorAll('.tab').forEach((tabEl) => {
-            const index = parseInt(tabEl.dataset.index);
+            // Add event listeners
+            tabList.querySelectorAll('.tab').forEach((tabEl) => {
+                const index = parseInt(tabEl.dataset.index);
 
-            // Click to switch
-            tabEl.addEventListener('click', (e) => {
-                if (!e.target.classList.contains('tab-close')) {
-                    this.switchToTab(panel, index);
-                }
-            });
-
-            // Middle click to close
-            tabEl.addEventListener('mousedown', (e) => {
-                if (e.button === 1) {
-                    // Middle mouse button
-                    e.preventDefault();
-                    this.closeTab(panel, index);
-                }
-            });
-
-            // Close button
-            const closeBtn = tabEl.querySelector('.tab-close');
-            if (closeBtn) {
-                closeBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.closeTab(panel, index);
+                // Click to switch
+                tabEl.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('tab-close')) {
+                        this.switchToTab(panel, index);
+                    }
                 });
-            }
 
-            // Drag and drop
-            this.setupTabDragAndDrop(tabEl);
-        });
+                // Middle click to close
+                tabEl.addEventListener('mousedown', (e) => {
+                    if (e.button === 1) {
+                        // Middle mouse button
+                        e.preventDefault();
+                        this.closeTab(panel, index);
+                    }
+                });
+
+                // Close button
+                const closeBtn = tabEl.querySelector('.tab-close');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.closeTab(panel, index);
+                    });
+                }
+
+                // Drag and drop
+                this.setupTabDragAndDrop(tabEl);
+            });
+        } else {
+            // Optimized render: just update active states and titles
+            existingTabs.forEach((tabEl, index) => {
+                const isActive = index === this.activeTab[panel];
+                tabEl.classList.toggle('active', isActive);
+
+                // Update title if it changed
+                const titleEl = tabEl.querySelector('.tab-title');
+                if (titleEl && tabs[index] && titleEl.textContent !== tabs[index].title) {
+                    titleEl.textContent = tabs[index].title;
+                }
+
+                // Update path tooltip
+                if (tabs[index] && tabEl.title !== tabs[index].path) {
+                    tabEl.title = tabs[index].path;
+                }
+            });
+        }
+
+        // Handle single tab UI reorganization
+        const tabBar = document.getElementById(`tab-bar-${panel}`);
+        const storageActions = document.querySelector(`#panel-${panel} .storage-actions`);
+        // Tab actions might be in either tab bar or storage-actions
+        let tabActions = tabBar.querySelector('.tab-actions');
+        if (!tabActions && storageActions) {
+            tabActions = storageActions.querySelector('.tab-actions');
+        }
+
+        if (tabs.length === 1) {
+            // Single tab: hide tab bar, move actions to storage-actions
+            tabBar.classList.add('single-tab');
+            if (storageActions && tabActions) {
+                storageActions.classList.add('with-actions');
+                // Only append if not already there
+                if (!storageActions.contains(tabActions)) {
+                    storageActions.appendChild(tabActions);
+                }
+            }
+        } else {
+            // Multiple tabs: show tab bar, keep actions in tab bar
+            tabBar.classList.remove('single-tab');
+            if (storageActions) {
+                storageActions.classList.remove('with-actions');
+                // Move actions back to tab bar if they're in storage-actions
+                if (tabActions && storageActions.contains(tabActions)) {
+                    tabBar.appendChild(tabActions);
+                }
+            }
+        }
+
+        // Double-check that single-tab panels have visible actions
+        if (tabs.length === 1) {
+            this.ensureTabActionsVisible(panel);
+        }
     }
 
     /**
@@ -302,7 +390,7 @@ export class TabManager {
         tabEl.addEventListener('dragover', (e) => {
             e.preventDefault();
             const afterElement = this.getDragAfterElement(tabEl.parentElement, e.clientX);
-            if (afterElement == null) {
+            if (afterElement === null) {
                 tabEl.parentElement.appendChild(draggedTab);
             } else {
                 tabEl.parentElement.insertBefore(draggedTab, afterElement);
@@ -356,7 +444,7 @@ export class TabManager {
         this.activeTab[panel] = newTabs.findIndex((tab) => tab.id === activeTabId);
 
         this.tabs[panel] = newTabs;
-        this.renderTabs(panel);
+        this.renderTabs(panel, true); // Force full render when reordering tabs
         this.saveTabs();
     }
 
@@ -378,8 +466,7 @@ export class TabManager {
         const menu = document.createElement('div');
         menu.className = 'tab-context-menu';
         menu.style.position = 'absolute';
-        menu.style.left = `${event.pageX}px`;
-        menu.style.top = `${event.pageY}px`;
+        menu.style.visibility = 'hidden'; // Hide while positioning
 
         menu.innerHTML = `
             <div class="menu-item" data-action="close-all">Close All Tabs</div>
@@ -408,6 +495,34 @@ export class TabManager {
         };
 
         document.body.appendChild(menu);
+
+        // Position menu with viewport boundary checks
+        const menuRect = menu.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        let left = event.pageX;
+        let top = event.pageY;
+
+        // Check right boundary
+        if (left + menuRect.width > viewportWidth) {
+            left = viewportWidth - menuRect.width - 5; // 5px padding from edge
+        }
+
+        // Check bottom boundary
+        if (top + menuRect.height > viewportHeight + window.scrollY) {
+            top = event.pageY - menuRect.height; // Show above cursor
+        }
+
+        // Ensure menu stays within left boundary
+        if (left < 0) {
+            left = 5;
+        }
+
+        menu.style.left = `${left}px`;
+        menu.style.top = `${top}px`;
+        menu.style.visibility = 'visible'; // Show after positioning
+
         setTimeout(() => {
             document.addEventListener('click', closeMenu);
         }, 0);
@@ -416,13 +531,20 @@ export class TabManager {
     /**
      * Handle tab menu action
      */
-    handleTabMenuAction(panel, action) {
+    async handleTabMenuAction(panel, action) {
         const activeIndex = this.activeTab[panel];
         const activeTab = this.tabs[panel][activeIndex];
 
         switch (action) {
-            case 'close-all':
-                if (confirm('Close all tabs except the first one?')) {
+            case 'close-all': {
+                const confirmed = await this.app.confirmAction({
+                    title: 'Close All Tabs',
+                    message: 'Close all tabs except the first one?',
+                    confirmText: 'Close All',
+                    cancelText: 'Cancel'
+                });
+
+                if (confirmed) {
                     while (this.tabs[panel].length > 1) {
                         this.tabs[panel].pop();
                     }
@@ -431,6 +553,7 @@ export class TabManager {
                     this.switchToTab(panel, 0);
                 }
                 break;
+            }
 
             case 'close-others':
                 if (this.tabs[panel].length > 1) {
@@ -616,6 +739,47 @@ export class TabManager {
             tab.title = this.getTabTitle(path);
             this.renderTabs(panel);
             this.saveTabs();
+        }
+    }
+
+    /**
+     * Setup breadcrumb synchronization
+     * Ensures tab actions remain visible after breadcrumb updates
+     */
+    setupBreadcrumbSync() {
+        // Listen for path changes that update breadcrumb
+        document.addEventListener('pathChanged', (e) => {
+            const panel = e.detail.panel;
+            // Small delay to ensure breadcrumb update completes first
+            setTimeout(() => {
+                this.ensureTabActionsVisible(panel);
+            }, 0);
+        });
+    }
+
+    /**
+     * Ensure tab actions are visible when there's only one tab
+     */
+    ensureTabActionsVisible(panel) {
+        const tabs = this.tabs[panel];
+        if (tabs && tabs.length === 1) {
+            const tabBar = document.getElementById(`tab-bar-${panel}`);
+            const storageActions = document.querySelector(`#panel-${panel} .storage-actions`);
+
+            // Find tab actions in either location
+            let tabActions = tabBar?.querySelector('.tab-actions');
+            if (!tabActions && storageActions) {
+                tabActions = storageActions.querySelector('.tab-actions');
+            }
+
+            // Ensure with-actions class is present
+            if (storageActions && tabActions) {
+                storageActions.classList.add('with-actions');
+                // Ensure tab-actions is in storage-actions
+                if (!storageActions.contains(tabActions)) {
+                    storageActions.appendChild(tabActions);
+                }
+            }
         }
     }
 }

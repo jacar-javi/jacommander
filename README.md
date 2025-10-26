@@ -130,6 +130,7 @@ go run backend/main.go
 - 📘 **[Documentation Home](docs/README.md)** - Complete documentation index
 - 🚀 **[Installation Guide](docs/installation.md)** - Docker, manual, and platform-specific installation
 - ✨ **[Features Overview](docs/features.md)** - Detailed feature documentation
+- 🛠️ **[Development Guide](DEVELOPMENT.md)** - Local development workflow and CI/CD integration
 
 ### Configuration & Setup
 - 🔧 **[Configuration Guide](docs/configuration.md)** - Production deployment and scenarios

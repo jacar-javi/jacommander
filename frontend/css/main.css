@@ -80,30 +80,6 @@ body {
   flex-shrink: 0;
 }
 
-.function-key {
-  flex: 1;
-  padding: 6px 4px;
-  background: var(--button-bg);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  font-size: 12px;
-  font-family: inherit;
-  transition: all 0.2s;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.function-key:hover {
-  background: var(--hover-bg);
-  color: var(--text-primary);
-}
-
-.function-key:active {
-  background: var(--active-bg);
-}
-
 /* Modals */
 .modal {
   display: none;
@@ -122,15 +98,17 @@ body {
   background: var(--modal-bg);
   border-radius: 8px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  max-width: 600px;
-  width: 90%;
+  width: fit-content;
+  min-width: 25vw;
+  max-width: 90vw;
   max-height: 80vh;
   display: flex;
   flex-direction: column;
 }
 
 .modal-wide {
-  max-width: 900px;
+  min-width: 25vw;
+  max-width: 90vw;
 }
 
 .modal-header {
@@ -164,6 +142,19 @@ body {
   padding: 20px;
   overflow-y: auto;
   flex: 1;
+  color: var(--text-primary);
+}
+
+.modal-body p {
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+}
+
+.modal-body label {
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
 }
 
 .modal-footer {
@@ -429,8 +420,8 @@ body {
 .breadcrumb-nav {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
+  gap: 0;
+  padding: 0;
   background: var(--input-bg);
   border: 1px solid var(--border-color);
   border-radius: 4px;
@@ -441,7 +432,6 @@ body {
 .breadcrumb-item {
   color: var(--text-secondary);
   cursor: pointer;
-  padding: 2px 6px;
   border-radius: 3px;
   transition: all 0.2s;
   font-size: 13px;
@@ -532,7 +522,9 @@ body {
   }
 
   .modal-content {
-    width: 95%;
+    width: fit-content;
+    min-width: 90vw;
+    max-width: 95vw;
     max-height: 90vh;
   }
 }

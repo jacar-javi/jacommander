@@ -6,7 +6,7 @@ package storage
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -112,25 +112,26 @@ func (nfs *NFSStorage) List(path string) ([]FileInfo, error) {
 
 	fullPath := filepath.Join(nfs.mountPoint, path)
 
-	entries, err := ioutil.ReadDir(fullPath)
+	entries, err := os.ReadDir(fullPath)
 	if err != nil {
 		return nil, err
 	}
 
-	files := make([]FileInfo, len(entries))
-	for i, entry := range entries {
-		info, err := entry.Info()
+	files := make([]FileInfo, 0, len(entries))
+	for _, entry := range entries {
+		// Get FileInfo from DirEntry
+		entryInfo, err := entry.Info()
 		if err != nil {
-			continue
+			continue // Skip entries we can't stat
 		}
 
-		files[i] = FileInfo{
-			Name:    entry.Name(),
-			Size:    info.Size(),
-			ModTime: info.ModTime(),
-			IsDir:   entry.IsDir(),
-			Mode:    info.Mode(),
-		}
+		files = append(files, FileInfo{
+			Name:        entry.Name(),
+			Size:        entryInfo.Size(),
+			ModTime:     entryInfo.ModTime(),
+			IsDir:       entry.IsDir(),
+			Permissions: entryInfo.Mode().String(),
+		})
 	}
 
 	return files, nil
@@ -169,7 +170,11 @@ func (nfs *NFSStorage) Write(path string, data io.Reader) error {
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Printf("Error closing file: %v", err)
+		}
+	}()
 
 	// Copy data
 	_, err = io.Copy(file, data)
@@ -218,11 +223,11 @@ func (nfs *NFSStorage) Stat(path string) (FileInfo, error) {
 	}
 
 	return FileInfo{
-		Name:    info.Name(),
-		Size:    info.Size(),
-		ModTime: info.ModTime(),
-		IsDir:   info.IsDir(),
-		Mode:    info.Mode(),
+		Name:        info.Name(),
+		Size:        info.Size(),
+		ModTime:     info.ModTime(),
+		IsDir:       info.IsDir(),
+		Permissions: info.Mode().String(),
 	}, nil
 }
 
@@ -249,18 +254,75 @@ func (nfs *NFSStorage) Move(src, dst string) error {
 }
 
 // Copy copies a file from src to dst
-func (nfs *NFSStorage) Copy(src, dst string) error {
+func (nfs *NFSStorage) Copy(src, dst string, progress ProgressCallback) error {
 	if !nfs.mounted {
 		return fmt.Errorf("NFS share not mounted")
+	}
+
+	// Get file size for progress reporting
+	info, err := nfs.Stat(src)
+	if err != nil {
+		return err
+	}
+
+	// Report initial progress
+	if progress != nil {
+		progress(0, info.Size)
 	}
 
 	srcFile, err := nfs.Read(src)
 	if err != nil {
 		return err
 	}
-	defer srcFile.Close()
+	defer func() {
+		if err := srcFile.Close(); err != nil {
+			log.Printf("Error closing srcFile: %v", err)
+		}
+	}()
 
-	return nfs.Write(dst, srcFile)
+	err = nfs.Write(dst, srcFile)
+	if err != nil {
+		return err
+	}
+
+	// Report completion
+	if progress != nil {
+		progress(info.Size, info.Size)
+	}
+
+	return nil
+}
+
+// GetType returns the storage type
+func (nfs *NFSStorage) GetType() string {
+	return "nfs"
+}
+
+// GetRootPath returns the root path
+func (nfs *NFSStorage) GetRootPath() string {
+	return nfs.mountPoint
+}
+
+// GetAvailableSpace returns available and total space
+func (nfs *NFSStorage) GetAvailableSpace() (available, total int64, err error) {
+	// NFS doesn't provide a standard way to get space info
+	// This would require platform-specific syscalls
+	return -1, -1, nil
+}
+
+// IsValidPath checks if a path is valid
+func (nfs *NFSStorage) IsValidPath(path string) bool {
+	return !strings.Contains(path, "\x00")
+}
+
+// JoinPath joins path parts
+func (nfs *NFSStorage) JoinPath(parts ...string) string {
+	return filepath.Join(parts...)
+}
+
+// ResolvePath resolves a path
+func (nfs *NFSStorage) ResolvePath(path string) string {
+	return filepath.Clean(path)
 }
 
 // Close unmounts the NFS share
@@ -278,15 +340,8 @@ func (nfs *NFSStorage) GetMountInfo() map[string]interface{} {
 		"readOnly":   nfs.readOnly,
 	}
 
-	// Try to get disk usage info
-	if nfs.mounted {
-		var stat os.Statfs_t
-		if err := os.Statfs(nfs.mountPoint, &stat); err == nil {
-			info["totalSpace"] = stat.Blocks * uint64(stat.Bsize)
-			info["freeSpace"] = stat.Bavail * uint64(stat.Bsize)
-			info["usedSpace"] = (stat.Blocks - stat.Bfree) * uint64(stat.Bsize)
-		}
-	}
+	// Disk usage info is platform-specific and not included in this basic implementation
+	// For production, use golang.org/x/sys/unix for Unix systems or syscall package
 
 	return info
 }

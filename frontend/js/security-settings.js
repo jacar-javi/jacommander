@@ -99,10 +99,10 @@ export class SecuritySettings {
                                 <h4>Current Status:</h4>
                                 <div class="status-indicator ${this.allowLocalIPs ? 'allowed' : 'blocked'}">
                                     ${
-                                        this.allowLocalIPs
-                                            ? '⚠️ Connections to local IP addresses are ALLOWED'
-                                            : '✓ Connections to local IP addresses are BLOCKED'
-                                    }
+    this.allowLocalIPs
+        ? '⚠️ Connections to local IP addresses are ALLOWED'
+        : '✓ Connections to local IP addresses are BLOCKED'
+}
                                 </div>
                             </div>
 

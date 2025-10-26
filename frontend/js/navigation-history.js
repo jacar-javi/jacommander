@@ -532,7 +532,7 @@ export class NavigationHistory {
 
         // Build path progressively
         let currentPath = '';
-        parts.forEach((part, index) => {
+        parts.forEach((part, _index) => {
             // Separator
             const separator = document.createElement('span');
             separator.className = 'breadcrumb-separator';
@@ -665,8 +665,16 @@ export class NavigationHistory {
         return JSON.parse(localStorage.getItem(key) || '{}');
     }
 
-    clearHistory() {
-        if (!confirm('Clear all navigation history?')) {
+    async clearHistory() {
+        const confirmed = await window.app.confirmAction({
+            title: 'Clear History',
+            message: 'Clear all navigation history?',
+            confirmText: 'Clear',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (!confirmed) {
             return;
         }
 

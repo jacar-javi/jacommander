@@ -2,7 +2,7 @@ package config
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"log"
 	"os"
 	"sync"
 )
@@ -22,7 +22,9 @@ func NewSecurityConfig() *SecurityConfig {
 	}
 
 	// Load existing configuration
-	cfg.Load()
+	if err := cfg.Load(); err != nil {
+		log.Printf("Warning: Failed to load security config: %v", err)
+	}
 
 	return cfg
 }
@@ -39,7 +41,7 @@ func (sc *SecurityConfig) Load() error {
 	}
 
 	// Read config file
-	data, err := ioutil.ReadFile(sc.configPath)
+	data, err := os.ReadFile(sc.configPath)
 	if err != nil {
 		return err
 	}
@@ -51,7 +53,9 @@ func (sc *SecurityConfig) Load() error {
 // Save writes configuration to file
 func (sc *SecurityConfig) save() error {
 	// Ensure directory exists
-	os.MkdirAll("/data", 0755)
+	if err := os.MkdirAll("/data", 0755); err != nil {
+		log.Printf("Warning: Failed to create data directory: %v", err)
+	}
 
 	// Marshal to JSON
 	data, err := json.MarshalIndent(sc, "", "  ")
@@ -60,7 +64,7 @@ func (sc *SecurityConfig) save() error {
 	}
 
 	// Write to file
-	return ioutil.WriteFile(sc.configPath, data, 0644)
+	return os.WriteFile(sc.configPath, data, 0644)
 }
 
 // GetAllowLocalIPs returns whether local IPs are allowed

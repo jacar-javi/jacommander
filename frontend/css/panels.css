@@ -25,12 +25,12 @@
 
 /* Panel Header */
 .panel-header {
-  padding: 8px;
+  padding: 0;
   background: var(--header-bg);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 
 .storage-selector {
@@ -99,6 +99,29 @@
   font-weight: 500;
   border-bottom: 1px solid var(--border-color);
   user-select: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.file-list th:hover {
+  background: var(--hover-bg, rgba(255, 255, 255, 0.05));
+}
+
+.file-list th.sortable::after {
+  content: '⇅';
+  margin-left: 4px;
+  opacity: 0.3;
+  font-size: 10px;
+}
+
+.file-list th.sorted-asc::after {
+  content: '▲';
+  opacity: 1;
+}
+
+.file-list th.sorted-desc::after {
+  content: '▼';
+  opacity: 1;
 }
 
 .file-list tbody tr {
@@ -106,17 +129,34 @@
   transition: background-color 0.1s;
 }
 
-.file-list tbody tr:hover {
-  background: var(--row-hover);
+/* Remove hover effect on non-focused rows to prevent confusion with keyboard navigation */
+.file-list tbody tr:not(.focused):hover {
+  background: transparent;
 }
 
 .file-list tbody tr.selected {
   background: var(--row-selected);
 }
 
-.file-list tbody tr.focused {
-  outline: 1px solid var(--focus-border);
-  outline-offset: -1px;
+/* Focused row has blue border and background highlight - takes priority for keyboard navigation */
+/* Only show focus border on active panel, and only on top/bottom to merge with panel borders */
+.panel.active .file-list tbody tr.focused {
+  outline: 2px solid var(--focus-border);
+  outline-offset: -2px;
+  background: var(--row-hover) !important;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Ensure first row shows top border correctly */
+.panel.active .file-list tbody tr:first-child.focused {
+  outline: 2px solid var(--focus-border);
+  outline-offset: -2px;
+}
+
+/* Inactive panel focused row - only background highlight, no border */
+.panel:not(.active) .file-list tbody tr.focused {
+  background: var(--row-hover) !important;
 }
 
 .file-list td {
@@ -131,6 +171,7 @@
 .col-select {
   width: 30px;
   text-align: center;
+  vertical-align: middle;
 }
 
 .col-name {
@@ -144,6 +185,7 @@
 
 .col-modified {
   width: 150px;
+  text-align: right;
 }
 
 /* File Type Styling */
@@ -184,11 +226,20 @@
 }
 
 /* Selection Checkbox */
-.file-checkbox {
-  width: 16px;
-  height: 16px;
+.file-checkbox,
+.select-all-checkbox {
+  width: 12px;
+  height: 12px;
   cursor: pointer;
   accent-color: var(--accent-color);
+  vertical-align: middle;
+  margin: 0;
+  display: inline-block;
+}
+
+/* Table header checkbox positioning */
+th .select-all-checkbox {
+  margin-left: 2px;
 }
 
 /* Panel Footer */
@@ -287,7 +338,7 @@
   }
 
   .file-checkbox {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
   }
 }

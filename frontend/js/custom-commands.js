@@ -2,6 +2,7 @@
  * Custom Commands Module
  * Allows users to define and execute custom shell commands
  */
+/* eslint-disable no-console */
 
 export class CustomCommands {
     constructor(app) {
@@ -912,7 +913,14 @@ export class CustomCommands {
 
         // Check for confirmation
         if (command.options.confirm) {
-            if (!confirm(`Execute command: ${command.name}?`)) {
+            const confirmed = await this.app.confirmAction({
+                title: 'Execute Command',
+                message: `Execute command: ${command.name}?`,
+                confirmText: 'Execute',
+                cancelText: 'Cancel'
+            });
+
+            if (!confirmed) {
                 return;
             }
         }
@@ -1209,8 +1217,16 @@ export class CustomCommands {
         this.settings.querySelector('#cmd-reload').checked = cmd.options.reload;
     }
 
-    deleteCommand(id) {
-        if (!confirm('Delete this command?')) {
+    async deleteCommand(id) {
+        const confirmed = await this.app.confirmAction({
+            title: 'Delete Command',
+            message: 'Delete this command?',
+            confirmText: 'Delete',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (!confirmed) {
             return;
         }
 
@@ -1380,8 +1396,16 @@ export class CustomCommands {
         URL.revokeObjectURL(url);
     }
 
-    resetToDefaults() {
-        if (!confirm('Reset all commands to defaults? This will delete all custom commands.')) {
+    async resetToDefaults() {
+        const confirmed = await this.app.confirmAction({
+            title: 'Reset Commands',
+            message: 'Reset all commands to defaults? This will delete all custom commands.',
+            confirmText: 'Reset',
+            cancelText: 'Cancel',
+            dangerAction: true
+        });
+
+        if (!confirmed) {
             return;
         }
 

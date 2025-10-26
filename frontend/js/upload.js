@@ -81,7 +81,7 @@ export class FileUploader {
         });
 
         // Handle drag leave
-        panelEl.addEventListener('dragleave', (e) => {
+        panelEl.addEventListener('dragleave', (_e) => {
             dragCounter--;
             if (dragCounter === 0) {
                 panelEl.classList.remove('drop-hover');
@@ -182,14 +182,14 @@ export class FileUploader {
                         </div>
                         <div class="file-list-preview" style="max-height: 200px; overflow-y: auto;">
                             ${files
-                                .map(
-                                    (file) => `
+        .map(
+            (file) => `
                                 <div style="padding: 4px 0;">
                                     📄 ${file.name} (${formatSize(file.size)})
                                 </div>
                             `
-                                )
-                                .join('')}
+        )
+        .join('')}
                         </div>
                         <p style="margin-top: 10px;">
                             <strong>Total size:</strong> ${formatSize(totalSize)}
@@ -265,7 +265,7 @@ export class FileUploader {
         formData.append('storage', storage || 'local');
 
         // Create progress container
-        const progressId = this.showUploadProgress(file.name, upload.id);
+        this.showUploadProgress(file.name, upload.id);
 
         try {
             // Create XMLHttpRequest for progress tracking
@@ -309,7 +309,7 @@ export class FileUploader {
             xhr.send(formData);
 
             // Wait for completion
-            const response = await uploadPromise;
+            await uploadPromise;
 
             // Success
             upload.status = 'completed';
@@ -450,7 +450,7 @@ export class FileUploader {
      * Cancel all uploads
      */
     cancelAllUploads() {
-        for (const [id, xhr] of this.activeUploads) {
+        for (const xhr of this.activeUploads.values()) {
             xhr.abort();
         }
         this.activeUploads.clear();

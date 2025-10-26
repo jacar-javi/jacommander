@@ -22,7 +22,10 @@
 
 1. [API Documentation](api.md) - RESTful API and WebSocket reference
 2. [Contributing Guide](../CONTRIBUTING.md) - How to contribute
-3. [Troubleshooting](troubleshooting.md) - Debug common issues
+3. [Development Guide](../DEVELOPMENT.md) - Local development and CI/CD
+4. [Code Quality & CI/CD](code-quality.md) - Linting, quality improvements, and pipeline
+5. [Testing & QA](testing.md) - Test coverage and quality assurance
+6. [Troubleshooting](troubleshooting.md) - Debug common issues
 
 ---
 
@@ -195,6 +198,58 @@ curl -X POST http://localhost:8080/api/auth/login \
 curl "http://localhost:8080/api/fs/list?path=/data" \
   -H "Authorization: Bearer {token}"
 ```
+
+---
+
+#### [Code Quality & CI/CD](code-quality.md)
+**Code quality improvements and CI/CD integration**
+
+- Error handling fixes (57 warnings resolved)
+- Linting configuration (golangci-lint, ESLint)
+- CI/CD pipeline enhancements
+- Security analysis (gosec findings)
+- Local development parity with CI
+- Version alignment and tool configuration
+
+**Quick commands:**
+```bash
+# Check code quality
+make pre-commit
+
+# Run CI pipeline locally
+make ci-local
+
+# Install linters
+make install-linters
+```
+
+**Quality Status:** ✅ A+ (0 critical issues)
+
+---
+
+#### [Testing & Quality Assurance](testing.md)
+**Comprehensive testing documentation and reports**
+
+- Running tests (backend, frontend, integration)
+- Test coverage reports
+- Quality assurance procedures
+- Comprehensive test results (114 tests - 100% pass rate)
+- Bug fix verification reports
+- Continuous integration testing
+
+**Quick commands:**
+```bash
+# Run backend tests
+make test-backend
+
+# Run all tests
+make test
+
+# Run CI pipeline locally
+make ci-local
+```
+
+**Test Status:** ✅ ALL TESTS PASSING (100% pass rate)
 
 ---
 

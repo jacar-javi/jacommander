@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -125,8 +126,14 @@ func (ch *CompressionHandler) performCompression(fs storage.FileSystem, req Comp
 		}
 		return
 	}
-	defer os.Remove(tmpFile.Name())
-	defer tmpFile.Close()
+	defer func() {
+		if err := tmpFile.Close(); err != nil {
+			log.Printf("Error closing temp file: %v", err)
+		}
+		if err := os.Remove(tmpFile.Name()); err != nil {
+			log.Printf("Error removing temp file: %v", err)
+		}
+	}()
 
 	// Perform compression based on format
 	switch strings.ToLower(req.Format) {
@@ -148,7 +155,13 @@ func (ch *CompressionHandler) performCompression(fs storage.FileSystem, req Comp
 	}
 
 	// Seek to beginning of temp file
-	tmpFile.Seek(0, 0)
+	if _, err := tmpFile.Seek(0, 0); err != nil {
+		log.Printf("Error seeking temp file: %v", err)
+		if tracker != nil {
+			tracker.Error(err)
+		}
+		return
+	}
 
 	// Write the archive to the storage
 	if err := fs.Write(req.OutputPath, tmpFile); err != nil {
@@ -172,7 +185,11 @@ func (ch *CompressionHandler) performCompression(fs storage.FileSystem, req Comp
 // createZipArchive creates a ZIP archive
 func (ch *CompressionHandler) createZipArchive(fs storage.FileSystem, output io.Writer, files []string, basePath string, tracker *ProgressTracker) error {
 	zipWriter := zip.NewWriter(output)
-	defer zipWriter.Close()
+	defer func() {
+		if err := zipWriter.Close(); err != nil {
+			log.Printf("Error closing zip writer: %v", err)
+		}
+	}()
 
 	var currentSize int64
 
@@ -228,7 +245,11 @@ func (ch *CompressionHandler) addFileToZip(fs storage.FileSystem, zipWriter *zip
 	if err != nil {
 		return err
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing reader in addFileToZip: %v", err)
+		}
+	}()
 
 	// Copy with progress tracking
 	if tracker != nil {
@@ -275,12 +296,24 @@ func (ch *CompressionHandler) createTarArchive(fs storage.FileSystem, output io.
 	if compress {
 		// Create gzip writer
 		gzWriter := gzip.NewWriter(output)
-		defer gzWriter.Close()
+		defer func() {
+			if err := gzWriter.Close(); err != nil {
+				// Ignore harmless errors
+				if !strings.Contains(err.Error(), "does not allow body") &&
+				   !strings.Contains(err.Error(), "Content-Length") {
+					log.Printf("Error closing gzip writer: %v", err)
+				}
+			}
+		}()
 		tarWriter = tar.NewWriter(gzWriter)
 	} else {
 		tarWriter = tar.NewWriter(output)
 	}
-	defer tarWriter.Close()
+	defer func() {
+		if err := tarWriter.Close(); err != nil {
+			log.Printf("Error closing tar writer: %v", err)
+		}
+	}()
 
 	var currentSize int64
 
@@ -335,7 +368,11 @@ func (ch *CompressionHandler) addFileToTar(fs storage.FileSystem, tarWriter *tar
 	if err != nil {
 		return err
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing reader in addFileToTar: %v", err)
+		}
+	}()
 
 	// Copy with progress tracking
 	if tracker != nil {
@@ -404,7 +441,11 @@ func (ch *CompressionHandler) performDecompression(fs storage.FileSystem, req De
 		}
 		return
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing archive reader: %v", err)
+		}
+	}()
 
 	// Determine archive format by extension
 	ext := strings.ToLower(filepath.Ext(req.ArchivePath))
@@ -415,7 +456,9 @@ func (ch *CompressionHandler) performDecompression(fs storage.FileSystem, req De
 		// Create a folder with the archive name (without extension)
 		baseName := strings.TrimSuffix(filepath.Base(req.ArchivePath), ext)
 		outputPath = filepath.Join(outputPath, baseName)
-		fs.MkDir(outputPath)
+		if err := fs.MkDir(outputPath); err != nil {
+			log.Printf("Error creating output directory: %v", err)
+		}
 	}
 
 	// Perform extraction based on format
@@ -459,8 +502,16 @@ func (ch *CompressionHandler) extractZipArchive(fs storage.FileSystem, reader io
 	if err != nil {
 		return err
 	}
-	defer os.Remove(tmpFile.Name())
-	defer tmpFile.Close()
+	defer func() {
+		if err := os.Remove(tmpFile.Name()); err != nil {
+			log.Printf("Error removing temp file: %v", err)
+		}
+	}()
+	defer func() {
+		if err := tmpFile.Close(); err != nil {
+			log.Printf("Error closing temp file: %v", err)
+		}
+	}()
 
 	// Copy archive to temp file
 	if _, err := io.Copy(tmpFile, reader); err != nil {
@@ -472,7 +523,11 @@ func (ch *CompressionHandler) extractZipArchive(fs storage.FileSystem, reader io
 	if err != nil {
 		return err
 	}
-	defer zipReader.Close()
+	defer func() {
+		if err := zipReader.Close(); err != nil {
+			log.Printf("Error closing zip reader: %v", err)
+		}
+	}()
 
 	var currentSize int64
 
@@ -482,12 +537,16 @@ func (ch *CompressionHandler) extractZipArchive(fs storage.FileSystem, reader io
 
 		if file.FileInfo().IsDir() {
 			// Create directory
-			fs.MkDir(filePath)
+			if err := fs.MkDir(filePath); err != nil {
+				log.Printf("Error creating directory: %v", err)
+			}
 			continue
 		}
 
 		// Create parent directory if needed
-		fs.MkDir(filepath.Dir(filePath))
+		if err := fs.MkDir(filepath.Dir(filePath)); err != nil {
+			log.Printf("Error creating parent directory: %v", err)
+		}
 
 		// Open file in archive
 		rc, err := file.Open()
@@ -501,19 +560,31 @@ func (ch *CompressionHandler) extractZipArchive(fs storage.FileSystem, reader io
 			tmpOut, _ := os.CreateTemp("", "extract-file-*.tmp")
 			written, err := ch.copyWithProgress(tmpOut, rc, &currentSize, tracker)
 			currentSize += written
-			tmpOut.Seek(0, 0)
-			fs.Write(filePath, tmpOut)
-			tmpOut.Close()
-			os.Remove(tmpOut.Name())
+			if _, seekErr := tmpOut.Seek(0, 0); seekErr != nil {
+				log.Printf("Error seeking temp file: %v", seekErr)
+			}
+			if writeErr := fs.Write(filePath, tmpOut); writeErr != nil {
+				log.Printf("Error writing file: %v", writeErr)
+			}
+			if closeErr := tmpOut.Close(); closeErr != nil {
+				log.Printf("Error closing temp file: %v", closeErr)
+			}
+			if removeErr := os.Remove(tmpOut.Name()); removeErr != nil {
+				log.Printf("Error removing temp file: %v", removeErr)
+			}
 			if err != nil {
-				rc.Close()
+				if closeErr := rc.Close(); closeErr != nil {
+					log.Printf("Error closing rc: %v", closeErr)
+				}
 				return err
 			}
 		} else {
 			err = fs.Write(filePath, rc)
 		}
 
-		rc.Close()
+		if closeErr := rc.Close(); closeErr != nil {
+			log.Printf("Error closing rc: %v", closeErr)
+		}
 		if err != nil {
 			return err
 		}
@@ -532,7 +603,11 @@ func (ch *CompressionHandler) extractTarArchive(fs storage.FileSystem, reader io
 		if err != nil {
 			return err
 		}
-		defer gzReader.Close()
+		defer func() {
+			if err := gzReader.Close(); err != nil {
+				log.Printf("Error closing gzip reader: %v", err)
+			}
+		}()
 		tarReader = tar.NewReader(gzReader)
 	} else {
 		tarReader = tar.NewReader(reader)
@@ -555,11 +630,15 @@ func (ch *CompressionHandler) extractTarArchive(fs storage.FileSystem, reader io
 		switch header.Typeflag {
 		case tar.TypeDir:
 			// Create directory
-			fs.MkDir(filePath)
+			if err := fs.MkDir(filePath); err != nil {
+				log.Printf("Error creating directory: %v", err)
+			}
 
 		case tar.TypeReg:
 			// Create parent directory if needed
-			fs.MkDir(filepath.Dir(filePath))
+			if err := fs.MkDir(filepath.Dir(filePath)); err != nil {
+				log.Printf("Error creating parent directory: %v", err)
+			}
 
 			// Write file to storage
 			if tracker != nil {
@@ -567,10 +646,18 @@ func (ch *CompressionHandler) extractTarArchive(fs storage.FileSystem, reader io
 				tmpOut, _ := os.CreateTemp("", "extract-file-*.tmp")
 				written, err := ch.copyWithProgress(tmpOut, tarReader, &currentSize, tracker)
 				currentSize += written
-				tmpOut.Seek(0, 0)
-				fs.Write(filePath, tmpOut)
-				tmpOut.Close()
-				os.Remove(tmpOut.Name())
+				if _, seekErr := tmpOut.Seek(0, 0); seekErr != nil {
+					log.Printf("Error seeking temp file: %v", seekErr)
+				}
+				if writeErr := fs.Write(filePath, tmpOut); writeErr != nil {
+					log.Printf("Error writing file: %v", writeErr)
+				}
+				if closeErr := tmpOut.Close(); closeErr != nil {
+					log.Printf("Error closing temp file: %v", closeErr)
+				}
+				if removeErr := os.Remove(tmpOut.Name()); removeErr != nil {
+					log.Printf("Error removing temp file: %v", removeErr)
+				}
 				if err != nil {
 					return err
 				}

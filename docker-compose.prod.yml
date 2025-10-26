@@ -1,0 +1,370 @@
+# Production Docker Compose Configuration for JaCommander
+#
+# This configuration is optimized for production deployments with:
+# - Security best practices (authentication, CORS, secrets management)
+# - Performance optimizations (caching, compression, resource limits)
+# - High availability (health checks, restart policies)
+# - Monitoring and logging
+#
+# Usage:
+#   docker-compose -f docker-compose.prod.yml up -d
+#
+# Prerequisites:
+#   1. Create secrets directory: mkdir -p secrets
+#   2. Generate secrets (see instructions below)
+#   3. Review and customize environment variables
+#   4. Configure SSL/TLS reverse proxy (nginx, traefik, caddy)
+
+services:
+  jacommander:
+    image: jacarjavi/jacommander:latest
+    # Alternatively, build from source:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    container_name: jacommander-prod
+
+    # Network configuration
+    ports:
+      - '127.0.0.1:8080:8080'  # Bind to localhost only - use reverse proxy for external access
+
+    # Volume mounts
+    volumes:
+      # Data volumes - customize paths as needed
+      - ./data:/data:rw
+      - ./uploads:/uploads:rw
+      - ./downloads:/downloads:rw
+      - ./backups:/backups:rw
+
+      # Storage configuration
+      - ./config/storage.json:/app/config/storage.json:ro
+
+      # SSH known_hosts for SFTP (if using SFTP)
+      - ./config/ssh_known_hosts:/etc/ssh/ssh_known_hosts:ro
+
+      # Optional: Custom TLS certificates
+      # - ./certs:/certs:ro
+
+    # Environment variables
+    environment:
+      # Server configuration
+      PORT: 8080
+      HOST: 0.0.0.0
+
+      # Security - CORS configuration
+      # IMPORTANT: Set to your actual domain in production
+      ALLOWED_ORIGIN: https://files.example.com
+
+      # Authentication (strongly recommended for production)
+      ENABLE_AUTH: 'true'
+      ADMIN_USER: admin
+      # Use Docker secrets for sensitive data (see secrets section below)
+      ADMIN_PASS_FILE: /run/secrets/admin_password
+      JWT_SECRET_FILE: /run/secrets/jwt_secret
+      SESSION_TIMEOUT: 7200  # 2 hours
+
+      # IP allowlist (optional - restrict access to specific IPs/ranges)
+      # ALLOWED_IPS: 192.168.1.0/24,10.0.0.0/8
+
+      # Local storage paths
+      LOCAL_STORAGE_1: /data
+      LOCAL_STORAGE_2: /uploads
+      LOCAL_STORAGE_3: /downloads
+      LOCAL_STORAGE_4: /backups
+
+      # AWS S3 Configuration (optional)
+      # S3_ENABLED: 'true'
+      # S3_ENDPOINT: https://s3.amazonaws.com
+      # S3_ACCESS_KEY_FILE: /run/secrets/s3_access_key
+      # S3_SECRET_KEY_FILE: /run/secrets/s3_secret_key
+      # S3_BUCKETS: production-files,user-uploads
+      # S3_REGION: us-east-1
+
+      # Google Drive Configuration (optional)
+      # GDRIVE_ENABLED: 'true'
+      # GDRIVE_CLIENT_ID_FILE: /run/secrets/gdrive_client_id
+      # GDRIVE_CLIENT_SECRET_FILE: /run/secrets/gdrive_client_secret
+      # GDRIVE_REFRESH_TOKEN_FILE: /run/secrets/gdrive_refresh_token
+
+      # Microsoft OneDrive Configuration (optional)
+      # ONEDRIVE_ENABLED: 'true'
+      # ONEDRIVE_CLIENT_ID_FILE: /run/secrets/onedrive_client_id
+      # ONEDRIVE_CLIENT_SECRET_FILE: /run/secrets/onedrive_client_secret
+      # ONEDRIVE_REFRESH_TOKEN_FILE: /run/secrets/onedrive_refresh_token
+
+      # FTP/SFTP Configuration (optional)
+      # FTP_ENABLED: 'true'
+      # FTP_SERVERS_FILE: /run/secrets/ftp_servers  # Format: host:port:user:pass
+      # SSH_KNOWN_HOSTS: /etc/ssh/ssh_known_hosts  # For SFTP host verification
+      # SSH_INSECURE: 'false'  # NEVER set to true in production!
+
+      # WebDAV Configuration (optional)
+      # WEBDAV_ENABLED: 'true'
+      # WEBDAV_SERVERS_FILE: /run/secrets/webdav_servers
+
+      # Performance settings - tuned for production
+      MAX_UPLOAD_SIZE: 10737418240  # 10GB
+      CHUNK_SIZE: 16777216          # 16MB
+      WORKER_THREADS: 8             # Adjust based on CPU cores
+      CACHE_ENABLED: 'true'
+      CACHE_SIZE_MB: 512
+
+      # Logging - structured JSON for production monitoring
+      LOG_LEVEL: info  # Use 'warn' or 'error' for minimal logging
+      LOG_FORMAT: json
+
+      # Compression - enabled for bandwidth optimization
+      ENABLE_GZIP: 'true'
+      COMPRESSION_LEVEL: 6  # Balanced performance
+
+    # Security: Run as non-root user (if supported by image)
+    # user: '1000:1000'
+
+    # Resource limits - prevent resource exhaustion
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+    # Restart policy - automatically restart on failure
+    restart: unless-stopped
+
+    # Health check - monitor container health
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:8080/api/health']
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+    # Docker secrets for sensitive data
+    secrets:
+      - admin_password
+      - jwt_secret
+      # Uncomment if using cloud storage:
+      # - s3_access_key
+      # - s3_secret_key
+      # - gdrive_client_id
+      # - gdrive_client_secret
+      # - gdrive_refresh_token
+      # - onedrive_client_id
+      # - onedrive_client_secret
+      # - onedrive_refresh_token
+      # - ftp_servers
+      # - webdav_servers
+
+    networks:
+      - jacommander-prod
+
+    # Logging configuration
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '3'
+        labels: 'service=jacommander,environment=production'
+
+# Docker secrets - secure way to manage sensitive data
+secrets:
+  admin_password:
+    file: ./secrets/admin_password.txt
+  jwt_secret:
+    file: ./secrets/jwt_secret.txt
+
+  # Cloud storage secrets (uncomment as needed)
+  # s3_access_key:
+  #   file: ./secrets/s3_access_key.txt
+  # s3_secret_key:
+  #   file: ./secrets/s3_secret_key.txt
+  # gdrive_client_id:
+  #   file: ./secrets/gdrive_client_id.txt
+  # gdrive_client_secret:
+  #   file: ./secrets/gdrive_client_secret.txt
+  # gdrive_refresh_token:
+  #   file: ./secrets/gdrive_refresh_token.txt
+  # onedrive_client_id:
+  #   file: ./secrets/onedrive_client_id.txt
+  # onedrive_client_secret:
+  #   file: ./secrets/onedrive_client_secret.txt
+  # onedrive_refresh_token:
+  #   file: ./secrets/onedrive_refresh_token.txt
+  # ftp_servers:
+  #   file: ./secrets/ftp_servers.txt
+  # webdav_servers:
+  #   file: ./secrets/webdav_servers.txt
+
+# Networks
+networks:
+  jacommander-prod:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Persistent volumes
+volumes:
+  data:
+    driver: local
+  uploads:
+    driver: local
+  downloads:
+    driver: local
+  backups:
+    driver: local
+
+# ==============================================================================
+# SETUP INSTRUCTIONS
+# ==============================================================================
+#
+# 1. CREATE SECRETS DIRECTORY
+#    mkdir -p secrets
+#    chmod 700 secrets
+#
+# 2. GENERATE ADMIN PASSWORD
+#    openssl rand -base64 32 > secrets/admin_password.txt
+#    chmod 600 secrets/admin_password.txt
+#
+# 3. GENERATE JWT SECRET
+#    openssl rand -hex 64 > secrets/jwt_secret.txt
+#    chmod 600 secrets/jwt_secret.txt
+#
+# 4. CONFIGURE ALLOWED_ORIGIN
+#    Edit the ALLOWED_ORIGIN environment variable above to match your domain
+#    Example: ALLOWED_ORIGIN: https://files.example.com
+#
+# 5. (OPTIONAL) SETUP SSH KNOWN_HOSTS FOR SFTP
+#    ssh-keyscan -H sftp.example.com >> config/ssh_known_hosts
+#
+# 6. (OPTIONAL) CREATE ADDITIONAL SECRETS FOR CLOUD STORAGE
+#    echo "your-s3-access-key" > secrets/s3_access_key.txt
+#    echo "your-s3-secret-key" > secrets/s3_secret_key.txt
+#    chmod 600 secrets/*.txt
+#
+# 7. CREATE DATA DIRECTORIES
+#    mkdir -p data uploads downloads backups
+#    chmod 755 data uploads downloads backups
+#
+# 8. REVIEW AND CUSTOMIZE CONFIGURATION
+#    - Adjust resource limits based on your server capacity
+#    - Configure volume paths to match your storage layout
+#    - Enable/disable storage backends as needed
+#
+# 9. START THE SERVICE
+#    docker-compose -f docker-compose.prod.yml up -d
+#
+# 10. CHECK LOGS
+#     docker-compose -f docker-compose.prod.yml logs -f
+#
+# 11. VERIFY HEALTH
+#     docker-compose -f docker-compose.prod.yml ps
+#     curl http://localhost:8080/api/health
+#
+# ==============================================================================
+# REVERSE PROXY CONFIGURATION (RECOMMENDED)
+# ==============================================================================
+#
+# For production, use a reverse proxy (nginx, traefik, or caddy) with SSL/TLS:
+#
+# NGINX EXAMPLE:
+# ---------------
+# server {
+#     listen 443 ssl http2;
+#     server_name files.example.com;
+#
+#     ssl_certificate /etc/ssl/certs/example.com.crt;
+#     ssl_certificate_key /etc/ssl/private/example.com.key;
+#
+#     location / {
+#         proxy_pass http://127.0.0.1:8080;
+#         proxy_http_version 1.1;
+#         proxy_set_header Upgrade $http_upgrade;
+#         proxy_set_header Connection 'upgrade';
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#         proxy_cache_bypass $http_upgrade;
+#
+#         # Increase timeouts for large file uploads
+#         proxy_read_timeout 300s;
+#         proxy_connect_timeout 75s;
+#         client_max_body_size 10G;
+#     }
+# }
+#
+# TRAEFIK EXAMPLE (docker-compose labels):
+# -----------------------------------------
+# Add these labels to the jacommander service:
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.jacommander.rule=Host(`files.example.com`)"
+#       - "traefik.http.routers.jacommander.entrypoints=websecure"
+#       - "traefik.http.routers.jacommander.tls.certresolver=letsencrypt"
+#       - "traefik.http.services.jacommander.loadbalancer.server.port=8080"
+#
+# ==============================================================================
+# BACKUP STRATEGY
+# ==============================================================================
+#
+# Regular backups are essential for production:
+#
+# 1. DATA VOLUMES
+#    docker run --rm -v jacommander_data:/data -v $(pwd)/backup:/backup \
+#        alpine tar czf /backup/data-$(date +%Y%m%d).tar.gz /data
+#
+# 2. SECRETS
+#    tar czf secrets-backup-$(date +%Y%m%d).tar.gz secrets/
+#    gpg --encrypt --recipient your@email.com secrets-backup-*.tar.gz
+#
+# 3. CONFIGURATION
+#    cp docker-compose.prod.yml config/storage.json backup/
+#
+# 4. AUTOMATED BACKUPS (crontab)
+#    0 2 * * * /path/to/backup-script.sh
+#
+# ==============================================================================
+# MONITORING AND MAINTENANCE
+# ==============================================================================
+#
+# 1. HEALTH MONITORING
+#    while true; do
+#        docker-compose -f docker-compose.prod.yml ps
+#        sleep 60
+#    done
+#
+# 2. LOG MONITORING
+#    docker-compose -f docker-compose.prod.yml logs -f --tail=100
+#
+# 3. RESOURCE MONITORING
+#    docker stats jacommander-prod
+#
+# 4. UPDATE STRATEGY
+#    docker-compose -f docker-compose.prod.yml pull
+#    docker-compose -f docker-compose.prod.yml up -d
+#    docker image prune -f
+#
+# ==============================================================================
+# SECURITY CHECKLIST
+# ==============================================================================
+#
+# [ ] ALLOWED_ORIGIN set to specific domain (not *)
+# [ ] ENABLE_AUTH set to true
+# [ ] Strong admin password (32+ characters, random)
+# [ ] Secure JWT secret (64+ hex characters)
+# [ ] All secrets in ./secrets/ with 600 permissions
+# [ ] secrets/ directory has 700 permissions
+# [ ] SSH_INSECURE set to false (or not set)
+# [ ] SSH_KNOWN_HOSTS configured for SFTP
+# [ ] Reverse proxy with SSL/TLS configured
+# [ ] Firewall rules restricting access
+# [ ] Regular backups configured
+# [ ] Log monitoring enabled
+# [ ] Resource limits configured
+# [ ] No sensitive data in environment variables
+# [ ] Secrets not committed to version control
+#
+# ==============================================================================

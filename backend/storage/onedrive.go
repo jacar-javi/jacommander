@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -21,11 +21,11 @@ import (
 
 // OneDriveStorage implements FileSystem interface for Microsoft OneDrive
 type OneDriveStorage struct {
-	client      *http.Client
-	accessToken string
-	baseURL     string
-	driveID     string
-	cache       map[string]*OneDriveItem
+	client  *http.Client
+	baseURL string
+	driveID string
+	cache   map[string]*OneDriveItem
+	// Note: accessToken removed - auth handled via OAuth2 client configuration
 }
 
 // OneDriveItem represents a file or folder in OneDrive
@@ -95,7 +95,11 @@ func NewOneDriveFileSystem(clientID, clientSecret, refreshToken string) (*OneDri
 	if err != nil {
 		return nil, fmt.Errorf("failed to get drive info: %v", err)
 	}
-	defer driveResp.Body.Close()
+	defer func() {
+		if err := driveResp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	var driveInfo struct {
 		ID string `json:"id"`
@@ -133,10 +137,14 @@ func (o *OneDriveStorage) List(dirPath string) ([]FileInfo, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to list items: %v", err)
 		}
-		defer resp.Body.Close()
+		defer func() {
+			if err := resp.Body.Close(); err != nil {
+				log.Printf("Error closing response body: %v", err)
+			}
+		}()
 
 		if resp.StatusCode != http.StatusOK {
-			body, _ := ioutil.ReadAll(resp.Body)
+			body, _ := io.ReadAll(resp.Body)
 			return nil, fmt.Errorf("API error: %s", body)
 		}
 
@@ -190,7 +198,11 @@ func (o *OneDriveStorage) Stat(filePath string) (FileInfo, error) {
 	if err != nil {
 		return FileInfo{}, fmt.Errorf("failed to get item info: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return FileInfo{}, fmt.Errorf("item not found")
@@ -228,7 +240,11 @@ func (o *OneDriveStorage) Read(filePath string) (io.ReadCloser, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		resp.Body.Close()
+		func() {
+			if err := resp.Body.Close(); err != nil {
+				log.Printf("Error closing response body: %v", err)
+			}
+		}()
 		return nil, fmt.Errorf("failed to download file: status %d", resp.StatusCode)
 	}
 
@@ -237,7 +253,7 @@ func (o *OneDriveStorage) Read(filePath string) (io.ReadCloser, error) {
 
 // Write writes a file to OneDrive
 func (o *OneDriveStorage) Write(filePath string, data io.Reader) error {
-	content, err := ioutil.ReadAll(data)
+	content, err := io.ReadAll(data)
 	if err != nil {
 		return fmt.Errorf("failed to read data: %v", err)
 	}
@@ -267,10 +283,14 @@ func (o *OneDriveStorage) simpleUpload(filePath string, content []byte) error {
 	if err != nil {
 		return fmt.Errorf("upload failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("upload failed: %s", body)
 	}
 
@@ -299,10 +319,14 @@ func (o *OneDriveStorage) largeUpload(filePath string, content []byte) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("failed to create upload session: %s", body)
 	}
 
@@ -339,7 +363,11 @@ func (o *OneDriveStorage) largeUpload(filePath string, content []byte) error {
 		if err != nil {
 			return err
 		}
-		chunkResp.Body.Close()
+		func() {
+			if err := chunkResp.Body.Close(); err != nil {
+				log.Printf("Error closing chunk response body: %v", err)
+			}
+		}()
 
 		if chunkResp.StatusCode != http.StatusAccepted && chunkResp.StatusCode != http.StatusCreated && chunkResp.StatusCode != http.StatusOK {
 			return fmt.Errorf("chunk upload failed: status %d", chunkResp.StatusCode)
@@ -363,10 +391,14 @@ func (o *OneDriveStorage) Delete(filePath string) error {
 	if err != nil {
 		return fmt.Errorf("delete failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("delete failed: %s", body)
 	}
 
@@ -407,10 +439,14 @@ func (o *OneDriveStorage) MkDir(dirPath string) error {
 	if err != nil {
 		return fmt.Errorf("mkdir failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusCreated && resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("mkdir failed: %s", body)
 	}
 
@@ -427,7 +463,11 @@ func (o *OneDriveStorage) Move(src, dst string) error {
 	if err != nil {
 		return err
 	}
-	defer srcResp.Body.Close()
+	defer func() {
+		if err := srcResp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	var srcItem OneDriveItem
 	if err := json.NewDecoder(srcResp.Body).Decode(&srcItem); err != nil {
@@ -468,10 +508,14 @@ func (o *OneDriveStorage) Move(src, dst string) error {
 	if err != nil {
 		return fmt.Errorf("move failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("move failed: %s", body)
 	}
 
@@ -491,7 +535,11 @@ func (o *OneDriveStorage) Copy(src, dst string, progress ProgressCallback) error
 	if err != nil {
 		return err
 	}
-	defer srcResp.Body.Close()
+	defer func() {
+		if err := srcResp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	var srcItem OneDriveItem
 	if err := json.NewDecoder(srcResp.Body).Decode(&srcItem); err != nil {
@@ -500,7 +548,7 @@ func (o *OneDriveStorage) Copy(src, dst string, progress ProgressCallback) error
 
 	// Report initial progress
 	if progress != nil {
-		progress(0, srcItem.Size, src)
+		progress(0, srcItem.Size)
 	}
 
 	// Prepare copy request
@@ -540,10 +588,14 @@ func (o *OneDriveStorage) Copy(src, dst string, progress ProgressCallback) error
 	if err != nil {
 		return fmt.Errorf("copy failed: %v", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusAccepted {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("copy failed: %s", body)
 	}
 
@@ -564,12 +616,12 @@ func (o *OneDriveStorage) Copy(src, dst string, progress ProgressCallback) error
 				Status             string  `json:"status"`
 			}
 
-			json.NewDecoder(statusResp.Body).Decode(&status)
-			statusResp.Body.Close()
+			_ = json.NewDecoder(statusResp.Body).Decode(&status)
+			_ = statusResp.Body.Close()
 
 			if progress != nil {
 				completed := int64(float64(srcItem.Size) * status.PercentageComplete / 100)
-				progress(completed, srcItem.Size, src)
+				progress(completed, srcItem.Size)
 			}
 
 			if status.Status == "completed" || status.Status == "failed" {
@@ -580,7 +632,7 @@ func (o *OneDriveStorage) Copy(src, dst string, progress ProgressCallback) error
 
 	// Report completion
 	if progress != nil {
-		progress(srcItem.Size, srcItem.Size, src)
+		progress(srcItem.Size, srcItem.Size)
 	}
 
 	return nil
@@ -602,7 +654,11 @@ func (o *OneDriveStorage) GetAvailableSpace() (available, total int64, err error
 	if err != nil {
 		return 0, 0, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	var driveInfo struct {
 		Quota struct {
@@ -647,9 +703,13 @@ func (o *OneDriveStorage) GetFileContent(filePath string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing reader: %v", err)
+		}
+	}()
 
-	return ioutil.ReadAll(reader)
+	return io.ReadAll(reader)
 }
 
 // PutFileContent writes file content
@@ -665,7 +725,11 @@ func (o *OneDriveStorage) Search(query string, options map[string]interface{}) (
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if err := resp.Body.Close(); err != nil {
+			log.Printf("Error closing response body: %v", err)
+		}
+	}()
 
 	var searchResp struct {
 		Value []OneDriveItem `json:"value"`

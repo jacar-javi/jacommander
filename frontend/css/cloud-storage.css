@@ -5,7 +5,9 @@
 
 /* Storage modal styles */
 #cloud-storage-modal .modal-content {
-  max-width: 800px;
+  width: fit-content;
+  min-width: 25vw;
+  max-width: 90vw;
   height: 600px;
 }
 
@@ -192,23 +194,7 @@
   border: 1px solid var(--error);
 }
 
-/* Storage selector enhancement */
-.storage-selector {
-  min-width: 150px;
-  padding: 6px 10px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text-primary);
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.storage-selector:focus {
-  outline: none;
-  border-color: var(--primary);
-}
-
+/* Storage selector options enhancement */
 .storage-selector option {
   padding: 5px;
 }
@@ -314,7 +300,9 @@
 /* Responsive design */
 @media (max-width: 768px) {
   #cloud-storage-modal .modal-content {
-    width: 95%;
+    width: fit-content;
+    min-width: 90vw;
+    max-width: 95vw;
     height: 80vh;
   }
 

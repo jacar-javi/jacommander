@@ -79,6 +79,7 @@ export class SyntaxHighlighter {
         this.patterns = {
             javascript: {
                 keywords:
+                    // eslint-disable-next-line max-len
                     /\b(async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|function|if|import|in|instanceof|let|new|return|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/g,
                 strings: /(["'`])(?:(?=(\\?))\2.)*?\1/g,
                 comments: /(\/\/.*$)|(\/\*[\s\S]*?\*\/)/gm,
@@ -89,6 +90,7 @@ export class SyntaxHighlighter {
             },
             python: {
                 keywords:
+                    // eslint-disable-next-line max-len
                     /\b(and|as|assert|async|await|break|class|continue|def|del|elif|else|except|False|finally|for|from|global|if|import|in|is|lambda|None|nonlocal|not|or|pass|raise|return|True|try|while|with|yield)\b/g,
                 strings: /(["'])(?:(?=(\\?))\2.)*?\1|'''[\s\S]*?'''|"""[\s\S]*?"""/g,
                 comments: /(#.*$)/gm,
@@ -100,10 +102,12 @@ export class SyntaxHighlighter {
             },
             go: {
                 keywords:
+                    // eslint-disable-next-line max-len
                     /\b(break|case|chan|const|continue|default|defer|else|fallthrough|for|func|go|goto|if|import|interface|map|package|range|return|select|struct|switch|type|var)\b/g,
                 strings: /(["'`])(?:(?=(\\?))\2.)*?\1/g,
                 comments: /(\/\/.*$)|(\/\*[\s\S]*?\*\/)/gm,
                 numbers: /\b(\d+\.?\d*([eE][+-]?\d+)?|0x[0-9a-fA-F]+|0b[01]+|0o[0-7]+)\b/g,
+                // eslint-disable-next-line max-len
                 types: /\b(bool|byte|complex64|complex128|error|float32|float64|int|int8|int16|int32|int64|rune|string|uint|uint8|uint16|uint32|uint64|uintptr)\b/g,
                 functions: /\b(func)\s+([a-zA-Z_][a-zA-Z0-9_]*)/g,
                 operators: /([+\-*/%=!<>&|^]+|:=)/g,
@@ -134,6 +138,7 @@ export class SyntaxHighlighter {
             },
             sql: {
                 keywords:
+                    // eslint-disable-next-line max-len
                     /\b(SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|TABLE|DATABASE|ALTER|DROP|INDEX|VIEW|PROCEDURE|FUNCTION|TRIGGER|PRIMARY|KEY|FOREIGN|REFERENCES|UNIQUE|NOT|NULL|DEFAULT|AUTO_INCREMENT|ORDER|BY|GROUP|HAVING|JOIN|INNER|LEFT|RIGHT|OUTER|ON|AS|AND|OR|IN|EXISTS|BETWEEN|LIKE|LIMIT|OFFSET|UNION|ALL)\b/gi,
                 strings: /(["'])(?:(?=(\\?))\2.)*?\1/g,
                 comments: /(--.*$)|(\/\*[\s\S]*?\*\/)/gm,
@@ -304,7 +309,7 @@ export class SyntaxHighlighter {
         // Apply highlighting patterns based on language
         if (language === 'json') {
             // JSON-specific highlighting
-            highlighted = highlighted.replace(patterns.keys, (match, key) => {
+            highlighted = highlighted.replace(patterns.keys, (match, _key) => {
                 return addReplacement(match, 'key', colors.key);
             });
             highlighted = highlighted.replace(patterns.strings, (match) => {

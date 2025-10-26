@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"net/http"
 	"path"
 	"strings"
@@ -172,7 +172,7 @@ func (g *GDriveStorage) Write(filePath string, data io.Reader) error {
 	existingID, _ := g.getFileID(filePath)
 
 	// Read all data
-	content, err := ioutil.ReadAll(data)
+	content, err := io.ReadAll(data)
 	if err != nil {
 		return err
 	}
@@ -289,7 +289,7 @@ func (g *GDriveStorage) Copy(src, dst string, progress ProgressCallback) error {
 
 	// Report progress
 	if progress != nil {
-		progress(0, srcFile.Size, src)
+		progress(0, srcFile.Size)
 	}
 
 	// Copy the file
@@ -304,7 +304,7 @@ func (g *GDriveStorage) Copy(src, dst string, progress ProgressCallback) error {
 
 	// Report completion
 	if progress != nil {
-		progress(srcFile.Size, srcFile.Size, src)
+		progress(srcFile.Size, srcFile.Size)
 	}
 
 	return nil
@@ -366,9 +366,13 @@ func (g *GDriveStorage) GetFileContent(filePath string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing reader in GetFileContent: %v", err)
+		}
+	}()
 
-	return ioutil.ReadAll(reader)
+	return io.ReadAll(reader)
 }
 
 // PutFileContent writes file content

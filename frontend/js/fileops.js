@@ -1,10 +1,12 @@
 // File Operations Module
 import { SyntaxHighlighter } from './syntax.js';
+import { AdvancedSearch } from './advanced-search.js';
 
 export class FileOperations {
     constructor(app) {
         this.app = app;
         this.syntaxHighlighter = new SyntaxHighlighter();
+        this.advancedSearch = new AdvancedSearch(app);
         this.setupEventListeners();
     }
 
@@ -53,23 +55,85 @@ export class FileOperations {
 
         const storage = this.app.panels.getCurrentStorage(panel);
         const path = `${this.app.panels.getCurrentPath(panel)}/${file.name}`;
+        const fileUrl = `/api/fs/download?storage=${storage}&path=${encodeURIComponent(path.replace('//', '/'))}`;
 
+        // Get file extension
+        const ext = file.name.split('.').pop().toLowerCase();
+
+        // Image extensions
+        const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico', 'tiff', 'tif'];
+
+        // Video extensions
+        const videoExts = ['mp4', 'webm', 'ogg', 'mov', 'avi', 'mkv', 'm4v'];
+
+        // Audio extensions (bonus)
+        const audioExts = ['mp3', 'wav', 'ogg', 'flac', 'm4a', 'aac', 'wma'];
+
+        // Show in view modal
+        document.getElementById('view-title').textContent = `View: ${file.name}`;
+        const viewContent = document.getElementById('view-content');
+
+        // Clear any language badge from previous view
+        const existingBadge = viewContent.parentElement.querySelector('.language-badge');
+        if (existingBadge) {
+            existingBadge.remove();
+        }
+
+        // Handle images
+        if (imageExts.includes(ext)) {
+            viewContent.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #000;">
+                    <img src="${fileUrl}" 
+                         alt="${file.name}" 
+                         style="max-width: 100%; max-height: 70vh; object-fit: contain; border-radius: 4px;" 
+                         onerror="this.parentElement.innerHTML='<div style=color:red>Failed to load image</div>'">
+                </div>
+            `;
+            this.app.showModal('view-modal');
+            return;
+        }
+
+        // Handle videos
+        if (videoExts.includes(ext)) {
+            viewContent.innerHTML = `
+                <div style="text-align: center; padding: 20px; background: #000;">
+                    <video controls 
+                           style="max-width: 100%; max-height: 70vh; border-radius: 4px;"
+                           preload="metadata">
+                        <source src="${fileUrl}" type="video/${ext === 'mov' ? 'quicktime' : ext}">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            `;
+            this.app.showModal('view-modal');
+            return;
+        }
+
+        // Handle audio
+        if (audioExts.includes(ext)) {
+            viewContent.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="margin-bottom: 20px; font-size: 48px;">🎵</div>
+                    <audio controls style="width: 100%; max-width: 500px;">
+                        <source src="${fileUrl}" type="audio/${ext}">
+                        Your browser does not support the audio tag.
+                    </audio>
+                    <div style="margin-top: 20px; color: var(--text-secondary);">${file.name}</div>
+                </div>
+            `;
+            this.app.showModal('view-modal');
+            return;
+        }
+
+        // Handle text files (existing behavior)
         try {
-            // For now, fetch file content via download endpoint
-            // In a real implementation, we'd have a separate view endpoint
-            const response = await fetch(
-                `/api/fs/download?storage=${storage}&path=${encodeURIComponent(path.replace('//', '/'))}`
-            );
+            const response = await fetch(fileUrl);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch file');
             }
 
             const content = await response.text();
-
-            // Show in view modal
-            document.getElementById('view-title').textContent = `View: ${file.name}`;
-            const viewContent = document.getElementById('view-content');
 
             // Apply syntax highlighting based on file type
             const language = this.syntaxHighlighter.detectLanguage(file.name);
@@ -333,7 +397,7 @@ export class FileOperations {
         const path = this.app.panels.getCurrentPath(panel);
 
         try {
-            const response = await fetch('/api/fs/move', {
+            await fetch('/api/fs/move', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -348,9 +412,6 @@ export class FileOperations {
             });
 
             // Rename the file in the destination
-            const srcFullPath = `${path}/${oldName}`;
-            const dstFullPath = `${path}/${newName}`;
-
             const renameResponse = await fetch('/api/fs/move', {
                 method: 'POST',
                 headers: {
@@ -565,7 +626,12 @@ export class FileOperations {
         const otherPanel = panel === 'left' ? 'right' : 'left';
         const outputPath = this.app.panels.getCurrentPath(otherPanel);
 
-        const createFolder = confirm(`Extract "${archiveName}" to a new folder?`);
+        const createFolder = await this.app.confirmAction({
+            title: 'Extract Archive',
+            message: `Extract "${archiveName}" to a new folder?`,
+            confirmText: 'Yes',
+            cancelText: 'No'
+        });
 
         try {
             const response = await fetch('/api/fs/decompress', {
@@ -596,6 +662,13 @@ export class FileOperations {
         } catch (error) {
             console.error('Failed to decompress file:', error);
             this.app.showNotification(`Failed to decompress file: ${error.message}`, 'error');
+        }
+    }
+
+    // Show search modal (Ctrl+S)
+    showSearchModal() {
+        if (this.advancedSearch) {
+            this.advancedSearch.show();
         }
     }
 }

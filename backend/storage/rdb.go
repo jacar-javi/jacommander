@@ -9,7 +9,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -121,11 +121,11 @@ func (r *RDBStorage) List(path string) ([]FileInfo, error) {
 		}
 
 		files = append(files, FileInfo{
-			Name:    childMeta.Name,
-			Size:    childMeta.Size,
-			ModTime: childMeta.ModTime,
-			IsDir:   childMeta.IsDir,
-			Mode:    childMeta.Mode,
+			Name:        childMeta.Name,
+			Size:        childMeta.Size,
+			ModTime:     childMeta.ModTime,
+			IsDir:       childMeta.IsDir,
+			Permissions: childMeta.Mode.String(),
 		})
 	}
 
@@ -161,11 +161,11 @@ func (r *RDBStorage) listRoot() ([]FileInfo, error) {
 					var meta RDBFileMetadata
 					if err := json.Unmarshal([]byte(metaStr), &meta); err == nil {
 						files = append(files, FileInfo{
-							Name:    meta.Name,
-							Size:    meta.Size,
-							ModTime: meta.ModTime,
-							IsDir:   meta.IsDir,
-							Mode:    meta.Mode,
+							Name:        meta.Name,
+							Size:        meta.Size,
+							ModTime:     meta.ModTime,
+							IsDir:       meta.IsDir,
+							Permissions: meta.Mode.String(),
 						})
 					}
 				}
@@ -209,13 +209,13 @@ func (r *RDBStorage) Read(path string) (io.ReadCloser, error) {
 		return nil, fmt.Errorf("failed to decode file data: %w", err)
 	}
 
-	return ioutil.NopCloser(bytes.NewReader(decoded)), nil
+	return io.NopCloser(bytes.NewReader(decoded)), nil
 }
 
 // Write writes data to a file
 func (r *RDBStorage) Write(path string, data io.Reader) error {
 	// Read all data
-	content, err := ioutil.ReadAll(data)
+	content, err := io.ReadAll(data)
 	if err != nil {
 		return err
 	}
@@ -350,11 +350,11 @@ func (r *RDBStorage) Stat(path string) (FileInfo, error) {
 	}
 
 	return FileInfo{
-		Name:    meta.Name,
-		Size:    meta.Size,
-		ModTime: meta.ModTime,
-		IsDir:   meta.IsDir,
-		Mode:    meta.Mode,
+		Name:        meta.Name,
+		Size:        meta.Size,
+		ModTime:     meta.ModTime,
+		IsDir:       meta.IsDir,
+		Permissions: meta.Mode.String(),
 	}, nil
 }
 
@@ -393,7 +393,11 @@ func (r *RDBStorage) Move(src, dst string) error {
 		// Delete source
 		return r.Delete(src)
 	}
-	defer srcData.Close()
+	defer func() {
+		if err := srcData.Close(); err != nil {
+			log.Printf("Error closing srcData: %v", err)
+		}
+	}()
 
 	// Write to destination
 	if err := r.Write(dst, srcData); err != nil {
@@ -405,7 +409,7 @@ func (r *RDBStorage) Move(src, dst string) error {
 }
 
 // Copy copies a file from src to dst
-func (r *RDBStorage) Copy(src, dst string) error {
+func (r *RDBStorage) Copy(src, dst string, progress ProgressCallback) error {
 	srcData, err := r.Read(src)
 	if err != nil {
 		// If it's a directory, handle differently
@@ -429,7 +433,7 @@ func (r *RDBStorage) Copy(src, dst string) error {
 			for _, child := range children {
 				srcChild := filepath.Join(src, child.Name)
 				dstChild := filepath.Join(dst, child.Name)
-				if err := r.Copy(srcChild, dstChild); err != nil {
+				if err := r.Copy(srcChild, dstChild, progress); err != nil {
 					return err
 				}
 			}
@@ -437,9 +441,34 @@ func (r *RDBStorage) Copy(src, dst string) error {
 		}
 		return err
 	}
-	defer srcData.Close()
+	defer func() {
+		if err := srcData.Close(); err != nil {
+			log.Printf("Error closing srcData: %v", err)
+		}
+	}()
 
-	return r.Write(dst, srcData)
+	// Get file size for progress reporting
+	srcInfo, err := r.Stat(src)
+	if err != nil {
+		return err
+	}
+
+	// Report initial progress
+	if progress != nil {
+		progress(0, srcInfo.Size)
+	}
+
+	err = r.Write(dst, srcData)
+	if err != nil {
+		return err
+	}
+
+	// Report completion
+	if progress != nil {
+		progress(srcInfo.Size, srcInfo.Size)
+	}
+
+	return nil
 }
 
 // updateParentDir adds a child to its parent directory
@@ -453,7 +482,9 @@ func (r *RDBStorage) updateParentDir(childPath string) {
 	metaStr, err := r.client.Get(r.ctx, parentKey).Result()
 	if err != nil {
 		// Parent doesn't exist, create it
-		r.MkDir(parent)
+		if err := r.MkDir(parent); err != nil {
+			log.Printf("Error creating parent dir: %v", err)
+		}
 		return
 	}
 
@@ -509,6 +540,54 @@ func (r *RDBStorage) removeFromParentDir(childPath string) {
 // Close closes the Redis connection
 func (r *RDBStorage) Close() error {
 	return r.client.Close()
+}
+
+// GetType returns the storage type
+func (r *RDBStorage) GetType() string {
+	return "redis"
+}
+
+// GetRootPath returns the root path
+func (r *RDBStorage) GetRootPath() string {
+	return "/"
+}
+
+// GetAvailableSpace returns available and total space
+func (r *RDBStorage) GetAvailableSpace() (available, total int64, err error) {
+	// Redis doesn't have a traditional file system with space limitations
+	// Return the max size as "total" and estimate available based on current usage
+	var used int64
+	pattern := fmt.Sprintf("%s:data:*", r.namespace)
+	if keys, err := r.client.Keys(r.ctx, pattern).Result(); err == nil {
+		for _, key := range keys {
+			if val, err := r.client.Get(r.ctx, key).Result(); err == nil {
+				// Approximate size (base64 encoded)
+				used += int64(len(val))
+			}
+		}
+	}
+
+	available = r.maxSize - used
+	if available < 0 {
+		available = 0
+	}
+
+	return available, r.maxSize, nil
+}
+
+// IsValidPath checks if a path is valid
+func (r *RDBStorage) IsValidPath(path string) bool {
+	return !strings.Contains(path, "\x00")
+}
+
+// JoinPath joins path parts
+func (r *RDBStorage) JoinPath(parts ...string) string {
+	return filepath.Join(parts...)
+}
+
+// ResolvePath resolves a path
+func (r *RDBStorage) ResolvePath(path string) string {
+	return filepath.Clean(path)
 }
 
 // GetInfo returns information about the Redis storage

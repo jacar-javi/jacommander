@@ -56,7 +56,7 @@ export class DragDropManager {
             }
         });
 
-        document.addEventListener('dragend', (e) => {
+        document.addEventListener('dragend', () => {
             this.cleanup();
         });
 
@@ -121,7 +121,7 @@ export class DragDropManager {
         });
 
         // Drag enter
-        row.addEventListener('dragenter', (e) => {
+        row.addEventListener('dragenter', () => {
             const file = this.getFileFromRow(row, panel);
             if (file && file.is_dir && this.isDragging) {
                 row.classList.add('drag-over');
@@ -221,7 +221,7 @@ export class DragDropManager {
     /**
      * Handle drag over
      */
-    handleDragOver(e, element, panel) {
+    handleDragOver(e, element, _panel) {
         if (!this.isDragging) {
             return;
         }

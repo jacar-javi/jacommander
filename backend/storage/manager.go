@@ -6,7 +6,7 @@ package storage
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"log"
 	"os"
 	"sync"
 
@@ -60,7 +60,7 @@ func (sm *CloudManager) LoadConfig(path string) error {
 		return sm.createDefaultConfig(path)
 	}
 
-	data, err := ioutil.ReadFile(path)
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return fmt.Errorf("failed to read config file: %w", err)
 	}
@@ -102,7 +102,7 @@ func (sm *CloudManager) createDefaultConfig(path string) error {
 		return err
 	}
 
-	if err := ioutil.WriteFile(path, data, 0644); err != nil {
+	if err := os.WriteFile(path, data, 0644); err != nil {
 		return err
 	}
 
@@ -162,10 +162,11 @@ func (sm *CloudManager) initializeStorage(cfg StorageConfig) error {
 		fs = gdrive
 
 	case "onedrive":
-		accessToken, _ := cfg.Config["access_token"].(string)
-		driveID, _ := cfg.Config["drive_id"].(string)
+		clientID, _ := cfg.Config["client_id"].(string)
+		clientSecret, _ := cfg.Config["client_secret"].(string)
+		refreshToken, _ := cfg.Config["refresh_token"].(string)
 
-		onedrive, err := NewOneDriveAdapter(accessToken, driveID)
+		onedrive, err := NewOneDriveAdapter(clientID, clientSecret, refreshToken)
 		if err != nil {
 			return fmt.Errorf("failed to create OneDrive storage: %w", err)
 		}
@@ -234,7 +235,7 @@ func (sm *CloudManager) initializeStorage(cfg StorageConfig) error {
 
 		// Validate Redis server
 		if err := sm.ipValidator.ValidateEndpoint(address); err != nil {
-			return fmt.Errorf("Redis server validation failed: %w", err)
+			return fmt.Errorf("redis server validation failed: %w", err)
 		}
 
 		rdb, err := NewRDBStorage(address, password, db, namespace)
@@ -363,7 +364,7 @@ func (sm *CloudManager) saveConfig() error {
 		return err
 	}
 
-	return ioutil.WriteFile("config/storage.json", data, 0644)
+	return os.WriteFile("config/storage.json", data, 0644)
 }
 
 // TransferBetweenStorages copies files between different storage backends
@@ -385,7 +386,11 @@ func (sm *CloudManager) TransferBetweenStorages(srcStorageID, srcPath, dstStorag
 	if err != nil {
 		return fmt.Errorf("failed to read from source: %w", err)
 	}
-	defer reader.Close()
+	defer func() {
+		if err := reader.Close(); err != nil {
+			log.Printf("Error closing reader: %v", err)
+		}
+	}()
 
 	// Write to destination
 	if err := dstStorage.Write(dstPath, reader); err != nil {

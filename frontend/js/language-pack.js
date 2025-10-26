@@ -93,7 +93,284 @@ export const languagePack = {
         // Terminal
         terminal: 'Terminal',
         clear: 'Effacer',
-        close: 'Fermer'
+        close: 'Fermer',
+
+        // Custom Commands
+        'commands.custom': 'Commandes personnalisées',
+        'commands.add': 'Ajouter une commande',
+        'commands.edit': 'Modifier la commande',
+        'commands.delete': 'Supprimer la commande',
+        'commands.run': 'Exécuter la commande',
+        'commands.name': 'Nom de la commande',
+        'commands.description': 'Description',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Raccourcis clavier',
+        'modal.view_file': 'Voir le fichier',
+        'modal.edit_file': 'Modifier le fichier',
+        'modal.copy_files': 'Copier les fichiers',
+        'modal.create_directory': 'Créer un répertoire',
+        'modal.confirm_delete': 'Confirmer la suppression',
+        'modal.compress_files': 'Compresser les fichiers',
+        'modal.search_files': 'Rechercher des fichiers',
+        'modal.confirm_title': 'Confirmer',
+        'modal.delete_message': 'Êtes-vous sûr de vouloir supprimer les fichiers suivants?',
+        'modal.copy_message': 'Copier les fichiers sélectionnés vers:',
+        'modal.directory_name_label': 'Nom du répertoire:',
+        'modal.archive_name_label': "Nom de l'archive:",
+        'modal.format_label': 'Format:',
+        'modal.search_for_label': 'Rechercher:',
+        'modal.results_label': 'Résultats:',
+        'modal.confirm_message_default': 'Êtes-vous sûr?',
+        'modal.loading': 'Chargement...',
+
+        // Buttons
+        'button.ok': 'OK',
+        'button.cancel': 'Annuler',
+        'button.yes': 'Oui',
+        'button.no': 'Non',
+        'button.save': 'Enregistrer',
+        'button.close': 'Fermer',
+        'button.copy': 'Copier',
+        'button.move': 'Déplacer',
+        'button.delete': 'Supprimer',
+        'button.create': 'Créer',
+        'button.compress': 'Compresser',
+        'button.search': 'Rechercher',
+
+        // Tooltips - Header
+        'tooltip.menu': 'Menu',
+        'tooltip.keyboard_shortcuts': 'Raccourcis clavier (Ctrl+H)',
+        'tooltip.toggle_theme': 'Changer de thème',
+        'tooltip.settings': 'Paramètres',
+        'tooltip.language': 'Langue',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Aide',
+        'tooltip.f2_menu': 'F2 - Menu',
+        'tooltip.f3_view': 'F3 - Voir le fichier',
+        'tooltip.f4_edit': 'F4 - Modifier le fichier',
+        'tooltip.f5_copy': 'F5 - Copier les fichiers',
+        'tooltip.f6_move': 'F6 - Déplacer les fichiers',
+        'tooltip.f7_mkdir': 'F7 - Créer un répertoire',
+        'tooltip.f8_delete': 'F8 - Supprimer les fichiers',
+        'tooltip.f9_menu': 'F9 - Menu',
+        'tooltip.f10_exit': 'F10 - Quitter',
+        'tooltip.f11_terminal': 'F11 - Terminal',
+        'tooltip.f12_settings': 'F12 - Paramètres',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'Favoris',
+        'tooltip.add_bookmark': 'Ajouter un favori',
+        'tooltip.edit_bookmarks': 'Modifier les favoris',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': 'Répertoire parent (Backspace)',
+        'tooltip.refresh': 'Actualiser (Ctrl+R)',
+        'tooltip.home': 'Répertoire personnel',
+        'tooltip.root': 'Répertoire racine',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'Ouvrir le terminal',
+        'tooltip.close_terminal': 'Fermer le terminal',
+        'tooltip.clear_terminal': 'Effacer le terminal',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': 'Éditeur hexadécimal',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Gestionnaire Docker',
+        'tooltip.docker_containers': 'Conteneurs Docker',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': 'Nouvel onglet (Ctrl+T)',
+        'tooltip.close_tab': "Fermer l'onglet",
+        'tooltip.tab_menu': 'Menu des onglets',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'Commandes personnalisées',
+        'tooltip.add_command': 'Ajouter une commande',
+        'tooltip.run_command': 'Exécuter la commande',
+
+        // Context Menu
+        'context.view': 'Voir',
+        'context.edit': 'Modifier',
+        'context.compress': 'Compresser',
+        'context.decompress': 'Décompresser',
+        'context.batch_rename': 'Renommer en lot',
+        'context.properties': 'Propriétés',
+        'context.new_file': 'Nouveau fichier',
+
+        // Search Options
+        'search.case_sensitive': 'Sensible à la casse',
+        'search.whole_word': 'Mot entier',
+        'search.regex': 'Expression régulière',
+
+        // Bookmarks
+        'bookmarks.title': 'Favoris',
+        'bookmarks.add': 'Ajouter un favori',
+        'bookmarks.edit': 'Modifier les favoris',
+        'bookmarks.delete': 'Supprimer le favori',
+        'bookmarks.name': 'Nom',
+        'bookmarks.path': 'Chemin',
+        'bookmarks.description': 'Description',
+
+        // File Operations
+        'fileops.no_file_selected': 'Aucun fichier sélectionné',
+        'fileops.no_files_selected': 'Aucun fichier sélectionné',
+        'fileops.select_one_to_rename': 'Sélectionnez exactement un fichier à renommer',
+        'fileops.select_one_archive': 'Sélectionnez exactement une archive à décompresser',
+        'fileops.enter_filename': 'Entrez le nom du fichier:',
+        'fileops.rename_to': 'Renommer en:',
+        'fileops.enter_directory_name': 'Veuillez entrer un nom de répertoire',
+        'fileops.enter_archive_name': "Veuillez entrer un nom d'archive",
+        'fileops.view_failed': 'Échec de la visualisation du fichier: {error}',
+        'fileops.edit_failed': 'Échec de la modification du fichier: {error}',
+        'fileops.save_success': 'Fichier enregistré avec succès',
+        'fileops.save_failed': "Échec de l'enregistrement du fichier: {error}",
+        'fileops.create_success': 'Fichier créé avec succès',
+        'fileops.create_failed': 'Échec de la création du fichier: {error}',
+        'fileops.copy_success': 'Fichiers copiés avec succès',
+        'fileops.move_success': 'Fichiers déplacés avec succès',
+        'fileops.operation_failed': 'Échec de {operation} des fichiers: {error}',
+        'fileops.rename_success': 'Fichier renommé avec succès',
+        'fileops.rename_failed': 'Échec du renommage du fichier: {error}',
+        'fileops.mkdir_success': 'Répertoire créé avec succès',
+        'fileops.mkdir_failed': 'Échec de la création du répertoire: {error}',
+        'fileops.delete_success': 'Fichiers supprimés avec succès',
+        'fileops.delete_failed': 'Échec de la suppression des fichiers: {error}',
+        'fileops.compress_started': 'Compression démarrée',
+        'fileops.compress_failed': 'Échec de la compression des fichiers: {error}',
+        'fileops.decompress_started': 'Décompression démarrée',
+        'fileops.decompress_failed': 'Échec de la décompression du fichier: {error}',
+        'fileops.load_directory_failed': 'Échec du chargement du répertoire: {error}',
+        'fileops.copy_with_options': 'Copie avec options non implémentée',
+        'fileops.close_browser_tab': "Veuillez fermer l'onglet du navigateur pour quitter",
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Navigation',
+        'shortcuts.selection': 'Sélection',
+        'shortcuts.operations': 'Opérations',
+        'shortcuts.panels': 'Panneaux',
+        'shortcuts.tabs': 'Onglets',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'Changer de panneau',
+        'shortcuts.arrow_keys': 'Touches fléchées',
+        'shortcuts.navigate': 'Naviguer',
+        'shortcuts.enter': 'Entrée',
+        'shortcuts.open_directory': 'Ouvrir le répertoire',
+        'shortcuts.backspace': 'Retour arrière',
+        'shortcuts.parent_directory': 'Répertoire parent',
+        'shortcuts.space': 'Espace',
+        'shortcuts.select_file': 'Sélectionner/désélectionner le fichier',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'Tout sélectionner',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'Tout désélectionner',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': 'Actualiser',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'Voir le fichier',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'Modifier le fichier',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'Copier',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': 'Déplacer',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'Créer un répertoire',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': 'Supprimer',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': 'Nouvel onglet',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': "Fermer l'onglet",
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': 'Onglet suivant',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': 'Onglet précédent',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'Commande exécutée',
+        'keyboard.invalid_command': 'Commande invalide',
+        'keyboard.command_failed': 'Échec de la commande: {error}',
+        'keyboard.no_custom_commands': 'Aucune commande personnalisée disponible',
+
+        // Batch Rename
+        'batch.prefix': 'Préfixe:',
+        'batch.suffix': 'Suffixe:',
+        'batch.replace': 'Rechercher et remplacer',
+
+        // Terminal
+        'terminal.title': 'Terminal',
+        'terminal.command': 'Commande:',
+        'terminal.output': 'Sortie:',
+        'terminal.error': 'Erreur:',
+
+        // Hex Editor
+        'hex.editor': 'Éditeur hexadécimal',
+
+        // Advanced Search
+        'advanced_search.title': 'Recherche avancée',
+        'advanced_search.file_name': 'Nom du fichier',
+        'advanced_search.content': 'Contenu',
+        'advanced_search.size': 'Taille',
+        'advanced_search.date': 'Date',
+        'advanced_search.type': 'Type',
+
+        // Security
+        'security.test': 'Test de sécurité',
+        'security.scan': 'Analyser',
+        'security.report': 'Rapport',
+
+        // Upload
+        'upload.drop': 'Déposer les fichiers ici pour télécharger',
+        'upload.select': 'ou cliquer pour sélectionner',
+        'upload.uploading': 'Téléchargement...',
+
+        // App
+        'app.loading': 'Chargement...',
+        'app.error': 'Erreur',
+
+        // Drag & Drop
+        'dragdrop.copy': 'COPIER',
+        'dragdrop.move': 'DÉPLACER',
+        'dragdrop.copying': 'Copie...',
+        'dragdrop.moving': 'Déplacement...',
+
+        // Placeholders
+        'placeholder.new_folder': 'Nouveau dossier',
+        'placeholder.archive_zip': 'archive.zip',
+        'placeholder.search_pattern': 'Entrez le nom de fichier ou le motif...',
+        'placeholder.rename_prefix': 'ex: IMG_',
+        'placeholder.rename_suffix': 'ex: _backup',
+        'placeholder.rename_find': 'Texte à trouver',
+        'placeholder.rename_replace': 'Texte de remplacement',
+        'placeholder.rename_extension': 'ex: jpg',
+        'placeholder.bookmarks_search': 'Rechercher dans les favoris...',
+        'placeholder.bookmark_name': 'Nom du favori',
+        'placeholder.bookmark_path': '/chemin/vers/répertoire',
+        'placeholder.bookmark_description': 'Description optionnelle',
+        'placeholder.command_search': 'Tapez la commande ou recherchez...',
+        'placeholder.command_name': 'Nom de la commande',
+        'placeholder.command_description': 'Ce que fait cette commande',
+        'placeholder.command_command': 'Commande shell à exécuter',
+        'placeholder.command_hotkey': 'ex: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': 'Entrez le motif de recherche...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': 'Min (octets)',
+        'placeholder.size_max': 'Max (octets)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'Texte à rechercher dans les fichiers...',
+        'placeholder.docker_filter': 'Filtrer les conteneurs...',
+        'placeholder.hex_search': 'Entrez des valeurs hex (ex: FF 00 1A) ou du texte',
+        'placeholder.security_test': "Entrez l'URL ou l'adresse IP",
+        'placeholder.cloud_storage_name': 'Mon stockage S3',
+        'placeholder.s3_bucket': 'mon-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'dossier/sous-dossier',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Italian
@@ -168,7 +445,284 @@ export const languagePack = {
         save: 'Salva',
         terminal: 'Terminale',
         clear: 'Cancella',
-        close: 'Chiudi'
+        close: 'Chiudi',
+
+        // Custom Commands
+        'commands.custom': 'Comandi personalizzati',
+        'commands.add': 'Aggiungi comando',
+        'commands.edit': 'Modifica comando',
+        'commands.delete': 'Elimina comando',
+        'commands.run': 'Esegui comando',
+        'commands.name': 'Nome comando',
+        'commands.description': 'Descrizione',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Scorciatoie da tastiera',
+        'modal.view_file': 'Visualizza file',
+        'modal.edit_file': 'Modifica file',
+        'modal.copy_files': 'Copia file',
+        'modal.create_directory': 'Crea directory',
+        'modal.confirm_delete': 'Conferma eliminazione',
+        'modal.compress_files': 'Comprimi file',
+        'modal.search_files': 'Cerca file',
+        'modal.confirm_title': 'Conferma',
+        'modal.delete_message': 'Sei sicuro di voler eliminare i seguenti file?',
+        'modal.copy_message': 'Copia i file selezionati in:',
+        'modal.directory_name_label': 'Nome directory:',
+        'modal.archive_name_label': 'Nome archivio:',
+        'modal.format_label': 'Formato:',
+        'modal.search_for_label': 'Cerca:',
+        'modal.results_label': 'Risultati:',
+        'modal.confirm_message_default': 'Sei sicuro?',
+        'modal.loading': 'Caricamento...',
+
+        // Buttons
+        'button.ok': 'OK',
+        'button.cancel': 'Annulla',
+        'button.yes': 'Sì',
+        'button.no': 'No',
+        'button.save': 'Salva',
+        'button.close': 'Chiudi',
+        'button.copy': 'Copia',
+        'button.move': 'Sposta',
+        'button.delete': 'Elimina',
+        'button.create': 'Crea',
+        'button.compress': 'Comprimi',
+        'button.search': 'Cerca',
+
+        // Tooltips - Header
+        'tooltip.menu': 'Menu',
+        'tooltip.keyboard_shortcuts': 'Scorciatoie da tastiera (Ctrl+H)',
+        'tooltip.toggle_theme': 'Cambia tema',
+        'tooltip.settings': 'Impostazioni',
+        'tooltip.language': 'Lingua',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Aiuto',
+        'tooltip.f2_menu': 'F2 - Menu',
+        'tooltip.f3_view': 'F3 - Visualizza file',
+        'tooltip.f4_edit': 'F4 - Modifica file',
+        'tooltip.f5_copy': 'F5 - Copia file',
+        'tooltip.f6_move': 'F6 - Sposta file',
+        'tooltip.f7_mkdir': 'F7 - Crea directory',
+        'tooltip.f8_delete': 'F8 - Elimina file',
+        'tooltip.f9_menu': 'F9 - Menu',
+        'tooltip.f10_exit': 'F10 - Esci',
+        'tooltip.f11_terminal': 'F11 - Terminale',
+        'tooltip.f12_settings': 'F12 - Impostazioni',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'Preferiti',
+        'tooltip.add_bookmark': 'Aggiungi preferito',
+        'tooltip.edit_bookmarks': 'Modifica preferiti',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': 'Directory superiore (Backspace)',
+        'tooltip.refresh': 'Aggiorna (Ctrl+R)',
+        'tooltip.home': 'Directory home',
+        'tooltip.root': 'Directory root',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'Apri terminale',
+        'tooltip.close_terminal': 'Chiudi terminale',
+        'tooltip.clear_terminal': 'Cancella terminale',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': 'Editor esadecimale',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Gestore Docker',
+        'tooltip.docker_containers': 'Container Docker',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': 'Nuova scheda (Ctrl+T)',
+        'tooltip.close_tab': 'Chiudi scheda',
+        'tooltip.tab_menu': 'Menu schede',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'Comandi personalizzati',
+        'tooltip.add_command': 'Aggiungi comando',
+        'tooltip.run_command': 'Esegui comando',
+
+        // Context Menu
+        'context.view': 'Visualizza',
+        'context.edit': 'Modifica',
+        'context.compress': 'Comprimi',
+        'context.decompress': 'Decomprimi',
+        'context.batch_rename': 'Rinomina in blocco',
+        'context.properties': 'Proprietà',
+        'context.new_file': 'Nuovo file',
+
+        // Search Options
+        'search.case_sensitive': 'Maiuscole/minuscole',
+        'search.whole_word': 'Parola intera',
+        'search.regex': 'Espressione regolare',
+
+        // Bookmarks
+        'bookmarks.title': 'Preferiti',
+        'bookmarks.add': 'Aggiungi preferito',
+        'bookmarks.edit': 'Modifica preferiti',
+        'bookmarks.delete': 'Elimina preferito',
+        'bookmarks.name': 'Nome',
+        'bookmarks.path': 'Percorso',
+        'bookmarks.description': 'Descrizione',
+
+        // File Operations
+        'fileops.no_file_selected': 'Nessun file selezionato',
+        'fileops.no_files_selected': 'Nessun file selezionato',
+        'fileops.select_one_to_rename': 'Seleziona esattamente un file da rinominare',
+        'fileops.select_one_archive': 'Seleziona esattamente un archivio da decomprimere',
+        'fileops.enter_filename': 'Inserisci il nome del file:',
+        'fileops.rename_to': 'Rinomina in:',
+        'fileops.enter_directory_name': 'Inserisci un nome di directory',
+        'fileops.enter_archive_name': 'Inserisci un nome di archivio',
+        'fileops.view_failed': 'Impossibile visualizzare il file: {error}',
+        'fileops.edit_failed': 'Impossibile modificare il file: {error}',
+        'fileops.save_success': 'File salvato con successo',
+        'fileops.save_failed': 'Impossibile salvare il file: {error}',
+        'fileops.create_success': 'File creato con successo',
+        'fileops.create_failed': 'Impossibile creare il file: {error}',
+        'fileops.copy_success': 'File copiati con successo',
+        'fileops.move_success': 'File spostati con successo',
+        'fileops.operation_failed': 'Impossibile {operation} i file: {error}',
+        'fileops.rename_success': 'File rinominato con successo',
+        'fileops.rename_failed': 'Impossibile rinominare il file: {error}',
+        'fileops.mkdir_success': 'Directory creata con successo',
+        'fileops.mkdir_failed': 'Impossibile creare la directory: {error}',
+        'fileops.delete_success': 'File eliminati con successo',
+        'fileops.delete_failed': 'Impossibile eliminare i file: {error}',
+        'fileops.compress_started': 'Compressione avviata',
+        'fileops.compress_failed': 'Impossibile comprimere i file: {error}',
+        'fileops.decompress_started': 'Decompressione avviata',
+        'fileops.decompress_failed': 'Impossibile decomprimere il file: {error}',
+        'fileops.load_directory_failed': 'Impossibile caricare la directory: {error}',
+        'fileops.copy_with_options': 'Copia con opzioni non implementata',
+        'fileops.close_browser_tab': 'Chiudi la scheda del browser per uscire',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Navigazione',
+        'shortcuts.selection': 'Selezione',
+        'shortcuts.operations': 'Operazioni',
+        'shortcuts.panels': 'Pannelli',
+        'shortcuts.tabs': 'Schede',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'Cambia pannello',
+        'shortcuts.arrow_keys': 'Tasti freccia',
+        'shortcuts.navigate': 'Naviga',
+        'shortcuts.enter': 'Invio',
+        'shortcuts.open_directory': 'Apri directory',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': 'Directory superiore',
+        'shortcuts.space': 'Spazio',
+        'shortcuts.select_file': 'Seleziona/deseleziona file',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'Seleziona tutto',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'Deseleziona tutto',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': 'Aggiorna',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'Visualizza file',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'Modifica file',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'Copia',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': 'Sposta',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'Crea directory',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': 'Elimina',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': 'Nuova scheda',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': 'Chiudi scheda',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': 'Scheda successiva',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': 'Scheda precedente',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'Comando eseguito',
+        'keyboard.invalid_command': 'Comando non valido',
+        'keyboard.command_failed': 'Comando fallito: {error}',
+        'keyboard.no_custom_commands': 'Nessun comando personalizzato disponibile',
+
+        // Batch Rename
+        'batch.prefix': 'Prefisso:',
+        'batch.suffix': 'Suffisso:',
+        'batch.replace': 'Trova e sostituisci',
+
+        // Terminal
+        'terminal.title': 'Terminale',
+        'terminal.command': 'Comando:',
+        'terminal.output': 'Output:',
+        'terminal.error': 'Errore:',
+
+        // Hex Editor
+        'hex.editor': 'Editor esadecimale',
+
+        // Advanced Search
+        'advanced_search.title': 'Ricerca avanzata',
+        'advanced_search.file_name': 'Nome file',
+        'advanced_search.content': 'Contenuto',
+        'advanced_search.size': 'Dimensione',
+        'advanced_search.date': 'Data',
+        'advanced_search.type': 'Tipo',
+
+        // Security
+        'security.test': 'Test di sicurezza',
+        'security.scan': 'Scansione',
+        'security.report': 'Report',
+
+        // Upload
+        'upload.drop': 'Trascina i file qui per caricarli',
+        'upload.select': 'o clicca per selezionare',
+        'upload.uploading': 'Caricamento...',
+
+        // App
+        'app.loading': 'Caricamento...',
+        'app.error': 'Errore',
+
+        // Drag & Drop
+        'dragdrop.copy': 'COPIA',
+        'dragdrop.move': 'SPOSTA',
+        'dragdrop.copying': 'Copia in corso...',
+        'dragdrop.moving': 'Spostamento in corso...',
+
+        // Placeholders
+        'placeholder.new_folder': 'Nuova cartella',
+        'placeholder.archive_zip': 'archivio.zip',
+        'placeholder.search_pattern': 'Inserisci nome file o pattern...',
+        'placeholder.rename_prefix': 'es: IMG_',
+        'placeholder.rename_suffix': 'es: _backup',
+        'placeholder.rename_find': 'Testo da trovare',
+        'placeholder.rename_replace': 'Testo sostitutivo',
+        'placeholder.rename_extension': 'es: jpg',
+        'placeholder.bookmarks_search': 'Cerca nei preferiti...',
+        'placeholder.bookmark_name': 'Nome preferito',
+        'placeholder.bookmark_path': '/percorso/alla/directory',
+        'placeholder.bookmark_description': 'Descrizione opzionale',
+        'placeholder.command_search': 'Digita comando o cerca...',
+        'placeholder.command_name': 'Nome comando',
+        'placeholder.command_description': 'Cosa fa questo comando',
+        'placeholder.command_command': 'Comando shell da eseguire',
+        'placeholder.command_hotkey': 'es: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': 'Inserisci pattern di ricerca...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': 'Min (byte)',
+        'placeholder.size_max': 'Max (byte)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'Testo da cercare nei file...',
+        'placeholder.docker_filter': 'Filtra container...',
+        'placeholder.hex_search': 'Inserisci valori hex (es: FF 00 1A) o testo',
+        'placeholder.security_test': 'Inserisci URL o indirizzo IP',
+        'placeholder.cloud_storage_name': 'Mio storage S3',
+        'placeholder.s3_bucket': 'mio-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'cartella/sottocartella',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Portuguese
@@ -243,7 +797,284 @@ export const languagePack = {
         save: 'Salvar',
         terminal: 'Terminal',
         clear: 'Limpar',
-        close: 'Fechar'
+        close: 'Fechar',
+
+        // Custom Commands
+        'commands.custom': 'Comandos personalizados',
+        'commands.add': 'Adicionar comando',
+        'commands.edit': 'Editar comando',
+        'commands.delete': 'Excluir comando',
+        'commands.run': 'Executar comando',
+        'commands.name': 'Nome do comando',
+        'commands.description': 'Descrição',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Atalhos de teclado',
+        'modal.view_file': 'Ver arquivo',
+        'modal.edit_file': 'Editar arquivo',
+        'modal.copy_files': 'Copiar arquivos',
+        'modal.create_directory': 'Criar diretório',
+        'modal.confirm_delete': 'Confirmar exclusão',
+        'modal.compress_files': 'Comprimir arquivos',
+        'modal.search_files': 'Pesquisar arquivos',
+        'modal.confirm_title': 'Confirmar',
+        'modal.delete_message': 'Tem certeza de que deseja excluir os seguintes arquivos?',
+        'modal.copy_message': 'Copiar arquivos selecionados para:',
+        'modal.directory_name_label': 'Nome do diretório:',
+        'modal.archive_name_label': 'Nome do arquivo:',
+        'modal.format_label': 'Formato:',
+        'modal.search_for_label': 'Pesquisar:',
+        'modal.results_label': 'Resultados:',
+        'modal.confirm_message_default': 'Tem certeza?',
+        'modal.loading': 'Carregando...',
+
+        // Buttons
+        'button.ok': 'OK',
+        'button.cancel': 'Cancelar',
+        'button.yes': 'Sim',
+        'button.no': 'Não',
+        'button.save': 'Salvar',
+        'button.close': 'Fechar',
+        'button.copy': 'Copiar',
+        'button.move': 'Mover',
+        'button.delete': 'Excluir',
+        'button.create': 'Criar',
+        'button.compress': 'Comprimir',
+        'button.search': 'Pesquisar',
+
+        // Tooltips - Header
+        'tooltip.menu': 'Menu',
+        'tooltip.keyboard_shortcuts': 'Atalhos de teclado (Ctrl+H)',
+        'tooltip.toggle_theme': 'Alternar tema',
+        'tooltip.settings': 'Configurações',
+        'tooltip.language': 'Idioma',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Ajuda',
+        'tooltip.f2_menu': 'F2 - Menu',
+        'tooltip.f3_view': 'F3 - Ver arquivo',
+        'tooltip.f4_edit': 'F4 - Editar arquivo',
+        'tooltip.f5_copy': 'F5 - Copiar arquivos',
+        'tooltip.f6_move': 'F6 - Mover arquivos',
+        'tooltip.f7_mkdir': 'F7 - Criar diretório',
+        'tooltip.f8_delete': 'F8 - Excluir arquivos',
+        'tooltip.f9_menu': 'F9 - Menu',
+        'tooltip.f10_exit': 'F10 - Sair',
+        'tooltip.f11_terminal': 'F11 - Terminal',
+        'tooltip.f12_settings': 'F12 - Configurações',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'Favoritos',
+        'tooltip.add_bookmark': 'Adicionar favorito',
+        'tooltip.edit_bookmarks': 'Editar favoritos',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': 'Diretório pai (Backspace)',
+        'tooltip.refresh': 'Atualizar (Ctrl+R)',
+        'tooltip.home': 'Diretório inicial',
+        'tooltip.root': 'Diretório raiz',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'Abrir terminal',
+        'tooltip.close_terminal': 'Fechar terminal',
+        'tooltip.clear_terminal': 'Limpar terminal',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': 'Editor hexadecimal',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Gerenciador Docker',
+        'tooltip.docker_containers': 'Contêineres Docker',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': 'Nova aba (Ctrl+T)',
+        'tooltip.close_tab': 'Fechar aba',
+        'tooltip.tab_menu': 'Menu de abas',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'Comandos personalizados',
+        'tooltip.add_command': 'Adicionar comando',
+        'tooltip.run_command': 'Executar comando',
+
+        // Context Menu
+        'context.view': 'Ver',
+        'context.edit': 'Editar',
+        'context.compress': 'Comprimir',
+        'context.decompress': 'Descomprimir',
+        'context.batch_rename': 'Renomear em lote',
+        'context.properties': 'Propriedades',
+        'context.new_file': 'Novo arquivo',
+
+        // Search Options
+        'search.case_sensitive': 'Diferenciar maiúsculas e minúsculas',
+        'search.whole_word': 'Palavra inteira',
+        'search.regex': 'Expressão regular',
+
+        // Bookmarks
+        'bookmarks.title': 'Favoritos',
+        'bookmarks.add': 'Adicionar favorito',
+        'bookmarks.edit': 'Editar favoritos',
+        'bookmarks.delete': 'Excluir favorito',
+        'bookmarks.name': 'Nome',
+        'bookmarks.path': 'Caminho',
+        'bookmarks.description': 'Descrição',
+
+        // File Operations
+        'fileops.no_file_selected': 'Nenhum arquivo selecionado',
+        'fileops.no_files_selected': 'Nenhum arquivo selecionado',
+        'fileops.select_one_to_rename': 'Selecione exatamente um arquivo para renomear',
+        'fileops.select_one_archive': 'Selecione exatamente um arquivo para descomprimir',
+        'fileops.enter_filename': 'Digite o nome do arquivo:',
+        'fileops.rename_to': 'Renomear para:',
+        'fileops.enter_directory_name': 'Digite um nome de diretório',
+        'fileops.enter_archive_name': 'Digite um nome de arquivo',
+        'fileops.view_failed': 'Falha ao visualizar arquivo: {error}',
+        'fileops.edit_failed': 'Falha ao editar arquivo: {error}',
+        'fileops.save_success': 'Arquivo salvo com sucesso',
+        'fileops.save_failed': 'Falha ao salvar arquivo: {error}',
+        'fileops.create_success': 'Arquivo criado com sucesso',
+        'fileops.create_failed': 'Falha ao criar arquivo: {error}',
+        'fileops.copy_success': 'Arquivos copiados com sucesso',
+        'fileops.move_success': 'Arquivos movidos com sucesso',
+        'fileops.operation_failed': 'Falha ao {operation} arquivos: {error}',
+        'fileops.rename_success': 'Arquivo renomeado com sucesso',
+        'fileops.rename_failed': 'Falha ao renomear arquivo: {error}',
+        'fileops.mkdir_success': 'Diretório criado com sucesso',
+        'fileops.mkdir_failed': 'Falha ao criar diretório: {error}',
+        'fileops.delete_success': 'Arquivos excluídos com sucesso',
+        'fileops.delete_failed': 'Falha ao excluir arquivos: {error}',
+        'fileops.compress_started': 'Compressão iniciada',
+        'fileops.compress_failed': 'Falha ao comprimir arquivos: {error}',
+        'fileops.decompress_started': 'Descompressão iniciada',
+        'fileops.decompress_failed': 'Falha ao descomprimir arquivo: {error}',
+        'fileops.load_directory_failed': 'Falha ao carregar diretório: {error}',
+        'fileops.copy_with_options': 'Copiar com opções não implementado',
+        'fileops.close_browser_tab': 'Feche a aba do navegador para sair',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Navegação',
+        'shortcuts.selection': 'Seleção',
+        'shortcuts.operations': 'Operações',
+        'shortcuts.panels': 'Painéis',
+        'shortcuts.tabs': 'Abas',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'Alternar painel',
+        'shortcuts.arrow_keys': 'Teclas de seta',
+        'shortcuts.navigate': 'Navegar',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': 'Abrir diretório',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': 'Diretório pai',
+        'shortcuts.space': 'Espaço',
+        'shortcuts.select_file': 'Selecionar/desselecionar arquivo',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'Selecionar tudo',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'Desselecionar tudo',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': 'Atualizar',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'Ver arquivo',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'Editar arquivo',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'Copiar',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': 'Mover',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'Criar diretório',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': 'Excluir',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': 'Nova aba',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': 'Fechar aba',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': 'Próxima aba',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': 'Aba anterior',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'Comando executado',
+        'keyboard.invalid_command': 'Comando inválido',
+        'keyboard.command_failed': 'Falha no comando: {error}',
+        'keyboard.no_custom_commands': 'Nenhum comando personalizado disponível',
+
+        // Batch Rename
+        'batch.prefix': 'Prefixo:',
+        'batch.suffix': 'Sufixo:',
+        'batch.replace': 'Localizar e substituir',
+
+        // Terminal
+        'terminal.title': 'Terminal',
+        'terminal.command': 'Comando:',
+        'terminal.output': 'Saída:',
+        'terminal.error': 'Erro:',
+
+        // Hex Editor
+        'hex.editor': 'Editor hexadecimal',
+
+        // Advanced Search
+        'advanced_search.title': 'Pesquisa avançada',
+        'advanced_search.file_name': 'Nome do arquivo',
+        'advanced_search.content': 'Conteúdo',
+        'advanced_search.size': 'Tamanho',
+        'advanced_search.date': 'Data',
+        'advanced_search.type': 'Tipo',
+
+        // Security
+        'security.test': 'Teste de segurança',
+        'security.scan': 'Digitalizar',
+        'security.report': 'Relatório',
+
+        // Upload
+        'upload.drop': 'Solte os arquivos aqui para enviar',
+        'upload.select': 'ou clique para selecionar',
+        'upload.uploading': 'Enviando...',
+
+        // App
+        'app.loading': 'Carregando...',
+        'app.error': 'Erro',
+
+        // Drag & Drop
+        'dragdrop.copy': 'COPIAR',
+        'dragdrop.move': 'MOVER',
+        'dragdrop.copying': 'Copiando...',
+        'dragdrop.moving': 'Movendo...',
+
+        // Placeholders
+        'placeholder.new_folder': 'Nova pasta',
+        'placeholder.archive_zip': 'arquivo.zip',
+        'placeholder.search_pattern': 'Digite o nome do arquivo ou padrão...',
+        'placeholder.rename_prefix': 'ex: IMG_',
+        'placeholder.rename_suffix': 'ex: _backup',
+        'placeholder.rename_find': 'Texto a localizar',
+        'placeholder.rename_replace': 'Texto de substituição',
+        'placeholder.rename_extension': 'ex: jpg',
+        'placeholder.bookmarks_search': 'Pesquisar favoritos...',
+        'placeholder.bookmark_name': 'Nome do favorito',
+        'placeholder.bookmark_path': '/caminho/para/diretório',
+        'placeholder.bookmark_description': 'Descrição opcional',
+        'placeholder.command_search': 'Digite comando ou pesquise...',
+        'placeholder.command_name': 'Nome do comando',
+        'placeholder.command_description': 'O que este comando faz',
+        'placeholder.command_command': 'Comando shell para executar',
+        'placeholder.command_hotkey': 'ex: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': 'Digite o padrão de pesquisa...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': 'Mín (bytes)',
+        'placeholder.size_max': 'Máx (bytes)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'Texto para pesquisar nos arquivos...',
+        'placeholder.docker_filter': 'Filtrar contêineres...',
+        'placeholder.hex_search': 'Digite valores hex (ex: FF 00 1A) ou texto',
+        'placeholder.security_test': 'Digite URL ou endereço IP',
+        'placeholder.cloud_storage_name': 'Meu armazenamento S3',
+        'placeholder.s3_bucket': 'meu-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'pasta/subpasta',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Russian
@@ -318,7 +1149,284 @@ export const languagePack = {
         save: 'Сохранить',
         terminal: 'Терминал',
         clear: 'Очистить',
-        close: 'Закрыть'
+        close: 'Закрыть',
+
+        // Custom Commands
+        'commands.custom': 'Пользовательские команды',
+        'commands.add': 'Добавить команду',
+        'commands.edit': 'Изменить команду',
+        'commands.delete': 'Удалить команду',
+        'commands.run': 'Выполнить команду',
+        'commands.name': 'Имя команды',
+        'commands.description': 'Описание',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Горячие клавиши',
+        'modal.view_file': 'Просмотр файла',
+        'modal.edit_file': 'Редактировать файл',
+        'modal.copy_files': 'Копировать файлы',
+        'modal.create_directory': 'Создать каталог',
+        'modal.confirm_delete': 'Подтвердить удаление',
+        'modal.compress_files': 'Сжать файлы',
+        'modal.search_files': 'Поиск файлов',
+        'modal.confirm_title': 'Подтвердить',
+        'modal.delete_message': 'Вы уверены, что хотите удалить следующие файлы?',
+        'modal.copy_message': 'Копировать выбранные файлы в:',
+        'modal.directory_name_label': 'Имя каталога:',
+        'modal.archive_name_label': 'Имя архива:',
+        'modal.format_label': 'Формат:',
+        'modal.search_for_label': 'Искать:',
+        'modal.results_label': 'Результаты:',
+        'modal.confirm_message_default': 'Вы уверены?',
+        'modal.loading': 'Загрузка...',
+
+        // Buttons
+        'button.ok': 'ОК',
+        'button.cancel': 'Отмена',
+        'button.yes': 'Да',
+        'button.no': 'Нет',
+        'button.save': 'Сохранить',
+        'button.close': 'Закрыть',
+        'button.copy': 'Копировать',
+        'button.move': 'Переместить',
+        'button.delete': 'Удалить',
+        'button.create': 'Создать',
+        'button.compress': 'Сжать',
+        'button.search': 'Поиск',
+
+        // Tooltips - Header
+        'tooltip.menu': 'Меню',
+        'tooltip.keyboard_shortcuts': 'Горячие клавиши (Ctrl+H)',
+        'tooltip.toggle_theme': 'Переключить тему',
+        'tooltip.settings': 'Настройки',
+        'tooltip.language': 'Язык',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Справка',
+        'tooltip.f2_menu': 'F2 - Меню',
+        'tooltip.f3_view': 'F3 - Просмотр файла',
+        'tooltip.f4_edit': 'F4 - Редактировать файл',
+        'tooltip.f5_copy': 'F5 - Копировать файлы',
+        'tooltip.f6_move': 'F6 - Переместить файлы',
+        'tooltip.f7_mkdir': 'F7 - Создать каталог',
+        'tooltip.f8_delete': 'F8 - Удалить файлы',
+        'tooltip.f9_menu': 'F9 - Меню',
+        'tooltip.f10_exit': 'F10 - Выход',
+        'tooltip.f11_terminal': 'F11 - Терминал',
+        'tooltip.f12_settings': 'F12 - Настройки',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'Закладки',
+        'tooltip.add_bookmark': 'Добавить закладку',
+        'tooltip.edit_bookmarks': 'Изменить закладки',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': 'Родительский каталог (Backspace)',
+        'tooltip.refresh': 'Обновить (Ctrl+R)',
+        'tooltip.home': 'Домашний каталог',
+        'tooltip.root': 'Корневой каталог',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'Открыть терминал',
+        'tooltip.close_terminal': 'Закрыть терминал',
+        'tooltip.clear_terminal': 'Очистить терминал',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': 'Шестнадцатеричный редактор',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Менеджер Docker',
+        'tooltip.docker_containers': 'Контейнеры Docker',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': 'Новая вкладка (Ctrl+T)',
+        'tooltip.close_tab': 'Закрыть вкладку',
+        'tooltip.tab_menu': 'Меню вкладок',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'Пользовательские команды',
+        'tooltip.add_command': 'Добавить команду',
+        'tooltip.run_command': 'Выполнить команду',
+
+        // Context Menu
+        'context.view': 'Просмотр',
+        'context.edit': 'Редактировать',
+        'context.compress': 'Сжать',
+        'context.decompress': 'Распаковать',
+        'context.batch_rename': 'Пакетное переименование',
+        'context.properties': 'Свойства',
+        'context.new_file': 'Новый файл',
+
+        // Search Options
+        'search.case_sensitive': 'Учитывать регистр',
+        'search.whole_word': 'Целое слово',
+        'search.regex': 'Регулярное выражение',
+
+        // Bookmarks
+        'bookmarks.title': 'Закладки',
+        'bookmarks.add': 'Добавить закладку',
+        'bookmarks.edit': 'Изменить закладки',
+        'bookmarks.delete': 'Удалить закладку',
+        'bookmarks.name': 'Имя',
+        'bookmarks.path': 'Путь',
+        'bookmarks.description': 'Описание',
+
+        // File Operations
+        'fileops.no_file_selected': 'Файл не выбран',
+        'fileops.no_files_selected': 'Файлы не выбраны',
+        'fileops.select_one_to_rename': 'Выберите ровно один файл для переименования',
+        'fileops.select_one_archive': 'Выберите ровно один архив для распаковки',
+        'fileops.enter_filename': 'Введите имя файла:',
+        'fileops.rename_to': 'Переименовать в:',
+        'fileops.enter_directory_name': 'Введите имя каталога',
+        'fileops.enter_archive_name': 'Введите имя архива',
+        'fileops.view_failed': 'Ошибка просмотра файла: {error}',
+        'fileops.edit_failed': 'Ошибка редактирования файла: {error}',
+        'fileops.save_success': 'Файл успешно сохранен',
+        'fileops.save_failed': 'Ошибка сохранения файла: {error}',
+        'fileops.create_success': 'Файл успешно создан',
+        'fileops.create_failed': 'Ошибка создания файла: {error}',
+        'fileops.copy_success': 'Файлы успешно скопированы',
+        'fileops.move_success': 'Файлы успешно перемещены',
+        'fileops.operation_failed': 'Ошибка {operation} файлов: {error}',
+        'fileops.rename_success': 'Файл успешно переименован',
+        'fileops.rename_failed': 'Ошибка переименования файла: {error}',
+        'fileops.mkdir_success': 'Каталог успешно создан',
+        'fileops.mkdir_failed': 'Ошибка создания каталога: {error}',
+        'fileops.delete_success': 'Файлы успешно удалены',
+        'fileops.delete_failed': 'Ошибка удаления файлов: {error}',
+        'fileops.compress_started': 'Сжатие начато',
+        'fileops.compress_failed': 'Ошибка сжатия файлов: {error}',
+        'fileops.decompress_started': 'Распаковка начата',
+        'fileops.decompress_failed': 'Ошибка распаковки файла: {error}',
+        'fileops.load_directory_failed': 'Ошибка загрузки каталога: {error}',
+        'fileops.copy_with_options': 'Копирование с параметрами не реализовано',
+        'fileops.close_browser_tab': 'Закройте вкладку браузера для выхода',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Навигация',
+        'shortcuts.selection': 'Выбор',
+        'shortcuts.operations': 'Операции',
+        'shortcuts.panels': 'Панели',
+        'shortcuts.tabs': 'Вкладки',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'Переключить панель',
+        'shortcuts.arrow_keys': 'Клавиши со стрелками',
+        'shortcuts.navigate': 'Навигация',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': 'Открыть каталог',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': 'Родительский каталог',
+        'shortcuts.space': 'Пробел',
+        'shortcuts.select_file': 'Выбрать/отменить выбор файла',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'Выбрать все',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'Отменить выбор всех',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': 'Обновить',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'Просмотр файла',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'Редактировать файл',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'Копировать',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': 'Переместить',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'Создать каталог',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': 'Удалить',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': 'Новая вкладка',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': 'Закрыть вкладку',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': 'Следующая вкладка',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': 'Предыдущая вкладка',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'Команда выполнена',
+        'keyboard.invalid_command': 'Неверная команда',
+        'keyboard.command_failed': 'Ошибка команды: {error}',
+        'keyboard.no_custom_commands': 'Нет доступных пользовательских команд',
+
+        // Batch Rename
+        'batch.prefix': 'Префикс:',
+        'batch.suffix': 'Суффикс:',
+        'batch.replace': 'Найти и заменить',
+
+        // Terminal
+        'terminal.title': 'Терминал',
+        'terminal.command': 'Команда:',
+        'terminal.output': 'Вывод:',
+        'terminal.error': 'Ошибка:',
+
+        // Hex Editor
+        'hex.editor': 'Шестнадцатеричный редактор',
+
+        // Advanced Search
+        'advanced_search.title': 'Расширенный поиск',
+        'advanced_search.file_name': 'Имя файла',
+        'advanced_search.content': 'Содержимое',
+        'advanced_search.size': 'Размер',
+        'advanced_search.date': 'Дата',
+        'advanced_search.type': 'Тип',
+
+        // Security
+        'security.test': 'Тест безопасности',
+        'security.scan': 'Сканировать',
+        'security.report': 'Отчет',
+
+        // Upload
+        'upload.drop': 'Перетащите файлы сюда для загрузки',
+        'upload.select': 'или нажмите для выбора',
+        'upload.uploading': 'Загрузка...',
+
+        // App
+        'app.loading': 'Загрузка...',
+        'app.error': 'Ошибка',
+
+        // Drag & Drop
+        'dragdrop.copy': 'КОПИРОВАТЬ',
+        'dragdrop.move': 'ПЕРЕМЕСТИТЬ',
+        'dragdrop.copying': 'Копирование...',
+        'dragdrop.moving': 'Перемещение...',
+
+        // Placeholders
+        'placeholder.new_folder': 'Новая папка',
+        'placeholder.archive_zip': 'архив.zip',
+        'placeholder.search_pattern': 'Введите имя файла или шаблон...',
+        'placeholder.rename_prefix': 'например: IMG_',
+        'placeholder.rename_suffix': 'например: _backup',
+        'placeholder.rename_find': 'Текст для поиска',
+        'placeholder.rename_replace': 'Текст замены',
+        'placeholder.rename_extension': 'например: jpg',
+        'placeholder.bookmarks_search': 'Поиск закладок...',
+        'placeholder.bookmark_name': 'Имя закладки',
+        'placeholder.bookmark_path': '/путь/к/каталогу',
+        'placeholder.bookmark_description': 'Необязательное описание',
+        'placeholder.command_search': 'Введите команду или поищите...',
+        'placeholder.command_name': 'Имя команды',
+        'placeholder.command_description': 'Что делает эта команда',
+        'placeholder.command_command': 'Команда оболочки для выполнения',
+        'placeholder.command_hotkey': 'например: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': 'Введите шаблон поиска...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': 'Мин (байт)',
+        'placeholder.size_max': 'Макс (байт)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'Текст для поиска в файлах...',
+        'placeholder.docker_filter': 'Фильтр контейнеров...',
+        'placeholder.hex_search': 'Введите hex значения (например: FF 00 1A) или текст',
+        'placeholder.security_test': 'Введите URL или IP-адрес',
+        'placeholder.cloud_storage_name': 'Мое хранилище S3',
+        'placeholder.s3_bucket': 'мой-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'папка/подпапка',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Chinese Simplified
@@ -393,7 +1501,284 @@ export const languagePack = {
         save: '保存',
         terminal: '终端',
         clear: '清除',
-        close: '关闭'
+        close: '关闭',
+
+        // Custom Commands
+        'commands.custom': '自定义命令',
+        'commands.add': '添加命令',
+        'commands.edit': '编辑命令',
+        'commands.delete': '删除命令',
+        'commands.run': '运行命令',
+        'commands.name': '命令名称',
+        'commands.description': '描述',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': '快捷键',
+        'modal.view_file': '查看文件',
+        'modal.edit_file': '编辑文件',
+        'modal.copy_files': '复制文件',
+        'modal.create_directory': '创建目录',
+        'modal.confirm_delete': '确认删除',
+        'modal.compress_files': '压缩文件',
+        'modal.search_files': '搜索文件',
+        'modal.confirm_title': '确认',
+        'modal.delete_message': '您确定要删除以下文件吗？',
+        'modal.copy_message': '将选定的文件复制到：',
+        'modal.directory_name_label': '目录名称：',
+        'modal.archive_name_label': '归档名称：',
+        'modal.format_label': '格式：',
+        'modal.search_for_label': '搜索：',
+        'modal.results_label': '结果：',
+        'modal.confirm_message_default': '您确定吗？',
+        'modal.loading': '加载中...',
+
+        // Buttons
+        'button.ok': '确定',
+        'button.cancel': '取消',
+        'button.yes': '是',
+        'button.no': '否',
+        'button.save': '保存',
+        'button.close': '关闭',
+        'button.copy': '复制',
+        'button.move': '移动',
+        'button.delete': '删除',
+        'button.create': '创建',
+        'button.compress': '压缩',
+        'button.search': '搜索',
+
+        // Tooltips - Header
+        'tooltip.menu': '菜单',
+        'tooltip.keyboard_shortcuts': '快捷键 (Ctrl+H)',
+        'tooltip.toggle_theme': '切换主题',
+        'tooltip.settings': '设置',
+        'tooltip.language': '语言',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - 帮助',
+        'tooltip.f2_menu': 'F2 - 菜单',
+        'tooltip.f3_view': 'F3 - 查看文件',
+        'tooltip.f4_edit': 'F4 - 编辑文件',
+        'tooltip.f5_copy': 'F5 - 复制文件',
+        'tooltip.f6_move': 'F6 - 移动文件',
+        'tooltip.f7_mkdir': 'F7 - 创建目录',
+        'tooltip.f8_delete': 'F8 - 删除文件',
+        'tooltip.f9_menu': 'F9 - 菜单',
+        'tooltip.f10_exit': 'F10 - 退出',
+        'tooltip.f11_terminal': 'F11 - 终端',
+        'tooltip.f12_settings': 'F12 - 设置',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': '书签',
+        'tooltip.add_bookmark': '添加书签',
+        'tooltip.edit_bookmarks': '编辑书签',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': '父目录 (Backspace)',
+        'tooltip.refresh': '刷新 (Ctrl+R)',
+        'tooltip.home': '主目录',
+        'tooltip.root': '根目录',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': '打开终端',
+        'tooltip.close_terminal': '关闭终端',
+        'tooltip.clear_terminal': '清除终端',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': '十六进制编辑器',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Docker 管理器',
+        'tooltip.docker_containers': 'Docker 容器',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': '新标签页 (Ctrl+T)',
+        'tooltip.close_tab': '关闭标签页',
+        'tooltip.tab_menu': '标签页菜单',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': '自定义命令',
+        'tooltip.add_command': '添加命令',
+        'tooltip.run_command': '运行命令',
+
+        // Context Menu
+        'context.view': '查看',
+        'context.edit': '编辑',
+        'context.compress': '压缩',
+        'context.decompress': '解压缩',
+        'context.batch_rename': '批量重命名',
+        'context.properties': '属性',
+        'context.new_file': '新文件',
+
+        // Search Options
+        'search.case_sensitive': '区分大小写',
+        'search.whole_word': '全字匹配',
+        'search.regex': '正则表达式',
+
+        // Bookmarks
+        'bookmarks.title': '书签',
+        'bookmarks.add': '添加书签',
+        'bookmarks.edit': '编辑书签',
+        'bookmarks.delete': '删除书签',
+        'bookmarks.name': '名称',
+        'bookmarks.path': '路径',
+        'bookmarks.description': '描述',
+
+        // File Operations
+        'fileops.no_file_selected': '未选择文件',
+        'fileops.no_files_selected': '未选择文件',
+        'fileops.select_one_to_rename': '请选择一个文件进行重命名',
+        'fileops.select_one_archive': '请选择一个归档文件进行解压缩',
+        'fileops.enter_filename': '输入文件名：',
+        'fileops.rename_to': '重命名为：',
+        'fileops.enter_directory_name': '请输入目录名称',
+        'fileops.enter_archive_name': '请输入归档名称',
+        'fileops.view_failed': '查看文件失败：{error}',
+        'fileops.edit_failed': '编辑文件失败：{error}',
+        'fileops.save_success': '文件保存成功',
+        'fileops.save_failed': '文件保存失败：{error}',
+        'fileops.create_success': '文件创建成功',
+        'fileops.create_failed': '文件创建失败：{error}',
+        'fileops.copy_success': '文件复制成功',
+        'fileops.move_success': '文件移动成功',
+        'fileops.operation_failed': '{operation} 文件失败：{error}',
+        'fileops.rename_success': '文件重命名成功',
+        'fileops.rename_failed': '文件重命名失败：{error}',
+        'fileops.mkdir_success': '目录创建成功',
+        'fileops.mkdir_failed': '目录创建失败：{error}',
+        'fileops.delete_success': '文件删除成功',
+        'fileops.delete_failed': '文件删除失败：{error}',
+        'fileops.compress_started': '压缩已开始',
+        'fileops.compress_failed': '压缩文件失败：{error}',
+        'fileops.decompress_started': '解压缩已开始',
+        'fileops.decompress_failed': '解压缩文件失败：{error}',
+        'fileops.load_directory_failed': '加载目录失败：{error}',
+        'fileops.copy_with_options': '带选项的复制未实现',
+        'fileops.close_browser_tab': '请关闭浏览器标签页以退出',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': '导航',
+        'shortcuts.selection': '选择',
+        'shortcuts.operations': '操作',
+        'shortcuts.panels': '面板',
+        'shortcuts.tabs': '标签页',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': '切换面板',
+        'shortcuts.arrow_keys': '箭头键',
+        'shortcuts.navigate': '导航',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': '打开目录',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': '父目录',
+        'shortcuts.space': '空格',
+        'shortcuts.select_file': '选择/取消选择文件',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': '全选',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': '取消全选',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': '刷新',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': '查看文件',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': '编辑文件',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': '复制',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': '移动',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': '创建目录',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': '删除',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': '新标签页',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': '关闭标签页',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': '下一个标签页',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': '上一个标签页',
+
+        // Keyboard Messages
+        'keyboard.command_executed': '命令已执行',
+        'keyboard.invalid_command': '无效命令',
+        'keyboard.command_failed': '命令失败：{error}',
+        'keyboard.no_custom_commands': '没有可用的自定义命令',
+
+        // Batch Rename
+        'batch.prefix': '前缀：',
+        'batch.suffix': '后缀：',
+        'batch.replace': '查找和替换',
+
+        // Terminal
+        'terminal.title': '终端',
+        'terminal.command': '命令：',
+        'terminal.output': '输出：',
+        'terminal.error': '错误：',
+
+        // Hex Editor
+        'hex.editor': '十六进制编辑器',
+
+        // Advanced Search
+        'advanced_search.title': '高级搜索',
+        'advanced_search.file_name': '文件名',
+        'advanced_search.content': '内容',
+        'advanced_search.size': '大小',
+        'advanced_search.date': '日期',
+        'advanced_search.type': '类型',
+
+        // Security
+        'security.test': '安全测试',
+        'security.scan': '扫描',
+        'security.report': '报告',
+
+        // Upload
+        'upload.drop': '拖放文件到此处上传',
+        'upload.select': '或点击选择',
+        'upload.uploading': '上传中...',
+
+        // App
+        'app.loading': '加载中...',
+        'app.error': '错误',
+
+        // Drag & Drop
+        'dragdrop.copy': '复制',
+        'dragdrop.move': '移动',
+        'dragdrop.copying': '复制中...',
+        'dragdrop.moving': '移动中...',
+
+        // Placeholders
+        'placeholder.new_folder': '新文件夹',
+        'placeholder.archive_zip': '归档.zip',
+        'placeholder.search_pattern': '输入文件名或模式...',
+        'placeholder.rename_prefix': '例如：IMG_',
+        'placeholder.rename_suffix': '例如：_backup',
+        'placeholder.rename_find': '要查找的文本',
+        'placeholder.rename_replace': '替换文本',
+        'placeholder.rename_extension': '例如：jpg',
+        'placeholder.bookmarks_search': '搜索书签...',
+        'placeholder.bookmark_name': '书签名称',
+        'placeholder.bookmark_path': '/路径/到/目录',
+        'placeholder.bookmark_description': '可选描述',
+        'placeholder.command_search': '输入命令或搜索...',
+        'placeholder.command_name': '命令名称',
+        'placeholder.command_description': '此命令的功能',
+        'placeholder.command_command': '要执行的 shell 命令',
+        'placeholder.command_hotkey': '例如：Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': '输入搜索模式...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': '最小（字节）',
+        'placeholder.size_max': '最大（字节）',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': '要在文件中搜索的文本...',
+        'placeholder.docker_filter': '过滤容器...',
+        'placeholder.hex_search': '输入十六进制值（例如：FF 00 1A）或文本',
+        'placeholder.security_test': '输入 URL 或 IP 地址',
+        'placeholder.cloud_storage_name': '我的 S3 存储',
+        'placeholder.s3_bucket': '我的存储桶',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': '文件夹/子文件夹',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Japanese
@@ -468,7 +1853,284 @@ export const languagePack = {
         save: '保存',
         terminal: 'ターミナル',
         clear: 'クリア',
-        close: '閉じる'
+        close: '閉じる',
+
+        // Custom Commands
+        'commands.custom': 'カスタムコマンド',
+        'commands.add': 'コマンドを追加',
+        'commands.edit': 'コマンドを編集',
+        'commands.delete': 'コマンドを削除',
+        'commands.run': 'コマンドを実行',
+        'commands.name': 'コマンド名',
+        'commands.description': '説明',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'キーボードショートカット',
+        'modal.view_file': 'ファイルを表示',
+        'modal.edit_file': 'ファイルを編集',
+        'modal.copy_files': 'ファイルをコピー',
+        'modal.create_directory': 'ディレクトリを作成',
+        'modal.confirm_delete': '削除の確認',
+        'modal.compress_files': 'ファイルを圧縮',
+        'modal.search_files': 'ファイルを検索',
+        'modal.confirm_title': '確認',
+        'modal.delete_message': '以下のファイルを削除してもよろしいですか？',
+        'modal.copy_message': '選択したファイルをコピー先：',
+        'modal.directory_name_label': 'ディレクトリ名：',
+        'modal.archive_name_label': 'アーカイブ名：',
+        'modal.format_label': 'フォーマット：',
+        'modal.search_for_label': '検索：',
+        'modal.results_label': '結果：',
+        'modal.confirm_message_default': 'よろしいですか？',
+        'modal.loading': '読み込み中...',
+
+        // Buttons
+        'button.ok': 'OK',
+        'button.cancel': 'キャンセル',
+        'button.yes': 'はい',
+        'button.no': 'いいえ',
+        'button.save': '保存',
+        'button.close': '閉じる',
+        'button.copy': 'コピー',
+        'button.move': '移動',
+        'button.delete': '削除',
+        'button.create': '作成',
+        'button.compress': '圧縮',
+        'button.search': '検索',
+
+        // Tooltips - Header
+        'tooltip.menu': 'メニュー',
+        'tooltip.keyboard_shortcuts': 'キーボードショートカット (Ctrl+H)',
+        'tooltip.toggle_theme': 'テーマを切り替え',
+        'tooltip.settings': '設定',
+        'tooltip.language': '言語',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - ヘルプ',
+        'tooltip.f2_menu': 'F2 - メニュー',
+        'tooltip.f3_view': 'F3 - ファイルを表示',
+        'tooltip.f4_edit': 'F4 - ファイルを編集',
+        'tooltip.f5_copy': 'F5 - ファイルをコピー',
+        'tooltip.f6_move': 'F6 - ファイルを移動',
+        'tooltip.f7_mkdir': 'F7 - ディレクトリを作成',
+        'tooltip.f8_delete': 'F8 - ファイルを削除',
+        'tooltip.f9_menu': 'F9 - メニュー',
+        'tooltip.f10_exit': 'F10 - 終了',
+        'tooltip.f11_terminal': 'F11 - ターミナル',
+        'tooltip.f12_settings': 'F12 - 設定',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'ブックマーク',
+        'tooltip.add_bookmark': 'ブックマークを追加',
+        'tooltip.edit_bookmarks': 'ブックマークを編集',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': '親ディレクトリ (Backspace)',
+        'tooltip.refresh': '更新 (Ctrl+R)',
+        'tooltip.home': 'ホームディレクトリ',
+        'tooltip.root': 'ルートディレクトリ',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'ターミナルを開く',
+        'tooltip.close_terminal': 'ターミナルを閉じる',
+        'tooltip.clear_terminal': 'ターミナルをクリア',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': '16進エディタ',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Dockerマネージャー',
+        'tooltip.docker_containers': 'Dockerコンテナ',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': '新しいタブ (Ctrl+T)',
+        'tooltip.close_tab': 'タブを閉じる',
+        'tooltip.tab_menu': 'タブメニュー',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'カスタムコマンド',
+        'tooltip.add_command': 'コマンドを追加',
+        'tooltip.run_command': 'コマンドを実行',
+
+        // Context Menu
+        'context.view': '表示',
+        'context.edit': '編集',
+        'context.compress': '圧縮',
+        'context.decompress': '解凍',
+        'context.batch_rename': '一括リネーム',
+        'context.properties': 'プロパティ',
+        'context.new_file': '新規ファイル',
+
+        // Search Options
+        'search.case_sensitive': '大文字小文字を区別',
+        'search.whole_word': '完全一致',
+        'search.regex': '正規表現',
+
+        // Bookmarks
+        'bookmarks.title': 'ブックマーク',
+        'bookmarks.add': 'ブックマークを追加',
+        'bookmarks.edit': 'ブックマークを編集',
+        'bookmarks.delete': 'ブックマークを削除',
+        'bookmarks.name': '名前',
+        'bookmarks.path': 'パス',
+        'bookmarks.description': '説明',
+
+        // File Operations
+        'fileops.no_file_selected': 'ファイルが選択されていません',
+        'fileops.no_files_selected': 'ファイルが選択されていません',
+        'fileops.select_one_to_rename': '名前を変更するファイルを1つ選択してください',
+        'fileops.select_one_archive': '解凍するアーカイブを1つ選択してください',
+        'fileops.enter_filename': 'ファイル名を入力：',
+        'fileops.rename_to': '名前を変更：',
+        'fileops.enter_directory_name': 'ディレクトリ名を入力してください',
+        'fileops.enter_archive_name': 'アーカイブ名を入力してください',
+        'fileops.view_failed': 'ファイルの表示に失敗しました：{error}',
+        'fileops.edit_failed': 'ファイルの編集に失敗しました：{error}',
+        'fileops.save_success': 'ファイルを保存しました',
+        'fileops.save_failed': 'ファイルの保存に失敗しました：{error}',
+        'fileops.create_success': 'ファイルを作成しました',
+        'fileops.create_failed': 'ファイルの作成に失敗しました：{error}',
+        'fileops.copy_success': 'ファイルをコピーしました',
+        'fileops.move_success': 'ファイルを移動しました',
+        'fileops.operation_failed': '{operation}に失敗しました：{error}',
+        'fileops.rename_success': 'ファイル名を変更しました',
+        'fileops.rename_failed': 'ファイル名の変更に失敗しました：{error}',
+        'fileops.mkdir_success': 'ディレクトリを作成しました',
+        'fileops.mkdir_failed': 'ディレクトリの作成に失敗しました：{error}',
+        'fileops.delete_success': 'ファイルを削除しました',
+        'fileops.delete_failed': 'ファイルの削除に失敗しました：{error}',
+        'fileops.compress_started': '圧縮を開始しました',
+        'fileops.compress_failed': 'ファイルの圧縮に失敗しました：{error}',
+        'fileops.decompress_started': '解凍を開始しました',
+        'fileops.decompress_failed': 'ファイルの解凍に失敗しました：{error}',
+        'fileops.load_directory_failed': 'ディレクトリの読み込みに失敗しました：{error}',
+        'fileops.copy_with_options': 'オプション付きコピーは未実装です',
+        'fileops.close_browser_tab': '終了するにはブラウザタブを閉じてください',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'ナビゲーション',
+        'shortcuts.selection': '選択',
+        'shortcuts.operations': '操作',
+        'shortcuts.panels': 'パネル',
+        'shortcuts.tabs': 'タブ',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'パネルを切り替え',
+        'shortcuts.arrow_keys': '矢印キー',
+        'shortcuts.navigate': '移動',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': 'ディレクトリを開く',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': '親ディレクトリ',
+        'shortcuts.space': 'スペース',
+        'shortcuts.select_file': 'ファイルを選択/解除',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'すべて選択',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'すべて選択解除',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': '更新',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'ファイルを表示',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'ファイルを編集',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'コピー',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': '移動',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'ディレクトリを作成',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': '削除',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': '新しいタブ',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': 'タブを閉じる',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': '次のタブ',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': '前のタブ',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'コマンドを実行しました',
+        'keyboard.invalid_command': '無効なコマンドです',
+        'keyboard.command_failed': 'コマンドが失敗しました：{error}',
+        'keyboard.no_custom_commands': '利用可能なカスタムコマンドがありません',
+
+        // Batch Rename
+        'batch.prefix': 'プレフィックス：',
+        'batch.suffix': 'サフィックス：',
+        'batch.replace': '検索と置換',
+
+        // Terminal
+        'terminal.title': 'ターミナル',
+        'terminal.command': 'コマンド：',
+        'terminal.output': '出力：',
+        'terminal.error': 'エラー：',
+
+        // Hex Editor
+        'hex.editor': '16進エディタ',
+
+        // Advanced Search
+        'advanced_search.title': '詳細検索',
+        'advanced_search.file_name': 'ファイル名',
+        'advanced_search.content': 'コンテンツ',
+        'advanced_search.size': 'サイズ',
+        'advanced_search.date': '日付',
+        'advanced_search.type': 'タイプ',
+
+        // Security
+        'security.test': 'セキュリティテスト',
+        'security.scan': 'スキャン',
+        'security.report': 'レポート',
+
+        // Upload
+        'upload.drop': 'ファイルをここにドロップしてアップロード',
+        'upload.select': 'またはクリックして選択',
+        'upload.uploading': 'アップロード中...',
+
+        // App
+        'app.loading': '読み込み中...',
+        'app.error': 'エラー',
+
+        // Drag & Drop
+        'dragdrop.copy': 'コピー',
+        'dragdrop.move': '移動',
+        'dragdrop.copying': 'コピー中...',
+        'dragdrop.moving': '移動中...',
+
+        // Placeholders
+        'placeholder.new_folder': '新しいフォルダ',
+        'placeholder.archive_zip': 'アーカイブ.zip',
+        'placeholder.search_pattern': 'ファイル名またはパターンを入力...',
+        'placeholder.rename_prefix': '例：IMG_',
+        'placeholder.rename_suffix': '例：_backup',
+        'placeholder.rename_find': '検索するテキスト',
+        'placeholder.rename_replace': '置換テキスト',
+        'placeholder.rename_extension': '例：jpg',
+        'placeholder.bookmarks_search': 'ブックマークを検索...',
+        'placeholder.bookmark_name': 'ブックマーク名',
+        'placeholder.bookmark_path': '/パス/to/ディレクトリ',
+        'placeholder.bookmark_description': 'オプションの説明',
+        'placeholder.command_search': 'コマンドを入力または検索...',
+        'placeholder.command_name': 'コマンド名',
+        'placeholder.command_description': 'このコマンドの機能',
+        'placeholder.command_command': '実行するシェルコマンド',
+        'placeholder.command_hotkey': '例：Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': '検索パターンを入力...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': '最小（バイト）',
+        'placeholder.size_max': '最大（バイト）',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'ファイル内で検索するテキスト...',
+        'placeholder.docker_filter': 'コンテナをフィルタ...',
+        'placeholder.hex_search': '16進値（例：FF 00 1A）またはテキストを入力',
+        'placeholder.security_test': 'URLまたはIPアドレスを入力',
+        'placeholder.cloud_storage_name': '私のS3ストレージ',
+        'placeholder.s3_bucket': 'my-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'フォルダ/サブフォルダ',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Korean
@@ -543,7 +2205,284 @@ export const languagePack = {
         save: '저장',
         terminal: '터미널',
         clear: '지우기',
-        close: '닫기'
+        close: '닫기',
+
+        // Custom Commands
+        'commands.custom': '사용자 정의 명령',
+        'commands.add': '명령 추가',
+        'commands.edit': '명령 편집',
+        'commands.delete': '명령 삭제',
+        'commands.run': '명령 실행',
+        'commands.name': '명령 이름',
+        'commands.description': '설명',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': '키보드 단축키',
+        'modal.view_file': '파일 보기',
+        'modal.edit_file': '파일 편집',
+        'modal.copy_files': '파일 복사',
+        'modal.create_directory': '디렉터리 만들기',
+        'modal.confirm_delete': '삭제 확인',
+        'modal.compress_files': '파일 압축',
+        'modal.search_files': '파일 검색',
+        'modal.confirm_title': '확인',
+        'modal.delete_message': '다음 파일을 삭제하시겠습니까?',
+        'modal.copy_message': '선택한 파일을 다음으로 복사:',
+        'modal.directory_name_label': '디렉터리 이름:',
+        'modal.archive_name_label': '아카이브 이름:',
+        'modal.format_label': '형식:',
+        'modal.search_for_label': '검색:',
+        'modal.results_label': '결과:',
+        'modal.confirm_message_default': '확실합니까?',
+        'modal.loading': '로딩 중...',
+
+        // Buttons
+        'button.ok': '확인',
+        'button.cancel': '취소',
+        'button.yes': '예',
+        'button.no': '아니오',
+        'button.save': '저장',
+        'button.close': '닫기',
+        'button.copy': '복사',
+        'button.move': '이동',
+        'button.delete': '삭제',
+        'button.create': '만들기',
+        'button.compress': '압축',
+        'button.search': '검색',
+
+        // Tooltips - Header
+        'tooltip.menu': '메뉴',
+        'tooltip.keyboard_shortcuts': '키보드 단축키 (Ctrl+H)',
+        'tooltip.toggle_theme': '테마 전환',
+        'tooltip.settings': '설정',
+        'tooltip.language': '언어',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - 도움말',
+        'tooltip.f2_menu': 'F2 - 메뉴',
+        'tooltip.f3_view': 'F3 - 파일 보기',
+        'tooltip.f4_edit': 'F4 - 파일 편집',
+        'tooltip.f5_copy': 'F5 - 파일 복사',
+        'tooltip.f6_move': 'F6 - 파일 이동',
+        'tooltip.f7_mkdir': 'F7 - 디렉터리 만들기',
+        'tooltip.f8_delete': 'F8 - 파일 삭제',
+        'tooltip.f9_menu': 'F9 - 메뉴',
+        'tooltip.f10_exit': 'F10 - 종료',
+        'tooltip.f11_terminal': 'F11 - 터미널',
+        'tooltip.f12_settings': 'F12 - 설정',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': '북마크',
+        'tooltip.add_bookmark': '북마크 추가',
+        'tooltip.edit_bookmarks': '북마크 편집',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': '상위 디렉터리 (Backspace)',
+        'tooltip.refresh': '새로고침 (Ctrl+R)',
+        'tooltip.home': '홈 디렉터리',
+        'tooltip.root': '루트 디렉터리',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': '터미널 열기',
+        'tooltip.close_terminal': '터미널 닫기',
+        'tooltip.clear_terminal': '터미널 지우기',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': '16진수 편집기',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Docker 관리자',
+        'tooltip.docker_containers': 'Docker 컨테이너',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': '새 탭 (Ctrl+T)',
+        'tooltip.close_tab': '탭 닫기',
+        'tooltip.tab_menu': '탭 메뉴',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': '사용자 정의 명령',
+        'tooltip.add_command': '명령 추가',
+        'tooltip.run_command': '명령 실행',
+
+        // Context Menu
+        'context.view': '보기',
+        'context.edit': '편집',
+        'context.compress': '압축',
+        'context.decompress': '압축 해제',
+        'context.batch_rename': '일괄 이름 변경',
+        'context.properties': '속성',
+        'context.new_file': '새 파일',
+
+        // Search Options
+        'search.case_sensitive': '대소문자 구분',
+        'search.whole_word': '단어 단위',
+        'search.regex': '정규 표현식',
+
+        // Bookmarks
+        'bookmarks.title': '북마크',
+        'bookmarks.add': '북마크 추가',
+        'bookmarks.edit': '북마크 편집',
+        'bookmarks.delete': '북마크 삭제',
+        'bookmarks.name': '이름',
+        'bookmarks.path': '경로',
+        'bookmarks.description': '설명',
+
+        // File Operations
+        'fileops.no_file_selected': '선택된 파일 없음',
+        'fileops.no_files_selected': '선택된 파일 없음',
+        'fileops.select_one_to_rename': '이름을 변경할 파일을 하나 선택하세요',
+        'fileops.select_one_archive': '압축을 해제할 아카이브를 하나 선택하세요',
+        'fileops.enter_filename': '파일 이름 입력:',
+        'fileops.rename_to': '다음으로 이름 변경:',
+        'fileops.enter_directory_name': '디렉터리 이름을 입력하세요',
+        'fileops.enter_archive_name': '아카이브 이름을 입력하세요',
+        'fileops.view_failed': '파일 보기 실패: {error}',
+        'fileops.edit_failed': '파일 편집 실패: {error}',
+        'fileops.save_success': '파일 저장 성공',
+        'fileops.save_failed': '파일 저장 실패: {error}',
+        'fileops.create_success': '파일 생성 성공',
+        'fileops.create_failed': '파일 생성 실패: {error}',
+        'fileops.copy_success': '파일 복사 성공',
+        'fileops.move_success': '파일 이동 성공',
+        'fileops.operation_failed': '{operation} 실패: {error}',
+        'fileops.rename_success': '파일 이름 변경 성공',
+        'fileops.rename_failed': '파일 이름 변경 실패: {error}',
+        'fileops.mkdir_success': '디렉터리 생성 성공',
+        'fileops.mkdir_failed': '디렉터리 생성 실패: {error}',
+        'fileops.delete_success': '파일 삭제 성공',
+        'fileops.delete_failed': '파일 삭제 실패: {error}',
+        'fileops.compress_started': '압축 시작됨',
+        'fileops.compress_failed': '파일 압축 실패: {error}',
+        'fileops.decompress_started': '압축 해제 시작됨',
+        'fileops.decompress_failed': '파일 압축 해제 실패: {error}',
+        'fileops.load_directory_failed': '디렉터리 로드 실패: {error}',
+        'fileops.copy_with_options': '옵션을 사용한 복사는 구현되지 않음',
+        'fileops.close_browser_tab': '종료하려면 브라우저 탭을 닫으세요',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': '탐색',
+        'shortcuts.selection': '선택',
+        'shortcuts.operations': '작업',
+        'shortcuts.panels': '패널',
+        'shortcuts.tabs': '탭',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': '패널 전환',
+        'shortcuts.arrow_keys': '화살표 키',
+        'shortcuts.navigate': '탐색',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': '디렉터리 열기',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': '상위 디렉터리',
+        'shortcuts.space': '스페이스',
+        'shortcuts.select_file': '파일 선택/선택 해제',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': '모두 선택',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': '모두 선택 해제',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': '새로고침',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': '파일 보기',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': '파일 편집',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': '복사',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': '이동',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': '디렉터리 만들기',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': '삭제',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': '새 탭',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': '탭 닫기',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': '다음 탭',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': '이전 탭',
+
+        // Keyboard Messages
+        'keyboard.command_executed': '명령 실행됨',
+        'keyboard.invalid_command': '잘못된 명령',
+        'keyboard.command_failed': '명령 실패: {error}',
+        'keyboard.no_custom_commands': '사용 가능한 사용자 정의 명령 없음',
+
+        // Batch Rename
+        'batch.prefix': '접두사:',
+        'batch.suffix': '접미사:',
+        'batch.replace': '찾기 및 바꾸기',
+
+        // Terminal
+        'terminal.title': '터미널',
+        'terminal.command': '명령:',
+        'terminal.output': '출력:',
+        'terminal.error': '오류:',
+
+        // Hex Editor
+        'hex.editor': '16진수 편집기',
+
+        // Advanced Search
+        'advanced_search.title': '고급 검색',
+        'advanced_search.file_name': '파일 이름',
+        'advanced_search.content': '내용',
+        'advanced_search.size': '크기',
+        'advanced_search.date': '날짜',
+        'advanced_search.type': '유형',
+
+        // Security
+        'security.test': '보안 테스트',
+        'security.scan': '스캔',
+        'security.report': '보고서',
+
+        // Upload
+        'upload.drop': '파일을 여기에 드롭하여 업로드',
+        'upload.select': '또는 클릭하여 선택',
+        'upload.uploading': '업로드 중...',
+
+        // App
+        'app.loading': '로딩 중...',
+        'app.error': '오류',
+
+        // Drag & Drop
+        'dragdrop.copy': '복사',
+        'dragdrop.move': '이동',
+        'dragdrop.copying': '복사 중...',
+        'dragdrop.moving': '이동 중...',
+
+        // Placeholders
+        'placeholder.new_folder': '새 폴더',
+        'placeholder.archive_zip': '아카이브.zip',
+        'placeholder.search_pattern': '파일 이름 또는 패턴 입력...',
+        'placeholder.rename_prefix': '예: IMG_',
+        'placeholder.rename_suffix': '예: _backup',
+        'placeholder.rename_find': '찾을 텍스트',
+        'placeholder.rename_replace': '바꿀 텍스트',
+        'placeholder.rename_extension': '예: jpg',
+        'placeholder.bookmarks_search': '북마크 검색...',
+        'placeholder.bookmark_name': '북마크 이름',
+        'placeholder.bookmark_path': '/경로/to/디렉터리',
+        'placeholder.bookmark_description': '선택적 설명',
+        'placeholder.command_search': '명령 입력 또는 검색...',
+        'placeholder.command_name': '명령 이름',
+        'placeholder.command_description': '이 명령의 기능',
+        'placeholder.command_command': '실행할 셸 명령',
+        'placeholder.command_hotkey': '예: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': '검색 패턴 입력...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': '최소 (바이트)',
+        'placeholder.size_max': '최대 (바이트)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': '파일에서 검색할 텍스트...',
+        'placeholder.docker_filter': '컨테이너 필터...',
+        'placeholder.hex_search': '16진수 값 (예: FF 00 1A) 또는 텍스트 입력',
+        'placeholder.security_test': 'URL 또는 IP 주소 입력',
+        'placeholder.cloud_storage_name': '내 S3 스토리지',
+        'placeholder.s3_bucket': '내-버킷',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': '폴더/하위폴더',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Dutch
@@ -618,7 +2557,284 @@ export const languagePack = {
         save: 'Opslaan',
         terminal: 'Terminal',
         clear: 'Wissen',
-        close: 'Sluiten'
+        close: 'Sluiten',
+
+        // Custom Commands
+        'commands.custom': 'Aangepaste opdrachten',
+        'commands.add': 'Opdracht toevoegen',
+        'commands.edit': 'Opdracht bewerken',
+        'commands.delete': 'Opdracht verwijderen',
+        'commands.run': 'Opdracht uitvoeren',
+        'commands.name': 'Opdrachtnaam',
+        'commands.description': 'Beschrijving',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Sneltoetsen',
+        'modal.view_file': 'Bestand bekijken',
+        'modal.edit_file': 'Bestand bewerken',
+        'modal.copy_files': 'Bestanden kopiëren',
+        'modal.create_directory': 'Map maken',
+        'modal.confirm_delete': 'Verwijderen bevestigen',
+        'modal.compress_files': 'Bestanden comprimeren',
+        'modal.search_files': 'Bestanden zoeken',
+        'modal.confirm_title': 'Bevestigen',
+        'modal.delete_message': 'Weet u zeker dat u de volgende bestanden wilt verwijderen?',
+        'modal.copy_message': 'Geselecteerde bestanden kopiëren naar:',
+        'modal.directory_name_label': 'Mapnaam:',
+        'modal.archive_name_label': 'Archiefnaam:',
+        'modal.format_label': 'Formaat:',
+        'modal.search_for_label': 'Zoeken naar:',
+        'modal.results_label': 'Resultaten:',
+        'modal.confirm_message_default': 'Weet u het zeker?',
+        'modal.loading': 'Laden...',
+
+        // Buttons
+        'button.ok': 'OK',
+        'button.cancel': 'Annuleren',
+        'button.yes': 'Ja',
+        'button.no': 'Nee',
+        'button.save': 'Opslaan',
+        'button.close': 'Sluiten',
+        'button.copy': 'Kopiëren',
+        'button.move': 'Verplaatsen',
+        'button.delete': 'Verwijderen',
+        'button.create': 'Maken',
+        'button.compress': 'Comprimeren',
+        'button.search': 'Zoeken',
+
+        // Tooltips - Header
+        'tooltip.menu': 'Menu',
+        'tooltip.keyboard_shortcuts': 'Sneltoetsen (Ctrl+H)',
+        'tooltip.toggle_theme': 'Thema wisselen',
+        'tooltip.settings': 'Instellingen',
+        'tooltip.language': 'Taal',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Help',
+        'tooltip.f2_menu': 'F2 - Menu',
+        'tooltip.f3_view': 'F3 - Bestand bekijken',
+        'tooltip.f4_edit': 'F4 - Bestand bewerken',
+        'tooltip.f5_copy': 'F5 - Bestanden kopiëren',
+        'tooltip.f6_move': 'F6 - Bestanden verplaatsen',
+        'tooltip.f7_mkdir': 'F7 - Map maken',
+        'tooltip.f8_delete': 'F8 - Bestanden verwijderen',
+        'tooltip.f9_menu': 'F9 - Menu',
+        'tooltip.f10_exit': 'F10 - Afsluiten',
+        'tooltip.f11_terminal': 'F11 - Terminal',
+        'tooltip.f12_settings': 'F12 - Instellingen',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'Bladwijzers',
+        'tooltip.add_bookmark': 'Bladwijzer toevoegen',
+        'tooltip.edit_bookmarks': 'Bladwijzers bewerken',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': 'Bovenliggende map (Backspace)',
+        'tooltip.refresh': 'Vernieuwen (Ctrl+R)',
+        'tooltip.home': 'Thuismap',
+        'tooltip.root': 'Hoofdmap',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'Terminal openen',
+        'tooltip.close_terminal': 'Terminal sluiten',
+        'tooltip.clear_terminal': 'Terminal wissen',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': 'Hex-editor',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Docker-beheerder',
+        'tooltip.docker_containers': 'Docker-containers',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': 'Nieuw tabblad (Ctrl+T)',
+        'tooltip.close_tab': 'Tabblad sluiten',
+        'tooltip.tab_menu': 'Tabbladmenu',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'Aangepaste opdrachten',
+        'tooltip.add_command': 'Opdracht toevoegen',
+        'tooltip.run_command': 'Opdracht uitvoeren',
+
+        // Context Menu
+        'context.view': 'Bekijken',
+        'context.edit': 'Bewerken',
+        'context.compress': 'Comprimeren',
+        'context.decompress': 'Decomprimeren',
+        'context.batch_rename': 'Batch hernoemen',
+        'context.properties': 'Eigenschappen',
+        'context.new_file': 'Nieuw bestand',
+
+        // Search Options
+        'search.case_sensitive': 'Hoofdlettergevoelig',
+        'search.whole_word': 'Heel woord',
+        'search.regex': 'Reguliere expressie',
+
+        // Bookmarks
+        'bookmarks.title': 'Bladwijzers',
+        'bookmarks.add': 'Bladwijzer toevoegen',
+        'bookmarks.edit': 'Bladwijzers bewerken',
+        'bookmarks.delete': 'Bladwijzer verwijderen',
+        'bookmarks.name': 'Naam',
+        'bookmarks.path': 'Pad',
+        'bookmarks.description': 'Beschrijving',
+
+        // File Operations
+        'fileops.no_file_selected': 'Geen bestand geselecteerd',
+        'fileops.no_files_selected': 'Geen bestanden geselecteerd',
+        'fileops.select_one_to_rename': 'Selecteer precies één bestand om te hernoemen',
+        'fileops.select_one_archive': 'Selecteer precies één archief om te decomprimeren',
+        'fileops.enter_filename': 'Voer bestandsnaam in:',
+        'fileops.rename_to': 'Hernoemen naar:',
+        'fileops.enter_directory_name': 'Voer een mapnaam in',
+        'fileops.enter_archive_name': 'Voer een archiefnaam in',
+        'fileops.view_failed': 'Bestand bekijken mislukt: {error}',
+        'fileops.edit_failed': 'Bestand bewerken mislukt: {error}',
+        'fileops.save_success': 'Bestand succesvol opgeslagen',
+        'fileops.save_failed': 'Bestand opslaan mislukt: {error}',
+        'fileops.create_success': 'Bestand succesvol aangemaakt',
+        'fileops.create_failed': 'Bestand maken mislukt: {error}',
+        'fileops.copy_success': 'Bestanden succesvol gekopieerd',
+        'fileops.move_success': 'Bestanden succesvol verplaatst',
+        'fileops.operation_failed': 'Bewerking mislukt {operation}: {error}',
+        'fileops.rename_success': 'Bestand succesvol hernoemd',
+        'fileops.rename_failed': 'Bestand hernoemen mislukt: {error}',
+        'fileops.mkdir_success': 'Map succesvol aangemaakt',
+        'fileops.mkdir_failed': 'Map maken mislukt: {error}',
+        'fileops.delete_success': 'Bestanden succesvol verwijderd',
+        'fileops.delete_failed': 'Bestanden verwijderen mislukt: {error}',
+        'fileops.compress_started': 'Comprimeren gestart',
+        'fileops.compress_failed': 'Bestanden comprimeren mislukt: {error}',
+        'fileops.decompress_started': 'Decomprimeren gestart',
+        'fileops.decompress_failed': 'Bestand decomprimeren mislukt: {error}',
+        'fileops.load_directory_failed': 'Map laden mislukt: {error}',
+        'fileops.copy_with_options': 'Kopiëren met opties niet geïmplementeerd',
+        'fileops.close_browser_tab': 'Sluit browsertabblad om af te sluiten',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Navigatie',
+        'shortcuts.selection': 'Selectie',
+        'shortcuts.operations': 'Bewerkingen',
+        'shortcuts.panels': 'Panelen',
+        'shortcuts.tabs': 'Tabbladen',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'Paneel wisselen',
+        'shortcuts.arrow_keys': 'Pijltjestoetsen',
+        'shortcuts.navigate': 'Navigeren',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': 'Map openen',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': 'Bovenliggende map',
+        'shortcuts.space': 'Spatie',
+        'shortcuts.select_file': 'Bestand selecteren/deselecteren',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'Alles selecteren',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'Alles deselecteren',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': 'Vernieuwen',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'Bestand bekijken',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'Bestand bewerken',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'Kopiëren',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': 'Verplaatsen',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'Map maken',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': 'Verwijderen',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': 'Nieuw tabblad',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': 'Tabblad sluiten',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': 'Volgend tabblad',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': 'Vorig tabblad',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'Opdracht uitgevoerd',
+        'keyboard.invalid_command': 'Ongeldige opdracht',
+        'keyboard.command_failed': 'Opdracht mislukt: {error}',
+        'keyboard.no_custom_commands': 'Geen aangepaste opdrachten beschikbaar',
+
+        // Batch Rename
+        'batch.prefix': 'Voorvoegsel:',
+        'batch.suffix': 'Achtervoegsel:',
+        'batch.replace': 'Zoeken en vervangen',
+
+        // Terminal
+        'terminal.title': 'Terminal',
+        'terminal.command': 'Opdracht:',
+        'terminal.output': 'Uitvoer:',
+        'terminal.error': 'Fout:',
+
+        // Hex Editor
+        'hex.editor': 'Hex-editor',
+
+        // Advanced Search
+        'advanced_search.title': 'Geavanceerd zoeken',
+        'advanced_search.file_name': 'Bestandsnaam',
+        'advanced_search.content': 'Inhoud',
+        'advanced_search.size': 'Grootte',
+        'advanced_search.date': 'Datum',
+        'advanced_search.type': 'Type',
+
+        // Security
+        'security.test': 'Beveiligingstest',
+        'security.scan': 'Scannen',
+        'security.report': 'Rapport',
+
+        // Upload
+        'upload.drop': 'Sleep bestanden hierheen om te uploaden',
+        'upload.select': 'of klik om te selecteren',
+        'upload.uploading': 'Uploaden...',
+
+        // App
+        'app.loading': 'Laden...',
+        'app.error': 'Fout',
+
+        // Drag & Drop
+        'dragdrop.copy': 'KOPIËREN',
+        'dragdrop.move': 'VERPLAATSEN',
+        'dragdrop.copying': 'Kopiëren...',
+        'dragdrop.moving': 'Verplaatsen...',
+
+        // Placeholders
+        'placeholder.new_folder': 'Nieuwe map',
+        'placeholder.archive_zip': 'archief.zip',
+        'placeholder.search_pattern': 'Voer bestandsnaam of patroon in...',
+        'placeholder.rename_prefix': 'bijv.: IMG_',
+        'placeholder.rename_suffix': 'bijv.: _backup',
+        'placeholder.rename_find': 'Te zoeken tekst',
+        'placeholder.rename_replace': 'Vervangende tekst',
+        'placeholder.rename_extension': 'bijv.: jpg',
+        'placeholder.bookmarks_search': 'Bladwijzers zoeken...',
+        'placeholder.bookmark_name': 'Bladwijzernaam',
+        'placeholder.bookmark_path': '/pad/naar/map',
+        'placeholder.bookmark_description': 'Optionele beschrijving',
+        'placeholder.command_search': 'Typ opdracht of zoek...',
+        'placeholder.command_name': 'Opdrachtnaam',
+        'placeholder.command_description': 'Wat deze opdracht doet',
+        'placeholder.command_command': 'Uit te voeren shell-opdracht',
+        'placeholder.command_hotkey': 'bijv.: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': 'Voer zoekpatroon in...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': 'Min (bytes)',
+        'placeholder.size_max': 'Max (bytes)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'Te zoeken tekst in bestanden...',
+        'placeholder.docker_filter': 'Containers filteren...',
+        'placeholder.hex_search': 'Voer hex-waarden in (bijv.: FF 00 1A) of tekst',
+        'placeholder.security_test': 'Voer URL of IP-adres in',
+        'placeholder.cloud_storage_name': 'Mijn S3-opslag',
+        'placeholder.s3_bucket': 'mijn-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'map/submap',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Polish
@@ -693,7 +2909,284 @@ export const languagePack = {
         save: 'Zapisz',
         terminal: 'Terminal',
         clear: 'Wyczyść',
-        close: 'Zamknij'
+        close: 'Zamknij',
+
+        // Custom Commands
+        'commands.custom': 'Własne polecenia',
+        'commands.add': 'Dodaj polecenie',
+        'commands.edit': 'Edytuj polecenie',
+        'commands.delete': 'Usuń polecenie',
+        'commands.run': 'Uruchom polecenie',
+        'commands.name': 'Nazwa polecenia',
+        'commands.description': 'Opis',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Skróty klawiaturowe',
+        'modal.view_file': 'Podgląd pliku',
+        'modal.edit_file': 'Edytuj plik',
+        'modal.copy_files': 'Kopiuj pliki',
+        'modal.create_directory': 'Utwórz katalog',
+        'modal.confirm_delete': 'Potwierdź usunięcie',
+        'modal.compress_files': 'Kompresuj pliki',
+        'modal.search_files': 'Szukaj plików',
+        'modal.confirm_title': 'Potwierdź',
+        'modal.delete_message': 'Czy na pewno chcesz usunąć następujące pliki?',
+        'modal.copy_message': 'Kopiuj zaznaczone pliki do:',
+        'modal.directory_name_label': 'Nazwa katalogu:',
+        'modal.archive_name_label': 'Nazwa archiwum:',
+        'modal.format_label': 'Format:',
+        'modal.search_for_label': 'Szukaj:',
+        'modal.results_label': 'Wyniki:',
+        'modal.confirm_message_default': 'Czy jesteś pewien?',
+        'modal.loading': 'Ładowanie...',
+
+        // Buttons
+        'button.ok': 'OK',
+        'button.cancel': 'Anuluj',
+        'button.yes': 'Tak',
+        'button.no': 'Nie',
+        'button.save': 'Zapisz',
+        'button.close': 'Zamknij',
+        'button.copy': 'Kopiuj',
+        'button.move': 'Przenieś',
+        'button.delete': 'Usuń',
+        'button.create': 'Utwórz',
+        'button.compress': 'Kompresuj',
+        'button.search': 'Szukaj',
+
+        // Tooltips - Header
+        'tooltip.menu': 'Menu',
+        'tooltip.keyboard_shortcuts': 'Skróty klawiaturowe (Ctrl+H)',
+        'tooltip.toggle_theme': 'Przełącz motyw',
+        'tooltip.settings': 'Ustawienia',
+        'tooltip.language': 'Język',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Pomoc',
+        'tooltip.f2_menu': 'F2 - Menu',
+        'tooltip.f3_view': 'F3 - Podgląd pliku',
+        'tooltip.f4_edit': 'F4 - Edytuj plik',
+        'tooltip.f5_copy': 'F5 - Kopiuj pliki',
+        'tooltip.f6_move': 'F6 - Przenieś pliki',
+        'tooltip.f7_mkdir': 'F7 - Utwórz katalog',
+        'tooltip.f8_delete': 'F8 - Usuń pliki',
+        'tooltip.f9_menu': 'F9 - Menu',
+        'tooltip.f10_exit': 'F10 - Wyjście',
+        'tooltip.f11_terminal': 'F11 - Terminal',
+        'tooltip.f12_settings': 'F12 - Ustawienia',
+
+        // Tooltips - Bookmarks
+        'tooltip.bookmarks': 'Zakładki',
+        'tooltip.add_bookmark': 'Dodaj zakładkę',
+        'tooltip.edit_bookmarks': 'Edytuj zakładki',
+
+        // Tooltips - Navigation
+        'tooltip.parent_directory': 'Katalog nadrzędny (Backspace)',
+        'tooltip.refresh': 'Odśwież (Ctrl+R)',
+        'tooltip.home': 'Katalog domowy',
+        'tooltip.root': 'Katalog główny',
+
+        // Tooltips - Terminal
+        'tooltip.open_terminal': 'Otwórz terminal',
+        'tooltip.close_terminal': 'Zamknij terminal',
+        'tooltip.clear_terminal': 'Wyczyść terminal',
+
+        // Tooltips - Hex Editor
+        'tooltip.hex_editor': 'Edytor szesnastkowy',
+
+        // Tooltips - Docker
+        'tooltip.docker_manager': 'Menedżer Docker',
+        'tooltip.docker_containers': 'Kontenery Docker',
+
+        // Tooltips - Tabs
+        'tooltip.new_tab': 'Nowa karta (Ctrl+T)',
+        'tooltip.close_tab': 'Zamknij kartę',
+        'tooltip.tab_menu': 'Menu kart',
+
+        // Tooltips - Commands
+        'tooltip.custom_commands': 'Własne polecenia',
+        'tooltip.add_command': 'Dodaj polecenie',
+        'tooltip.run_command': 'Uruchom polecenie',
+
+        // Context Menu
+        'context.view': 'Podgląd',
+        'context.edit': 'Edytuj',
+        'context.compress': 'Kompresuj',
+        'context.decompress': 'Dekompresuj',
+        'context.batch_rename': 'Zmienianie nazw wsadowe',
+        'context.properties': 'Właściwości',
+        'context.new_file': 'Nowy plik',
+
+        // Search Options
+        'search.case_sensitive': 'Rozróżniaj wielkość liter',
+        'search.whole_word': 'Całe słowo',
+        'search.regex': 'Wyrażenie regularne',
+
+        // Bookmarks
+        'bookmarks.title': 'Zakładki',
+        'bookmarks.add': 'Dodaj zakładkę',
+        'bookmarks.edit': 'Edytuj zakładki',
+        'bookmarks.delete': 'Usuń zakładkę',
+        'bookmarks.name': 'Nazwa',
+        'bookmarks.path': 'Ścieżka',
+        'bookmarks.description': 'Opis',
+
+        // File Operations
+        'fileops.no_file_selected': 'Nie wybrano pliku',
+        'fileops.no_files_selected': 'Nie wybrano plików',
+        'fileops.select_one_to_rename': 'Wybierz dokładnie jeden plik do zmiany nazwy',
+        'fileops.select_one_archive': 'Wybierz dokładnie jedno archiwum do dekompresji',
+        'fileops.enter_filename': 'Wprowadź nazwę pliku:',
+        'fileops.rename_to': 'Zmień nazwę na:',
+        'fileops.enter_directory_name': 'Wprowadź nazwę katalogu',
+        'fileops.enter_archive_name': 'Wprowadź nazwę archiwum',
+        'fileops.view_failed': 'Nie udało się wyświetlić pliku: {error}',
+        'fileops.edit_failed': 'Nie udało się edytować pliku: {error}',
+        'fileops.save_success': 'Plik zapisany pomyślnie',
+        'fileops.save_failed': 'Nie udało się zapisać pliku: {error}',
+        'fileops.create_success': 'Plik utworzony pomyślnie',
+        'fileops.create_failed': 'Nie udało się utworzyć pliku: {error}',
+        'fileops.copy_success': 'Pliki skopiowane pomyślnie',
+        'fileops.move_success': 'Pliki przeniesione pomyślnie',
+        'fileops.operation_failed': 'Nie udało się {operation} plików: {error}',
+        'fileops.rename_success': 'Nazwa pliku zmieniona pomyślnie',
+        'fileops.rename_failed': 'Nie udało się zmienić nazwy pliku: {error}',
+        'fileops.mkdir_success': 'Katalog utworzony pomyślnie',
+        'fileops.mkdir_failed': 'Nie udało się utworzyć katalogu: {error}',
+        'fileops.delete_success': 'Pliki usunięte pomyślnie',
+        'fileops.delete_failed': 'Nie udało się usunąć plików: {error}',
+        'fileops.compress_started': 'Rozpoczęto kompresję',
+        'fileops.compress_failed': 'Nie udało się skompresować plików: {error}',
+        'fileops.decompress_started': 'Rozpoczęto dekompresję',
+        'fileops.decompress_failed': 'Nie udało się zdekompresować pliku: {error}',
+        'fileops.load_directory_failed': 'Nie udało się załadować katalogu: {error}',
+        'fileops.copy_with_options': 'Kopiowanie z opcjami nie zaimplementowane',
+        'fileops.close_browser_tab': 'Zamknij kartę przeglądarki aby wyjść',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Nawigacja',
+        'shortcuts.selection': 'Zaznaczanie',
+        'shortcuts.operations': 'Operacje',
+        'shortcuts.panels': 'Panele',
+        'shortcuts.tabs': 'Karty',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.switch_panel': 'Przełącz panel',
+        'shortcuts.arrow_keys': 'Klawisze strzałek',
+        'shortcuts.navigate': 'Nawiguj',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.open_directory': 'Otwórz katalog',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.parent_directory': 'Katalog nadrzędny',
+        'shortcuts.space': 'Spacja',
+        'shortcuts.select_file': 'Zaznacz/odznacz plik',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.select_all': 'Zaznacz wszystko',
+        'shortcuts.ctrl_d': 'Ctrl+D',
+        'shortcuts.deselect_all': 'Odznacz wszystko',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.refresh': 'Odśwież',
+        'shortcuts.f3': 'F3',
+        'shortcuts.view_file': 'Podgląd pliku',
+        'shortcuts.f4': 'F4',
+        'shortcuts.edit_file': 'Edytuj plik',
+        'shortcuts.f5': 'F5',
+        'shortcuts.copy': 'Kopiuj',
+        'shortcuts.f6': 'F6',
+        'shortcuts.move': 'Przenieś',
+        'shortcuts.f7': 'F7',
+        'shortcuts.create_directory': 'Utwórz katalog',
+        'shortcuts.f8': 'F8',
+        'shortcuts.delete': 'Usuń',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.new_tab': 'Nowa karta',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.close_tab': 'Zamknij kartę',
+        'shortcuts.ctrl_tab': 'Ctrl+Tab',
+        'shortcuts.next_tab': 'Następna karta',
+        'shortcuts.ctrl_shift_tab': 'Ctrl+Shift+Tab',
+        'shortcuts.previous_tab': 'Poprzednia karta',
+
+        // Keyboard Messages
+        'keyboard.command_executed': 'Polecenie wykonane',
+        'keyboard.invalid_command': 'Nieprawidłowe polecenie',
+        'keyboard.command_failed': 'Polecenie nie powiodło się: {error}',
+        'keyboard.no_custom_commands': 'Brak dostępnych własnych poleceń',
+
+        // Batch Rename
+        'batch.prefix': 'Prefiks:',
+        'batch.suffix': 'Sufiks:',
+        'batch.replace': 'Znajdź i zamień',
+
+        // Terminal
+        'terminal.title': 'Terminal',
+        'terminal.command': 'Polecenie:',
+        'terminal.output': 'Wyjście:',
+        'terminal.error': 'Błąd:',
+
+        // Hex Editor
+        'hex.editor': 'Edytor szesnastkowy',
+
+        // Advanced Search
+        'advanced_search.title': 'Zaawansowane wyszukiwanie',
+        'advanced_search.file_name': 'Nazwa pliku',
+        'advanced_search.content': 'Zawartość',
+        'advanced_search.size': 'Rozmiar',
+        'advanced_search.date': 'Data',
+        'advanced_search.type': 'Typ',
+
+        // Security
+        'security.test': 'Test bezpieczeństwa',
+        'security.scan': 'Skanuj',
+        'security.report': 'Raport',
+
+        // Upload
+        'upload.drop': 'Upuść pliki tutaj aby przesłać',
+        'upload.select': 'lub kliknij aby wybrać',
+        'upload.uploading': 'Przesyłanie...',
+
+        // App
+        'app.loading': 'Ładowanie...',
+        'app.error': 'Błąd',
+
+        // Drag & Drop
+        'dragdrop.copy': 'KOPIUJ',
+        'dragdrop.move': 'PRZENIEŚ',
+        'dragdrop.copying': 'Kopiowanie...',
+        'dragdrop.moving': 'Przenoszenie...',
+
+        // Placeholders
+        'placeholder.new_folder': 'Nowy folder',
+        'placeholder.archive_zip': 'archiwum.zip',
+        'placeholder.search_pattern': 'Wprowadź nazwę pliku lub wzorzec...',
+        'placeholder.rename_prefix': 'np.: IMG_',
+        'placeholder.rename_suffix': 'np.: _backup',
+        'placeholder.rename_find': 'Tekst do znalezienia',
+        'placeholder.rename_replace': 'Tekst zastępczy',
+        'placeholder.rename_extension': 'np.: jpg',
+        'placeholder.bookmarks_search': 'Szukaj zakładek...',
+        'placeholder.bookmark_name': 'Nazwa zakładki',
+        'placeholder.bookmark_path': '/ścieżka/do/katalogu',
+        'placeholder.bookmark_description': 'Opcjonalny opis',
+        'placeholder.command_search': 'Wpisz polecenie lub szukaj...',
+        'placeholder.command_name': 'Nazwa polecenia',
+        'placeholder.command_description': 'Co robi to polecenie',
+        'placeholder.command_command': 'Polecenie powłoki do wykonania',
+        'placeholder.command_hotkey': 'np.: Ctrl+Shift+G',
+        'placeholder.search_pattern_advanced': 'Wprowadź wzorzec wyszukiwania...',
+        'placeholder.file_extensions': '.txt, .js, .html',
+        'placeholder.size_min': 'Min (bajty)',
+        'placeholder.size_max': 'Maks (bajty)',
+        'placeholder.exclude_paths': 'node_modules/\n.git/\ndist/',
+        'placeholder.content_search': 'Tekst do wyszukania w plikach...',
+        'placeholder.docker_filter': 'Filtruj kontenery...',
+        'placeholder.hex_search': 'Wprowadź wartości hex (np.: FF 00 1A) lub tekst',
+        'placeholder.security_test': 'Wprowadź URL lub adres IP',
+        'placeholder.cloud_storage_name': 'Moja pamięć S3',
+        'placeholder.s3_bucket': 'moj-bucket',
+        'placeholder.s3_access_key': 'AKIAIOSFODNN7EXAMPLE',
+        'placeholder.s3_secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+        'placeholder.s3_prefix': 'folder/podfolder',
+        'placeholder.s3_endpoint': 'https://s3.example.com'
     },
 
     // Turkish
@@ -768,7 +3261,318 @@ export const languagePack = {
         save: 'Kaydet',
         terminal: 'Terminal',
         clear: 'Temizle',
-        close: 'Kapat'
+        close: 'Kapat',
+
+        // Custom Commands
+        'commands.custom': 'Özel Komutlar',
+        'commands.add': 'Komut Ekle',
+        'commands.edit': 'Komutu Düzenle',
+        'commands.delete': 'Komutu Sil',
+        'commands.run': 'Komutu Çalıştır',
+        'commands.name': 'Komut Adı',
+        'commands.description': 'Açıklama',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'Klavye Kısayolları',
+        'modal.view_file': 'Dosyayı Görüntüle',
+        'modal.edit_file': 'Dosyayı Düzenle',
+        'modal.copy_files': 'Dosyaları Kopyala',
+        'modal.create_directory': 'Dizin Oluştur',
+        'modal.confirm_delete': 'Silmeyi Onayla',
+        'modal.compress_files': 'Dosyaları Sıkıştır',
+        'modal.search_files': 'Dosya Ara',
+        'modal.confirm_title': 'Onayla',
+        'modal.delete_message': 'Aşağıdaki dosyaları silmek istediğinizden emin misiniz?',
+        'modal.copy_message': 'Seçili dosyaları şuraya kopyala:',
+        'modal.directory_name_label': 'Dizin adı:',
+        'modal.archive_name_label': 'Arşiv adı:',
+        'modal.format_label': 'Format:',
+        'modal.search_for_label': 'Ara:',
+        'modal.results_label': 'Sonuçlar:',
+        'modal.confirm_message_default': 'Emin misiniz?',
+        'modal.loading': 'Yükleniyor...',
+
+        // Buttons
+        'button.ok': 'Tamam',
+        'button.cancel': 'İptal',
+        'button.yes': 'Evet',
+        'button.no': 'Hayır',
+        'button.apply': 'Uygula',
+        'button.close': 'Kapat',
+        'button.save': 'Kaydet',
+        'button.delete': 'Sil',
+        'button.create': 'Oluştur',
+        'button.search': 'Ara',
+        'button.compress': 'Sıkıştır',
+        'button.refresh': 'Yenile',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - Yardım',
+        'tooltip.f2_menu': 'F2 - Menü',
+        'tooltip.f3_view': 'F3 - Dosyayı görüntüle',
+        'tooltip.f4_edit': 'F4 - Dosyayı düzenle',
+        'tooltip.f5_copy': 'F5 - Dosyaları kopyala',
+        'tooltip.f6_move': 'F6 - Dosyaları taşı',
+        'tooltip.f7_mkdir': 'F7 - Yeni dizin',
+        'tooltip.f8_delete': 'F8 - Sil',
+        'tooltip.f9_terminal': 'F9 - Terminal',
+        'tooltip.f10_quit': 'F10 - Çıkış',
+
+        // Tooltips - Header
+        'tooltip.storage_selector': 'Depolama alanı seç',
+        'tooltip.new_tab': 'Yeni sekme aç (Ctrl+T)',
+        'tooltip.tab_menu': 'Sekme menüsü',
+        'tooltip.refresh_panel': 'Paneli yenile (Ctrl+R)',
+        'tooltip.sync_panels': 'Panelleri senkronize et',
+        'tooltip.breadcrumb_home': 'Ana dizine git',
+        'tooltip.breadcrumb_up': 'Üst dizine git',
+        'tooltip.breadcrumb_copy': 'Yolu kopyala',
+
+        // Tooltips - File List
+        'tooltip.select_all': 'Tümünü seç (Ctrl+A)',
+        'tooltip.invert_selection': 'Seçimi ters çevir (Ctrl+I)',
+        'tooltip.sort_name': 'Ada göre sırala',
+        'tooltip.sort_size': 'Boyuta göre sırala',
+        'tooltip.sort_date': 'Tarihe göre sırala',
+        'tooltip.sort_type': 'Türe göre sırala',
+        'tooltip.filter_files': 'Dosyaları filtrele',
+
+        // Tooltips - Drag & Drop
+        'tooltip.drag_to_copy': 'Kopyalamak için sürükle',
+        'tooltip.drag_to_move': 'Taşımak için sürükle',
+        'tooltip.drop_here': 'Buraya bırak',
+
+        // Tooltips - Search
+        'tooltip.search_options': 'Arama seçenekleri',
+        'tooltip.search_case_sensitive': 'Büyük/küçük harf duyarlı',
+        'tooltip.search_regex': 'Regex kullan',
+        'tooltip.search_recursive': 'Alt dizinlerde ara',
+
+        // Tooltips - Terminal
+        'tooltip.terminal_clear': 'Terminali temizle',
+        'tooltip.terminal_copy': 'Seçili metni kopyala',
+        'tooltip.terminal_paste': 'Yapıştır',
+
+        // Tooltips - Tabs
+        'tooltip.close_tab': 'Sekmeyi kapat (Ctrl+W)',
+        'tooltip.close_other_tabs': 'Diğer sekmeleri kapat',
+        'tooltip.close_tabs_right': 'Sağdaki sekmeleri kapat',
+        'tooltip.pin_tab': 'Sekmeyi sabitle',
+        'tooltip.duplicate_tab': 'Sekmeyi çoğalt',
+
+        // Tooltips - Bookmarks
+        'tooltip.add_bookmark': 'Yer imi ekle',
+        'tooltip.edit_bookmark': 'Yer imini düzenle',
+        'tooltip.delete_bookmark': 'Yer imini sil',
+        'tooltip.goto_bookmark': 'Yer imine git',
+
+        // Tooltips - Settings
+        'tooltip.toggle_hidden': 'Gizli dosyaları göster/gizle',
+        'tooltip.toggle_theme': 'Temayı değiştir',
+        'tooltip.font_size_increase': 'Yazı boyutunu artır',
+        'tooltip.font_size_decrease': 'Yazı boyutunu azalt',
+
+        // Context Menu
+        'context.open': 'Aç',
+        'context.edit': 'Düzenle',
+        'context.copy': 'Kopyala',
+        'context.cut': 'Kes',
+        'context.paste': 'Yapıştır',
+        'context.delete': 'Sil',
+        'context.rename': 'Yeniden Adlandır',
+        'context.properties': 'Özellikler',
+        'context.compress': 'Sıkıştır',
+        'context.extract': 'Ayıkla',
+        'context.copy_path': 'Yolu Kopyala',
+        'context.copy_name': 'Adı Kopyala',
+
+        // Search Options
+        'search.case_sensitive': 'Büyük/küçük harf duyarlı',
+        'search.use_regex': 'Regex kullan',
+        'search.recursive': 'Alt dizinlerde ara',
+
+        // Bookmarks
+        'bookmark.add': 'Yer imi ekle',
+        'bookmark.edit': 'Yer imini düzenle',
+        'bookmark.delete': 'Yer imini sil',
+        'bookmark.name': 'Yer imi adı',
+        'bookmark.path': 'Yol',
+        'bookmark.icon': 'Simge',
+        'bookmark.go': 'Git',
+
+        // File Operations
+        'fileops.no_file_selected': 'Dosya seçilmedi',
+        'fileops.no_files_selected': 'Dosya seçilmedi',
+        'fileops.select_one_to_rename': 'Yeniden adlandırmak için tam olarak bir dosya seçin',
+        'fileops.enter_filename': 'Dosya adını girin:',
+        'fileops.rename_to': 'Yeni ad:',
+        'fileops.view_failed': 'Dosya görüntülenemedi: {error}',
+        'fileops.save_success': 'Dosya başarıyla kaydedildi',
+        'fileops.save_failed': 'Dosya kaydedilemedi: {error}',
+        'fileops.copy_success': 'Dosyalar başarıyla kopyalandı',
+        'fileops.copy_failed': 'Dosyalar kopyalanamadı: {error}',
+        'fileops.move_success': 'Dosyalar başarıyla taşındı',
+        'fileops.move_failed': 'Dosyalar taşınamadı: {error}',
+        'fileops.delete_success': 'Dosyalar başarıyla silindi',
+        'fileops.delete_failed': 'Dosyalar silinemedi: {error}',
+        'fileops.mkdir_success': 'Dizin başarıyla oluşturuldu',
+        'fileops.mkdir_failed': 'Dizin oluşturulamadı: {error}',
+        'fileops.compress_success': 'Dosyalar başarıyla sıkıştırıldı',
+        'fileops.compress_failed': 'Dosyalar sıkıştırılamadı: {error}',
+        'fileops.extract_success': 'Arşiv başarıyla ayıklandı',
+        'fileops.extract_failed': 'Arşiv ayıklanamadı: {error}',
+        'fileops.search_in_progress': 'Aranıyor...',
+        'fileops.search_complete': 'Arama tamamlandı. {count} sonuç bulundu.',
+        'fileops.search_failed': 'Arama başarısız: {error}',
+        'fileops.operation_failed': '{operation} başarısız: {error}',
+        'fileops.clipboard_copy_success': 'Panoya kopyalandı',
+        'fileops.clipboard_copy_failed': 'Panoya kopyalanamadı',
+        'fileops.invalid_filename': 'Geçersiz dosya adı',
+        'fileops.file_exists': 'Dosya zaten mevcut',
+        'fileops.permission_denied': 'İzin reddedildi',
+        'fileops.disk_full': 'Disk dolu',
+        'fileops.network_error': 'Ağ hatası',
+        'fileops.loading': 'Yükleniyor...',
+        'fileops.no_results': 'Sonuç bulunamadı',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'Gezinme',
+        'shortcuts.file_operations': 'Dosya İşlemleri',
+        'shortcuts.selection': 'Seçim',
+        'shortcuts.tabs': 'Sekmeler',
+        'shortcuts.view': 'Görünüm',
+        'shortcuts.other': 'Diğer',
+        'shortcuts.arrow_keys': 'Ok Tuşları',
+        'shortcuts.arrow_keys_desc': 'Dosyalar arasında gezin',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.tab_desc': 'Paneller arasında geçiş yap',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.enter_desc': 'Dizini aç veya dosyayı çalıştır',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.backspace_desc': 'Üst dizine git',
+        'shortcuts.space': 'Boşluk',
+        'shortcuts.space_desc': 'Dosya/klasör seç/seçimi kaldır',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.ctrl_a_desc': 'Tümünü seç',
+        'shortcuts.ctrl_i': 'Ctrl+I',
+        'shortcuts.ctrl_i_desc': 'Seçimi ters çevir',
+        'shortcuts.ctrl_c': 'Ctrl+C',
+        'shortcuts.ctrl_c_desc': 'Kopyala',
+        'shortcuts.ctrl_x': 'Ctrl+X',
+        'shortcuts.ctrl_x_desc': 'Kes',
+        'shortcuts.ctrl_v': 'Ctrl+V',
+        'shortcuts.ctrl_v_desc': 'Yapıştır',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.ctrl_r_desc': 'Yenile',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.ctrl_t_desc': 'Yeni sekme',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.ctrl_w_desc': 'Sekmeyi kapat',
+        'shortcuts.ctrl_1_9': 'Ctrl+1..9',
+        'shortcuts.ctrl_1_9_desc': 'Sekmeye geç',
+        'shortcuts.f1': 'F1',
+        'shortcuts.f1_desc': 'Yardımı göster',
+        'shortcuts.f2': 'F2',
+        'shortcuts.f2_desc': 'Menüyü aç',
+        'shortcuts.f3': 'F3',
+        'shortcuts.f3_desc': 'Dosyayı görüntüle',
+        'shortcuts.f4': 'F4',
+        'shortcuts.f4_desc': 'Dosyayı düzenle',
+        'shortcuts.f5': 'F5',
+        'shortcuts.f5_desc': 'Dosyaları kopyala',
+        'shortcuts.f6': 'F6',
+        'shortcuts.f6_desc': 'Dosyaları taşı',
+        'shortcuts.f7': 'F7',
+        'shortcuts.f7_desc': 'Yeni dizin',
+        'shortcuts.f8': 'F8',
+        'shortcuts.f8_desc': 'Sil',
+        'shortcuts.f9': 'F9',
+        'shortcuts.f9_desc': 'Terminali aç',
+        'shortcuts.f10': 'F10',
+        'shortcuts.f10_desc': 'Çıkış',
+
+        // Keyboard Messages
+        'keyboard.enabled': 'Klavye kısayolları etkin',
+        'keyboard.disabled': 'Klavye kısayolları devre dışı',
+        'keyboard.help': 'F1 tuşuna basarak tüm kısayolları görün',
+        'keyboard.conflict': 'Kısayol çakışması tespit edildi',
+
+        // Batch Rename
+        'batch.rename': 'Toplu Yeniden Adlandır',
+        'batch.pattern': 'Desen',
+        'batch.preview': 'Önizleme',
+
+        // Terminal
+        'terminal.title': 'Terminal',
+        'terminal.clear': 'Temizle',
+        'terminal.copy': 'Kopyala',
+        'terminal.paste': 'Yapıştır',
+
+        // Hex Editor
+        'hex.editor': 'Hex Düzenleyici',
+
+        // Advanced Search
+        'advanced.search': 'Gelişmiş Arama',
+        'advanced.contains': 'İçerir',
+        'advanced.starts_with': 'Şununla başlar',
+        'advanced.ends_with': 'Şununla biter',
+        'advanced.matches': 'Eşleşir',
+        'advanced.size_filter': 'Boyut Filtresi',
+
+        // Security
+        'security.checksum': 'Sağlama Toplamı',
+        'security.verify': 'Doğrula',
+        'security.hash': 'Hash',
+
+        // Upload
+        'upload.drag_here': 'Dosyaları buraya sürükle',
+        'upload.click_to_browse': 'Veya dosyalara göz atmak için tıkla',
+        'upload.uploading': 'Yükleniyor...',
+
+        // App
+        'app.loading': 'JaCommander Yükleniyor...',
+        'app.ready': 'Hazır',
+
+        // Drag & Drop
+        'drag.copy_to': 'Şuraya kopyala: {path}',
+        'drag.move_to': 'Şuraya taşı: {path}',
+        'drag.operation': 'Sürükle ve bırak işlemi',
+        'drag.drop_files': 'Dosyaları bırak',
+
+        // Placeholders
+        'placeholder.new_folder': 'Yeni klasör',
+        'placeholder.archive_zip': 'arsiv.zip',
+        'placeholder.search_pattern': 'Dosya adı veya desen girin...',
+        'placeholder.command_name': 'Komut adı',
+        'placeholder.command_description': 'Komut açıklaması',
+        'placeholder.command_script': 'Komut betiği',
+        'placeholder.bookmark_name': 'Yer imi adı',
+        'placeholder.bookmark_path': '/yol/dizin',
+        'placeholder.filter_files': 'Dosyaları filtrele...',
+        'placeholder.search_files': 'Dosyalarda ara...',
+        'placeholder.terminal_command': 'Komut girin...',
+        'placeholder.rename_file': 'Yeni dosya adı',
+        'placeholder.create_folder': 'Klasör adı',
+        'placeholder.archive_name': 'Arşiv adı',
+        'placeholder.search_content': 'İçerikte ara...',
+        'placeholder.regex_pattern': 'Regex deseni',
+        'placeholder.file_extension': '*.txt, *.js',
+        'placeholder.min_size': 'Min boyut (bayt)',
+        'placeholder.max_size': 'Maks boyut (bayt)',
+        'placeholder.date_from': 'Tarihten',
+        'placeholder.date_to': 'Tarihe',
+        'placeholder.owner': 'Dosya sahibi',
+        'placeholder.permissions': 'İzinler (örn: 755)',
+        'placeholder.hash_value': 'Hash değeri',
+        'placeholder.compare_with': 'Şununla karşılaştır...',
+        'placeholder.encoding': 'Kodlama (örn: UTF-8)',
+        'placeholder.line_number': 'Satır numarası',
+        'placeholder.goto_line': 'Satıra git...',
+        'placeholder.find_text': 'Metin bul...',
+        'placeholder.replace_with': 'Şununla değiştir...',
+        'placeholder.command_search': 'Komut yazın veya arayın...',
+        'placeholder.hex_search': 'Hex değerleri girin (örn: FF 00 1A) veya metin',
+        'placeholder.select_format': 'Format seçin'
     },
 
     // Arabic
@@ -843,7 +3647,318 @@ export const languagePack = {
         save: 'حفظ',
         terminal: 'محطة',
         clear: 'مسح',
-        close: 'إغلاق'
+        close: 'إغلاق',
+
+        // Custom Commands
+        'commands.custom': 'أوامر مخصصة',
+        'commands.add': 'إضافة أمر',
+        'commands.edit': 'تحرير الأمر',
+        'commands.delete': 'حذف الأمر',
+        'commands.run': 'تشغيل الأمر',
+        'commands.name': 'اسم الأمر',
+        'commands.description': 'الوصف',
+
+        // Modals - Titles & Content
+        'modal.keyboard_shortcuts': 'اختصارات لوحة المفاتيح',
+        'modal.view_file': 'عرض الملف',
+        'modal.edit_file': 'تحرير الملف',
+        'modal.copy_files': 'نسخ الملفات',
+        'modal.create_directory': 'إنشاء دليل',
+        'modal.confirm_delete': 'تأكيد الحذف',
+        'modal.compress_files': 'ضغط الملفات',
+        'modal.search_files': 'البحث عن ملفات',
+        'modal.confirm_title': 'تأكيد',
+        'modal.delete_message': 'هل أنت متأكد أنك تريد حذف الملفات التالية؟',
+        'modal.copy_message': 'نسخ الملفات المحددة إلى:',
+        'modal.directory_name_label': 'اسم الدليل:',
+        'modal.archive_name_label': 'اسم الأرشيف:',
+        'modal.format_label': 'التنسيق:',
+        'modal.search_for_label': 'البحث عن:',
+        'modal.results_label': 'النتائج:',
+        'modal.confirm_message_default': 'هل أنت متأكد؟',
+        'modal.loading': 'جاري التحميل...',
+
+        // Buttons
+        'button.ok': 'موافق',
+        'button.cancel': 'إلغاء',
+        'button.yes': 'نعم',
+        'button.no': 'لا',
+        'button.apply': 'تطبيق',
+        'button.close': 'إغلاق',
+        'button.save': 'حفظ',
+        'button.delete': 'حذف',
+        'button.create': 'إنشاء',
+        'button.search': 'بحث',
+        'button.compress': 'ضغط',
+        'button.refresh': 'تحديث',
+
+        // Tooltips - Footer
+        'tooltip.f1_help': 'F1 - مساعدة',
+        'tooltip.f2_menu': 'F2 - القائمة',
+        'tooltip.f3_view': 'F3 - عرض الملف',
+        'tooltip.f4_edit': 'F4 - تحرير الملف',
+        'tooltip.f5_copy': 'F5 - نسخ الملفات',
+        'tooltip.f6_move': 'F6 - نقل الملفات',
+        'tooltip.f7_mkdir': 'F7 - دليل جديد',
+        'tooltip.f8_delete': 'F8 - حذف',
+        'tooltip.f9_terminal': 'F9 - المحطة',
+        'tooltip.f10_quit': 'F10 - خروج',
+
+        // Tooltips - Header
+        'tooltip.storage_selector': 'اختر التخزين',
+        'tooltip.new_tab': 'فتح علامة تبويب جديدة (Ctrl+T)',
+        'tooltip.tab_menu': 'قائمة علامة التبويب',
+        'tooltip.refresh_panel': 'تحديث اللوحة (Ctrl+R)',
+        'tooltip.sync_panels': 'مزامنة اللوحات',
+        'tooltip.breadcrumb_home': 'الانتقال إلى الدليل الرئيسي',
+        'tooltip.breadcrumb_up': 'الانتقال إلى الدليل الأعلى',
+        'tooltip.breadcrumb_copy': 'نسخ المسار',
+
+        // Tooltips - File List
+        'tooltip.select_all': 'تحديد الكل (Ctrl+A)',
+        'tooltip.invert_selection': 'عكس التحديد (Ctrl+I)',
+        'tooltip.sort_name': 'فرز حسب الاسم',
+        'tooltip.sort_size': 'فرز حسب الحجم',
+        'tooltip.sort_date': 'فرز حسب التاريخ',
+        'tooltip.sort_type': 'فرز حسب النوع',
+        'tooltip.filter_files': 'تصفية الملفات',
+
+        // Tooltips - Drag & Drop
+        'tooltip.drag_to_copy': 'اسحب للنسخ',
+        'tooltip.drag_to_move': 'اسحب للنقل',
+        'tooltip.drop_here': 'أفلت هنا',
+
+        // Tooltips - Search
+        'tooltip.search_options': 'خيارات البحث',
+        'tooltip.search_case_sensitive': 'حساس لحالة الأحرف',
+        'tooltip.search_regex': 'استخدام Regex',
+        'tooltip.search_recursive': 'البحث في الأدلة الفرعية',
+
+        // Tooltips - Terminal
+        'tooltip.terminal_clear': 'مسح المحطة',
+        'tooltip.terminal_copy': 'نسخ النص المحدد',
+        'tooltip.terminal_paste': 'لصق',
+
+        // Tooltips - Tabs
+        'tooltip.close_tab': 'إغلاق علامة التبويب (Ctrl+W)',
+        'tooltip.close_other_tabs': 'إغلاق علامات التبويب الأخرى',
+        'tooltip.close_tabs_right': 'إغلاق علامات التبويب على اليمين',
+        'tooltip.pin_tab': 'تثبيت علامة التبويب',
+        'tooltip.duplicate_tab': 'تكرار علامة التبويب',
+
+        // Tooltips - Bookmarks
+        'tooltip.add_bookmark': 'إضافة إشارة مرجعية',
+        'tooltip.edit_bookmark': 'تحرير الإشارة المرجعية',
+        'tooltip.delete_bookmark': 'حذف الإشارة المرجعية',
+        'tooltip.goto_bookmark': 'الانتقال إلى الإشارة المرجعية',
+
+        // Tooltips - Settings
+        'tooltip.toggle_hidden': 'إظهار/إخفاء الملفات المخفية',
+        'tooltip.toggle_theme': 'تبديل الثيم',
+        'tooltip.font_size_increase': 'زيادة حجم الخط',
+        'tooltip.font_size_decrease': 'تقليل حجم الخط',
+
+        // Context Menu
+        'context.open': 'فتح',
+        'context.edit': 'تحرير',
+        'context.copy': 'نسخ',
+        'context.cut': 'قص',
+        'context.paste': 'لصق',
+        'context.delete': 'حذف',
+        'context.rename': 'إعادة تسمية',
+        'context.properties': 'خصائص',
+        'context.compress': 'ضغط',
+        'context.extract': 'استخراج',
+        'context.copy_path': 'نسخ المسار',
+        'context.copy_name': 'نسخ الاسم',
+
+        // Search Options
+        'search.case_sensitive': 'حساس لحالة الأحرف',
+        'search.use_regex': 'استخدام Regex',
+        'search.recursive': 'البحث في الأدلة الفرعية',
+
+        // Bookmarks
+        'bookmark.add': 'إضافة إشارة مرجعية',
+        'bookmark.edit': 'تحرير الإشارة المرجعية',
+        'bookmark.delete': 'حذف الإشارة المرجعية',
+        'bookmark.name': 'اسم الإشارة المرجعية',
+        'bookmark.path': 'المسار',
+        'bookmark.icon': 'الأيقونة',
+        'bookmark.go': 'انتقال',
+
+        // File Operations
+        'fileops.no_file_selected': 'لم يتم تحديد ملف',
+        'fileops.no_files_selected': 'لم يتم تحديد ملفات',
+        'fileops.select_one_to_rename': 'حدد ملف واحد بالضبط لإعادة التسمية',
+        'fileops.enter_filename': 'أدخل اسم الملف:',
+        'fileops.rename_to': 'إعادة التسمية إلى:',
+        'fileops.view_failed': 'فشل عرض الملف: {error}',
+        'fileops.save_success': 'تم حفظ الملف بنجاح',
+        'fileops.save_failed': 'فشل حفظ الملف: {error}',
+        'fileops.copy_success': 'تم نسخ الملفات بنجاح',
+        'fileops.copy_failed': 'فشل نسخ الملفات: {error}',
+        'fileops.move_success': 'تم نقل الملفات بنجاح',
+        'fileops.move_failed': 'فشل نقل الملفات: {error}',
+        'fileops.delete_success': 'تم حذف الملفات بنجاح',
+        'fileops.delete_failed': 'فشل حذف الملفات: {error}',
+        'fileops.mkdir_success': 'تم إنشاء الدليل بنجاح',
+        'fileops.mkdir_failed': 'فشل إنشاء الدليل: {error}',
+        'fileops.compress_success': 'تم ضغط الملفات بنجاح',
+        'fileops.compress_failed': 'فشل ضغط الملفات: {error}',
+        'fileops.extract_success': 'تم استخراج الأرشيف بنجاح',
+        'fileops.extract_failed': 'فشل استخراج الأرشيف: {error}',
+        'fileops.search_in_progress': 'جاري البحث...',
+        'fileops.search_complete': 'اكتمل البحث. تم العثور على {count} نتيجة.',
+        'fileops.search_failed': 'فشل البحث: {error}',
+        'fileops.operation_failed': 'فشل {operation}: {error}',
+        'fileops.clipboard_copy_success': 'تم النسخ إلى الحافظة',
+        'fileops.clipboard_copy_failed': 'فشل النسخ إلى الحافظة',
+        'fileops.invalid_filename': 'اسم ملف غير صالح',
+        'fileops.file_exists': 'الملف موجود بالفعل',
+        'fileops.permission_denied': 'تم رفض الإذن',
+        'fileops.disk_full': 'القرص ممتلئ',
+        'fileops.network_error': 'خطأ في الشبكة',
+        'fileops.loading': 'جاري التحميل...',
+        'fileops.no_results': 'لم يتم العثور على نتائج',
+
+        // Keyboard Shortcuts
+        'shortcuts.navigation': 'التنقل',
+        'shortcuts.file_operations': 'عمليات الملفات',
+        'shortcuts.selection': 'التحديد',
+        'shortcuts.tabs': 'علامات التبويب',
+        'shortcuts.view': 'العرض',
+        'shortcuts.other': 'أخرى',
+        'shortcuts.arrow_keys': 'مفاتيح الأسهم',
+        'shortcuts.arrow_keys_desc': 'التنقل بين الملفات',
+        'shortcuts.tab': 'Tab',
+        'shortcuts.tab_desc': 'التبديل بين اللوحات',
+        'shortcuts.enter': 'Enter',
+        'shortcuts.enter_desc': 'فتح الدليل أو تشغيل الملف',
+        'shortcuts.backspace': 'Backspace',
+        'shortcuts.backspace_desc': 'الانتقال إلى الدليل الأعلى',
+        'shortcuts.space': 'مسافة',
+        'shortcuts.space_desc': 'تحديد/إلغاء تحديد ملف/مجلد',
+        'shortcuts.ctrl_a': 'Ctrl+A',
+        'shortcuts.ctrl_a_desc': 'تحديد الكل',
+        'shortcuts.ctrl_i': 'Ctrl+I',
+        'shortcuts.ctrl_i_desc': 'عكس التحديد',
+        'shortcuts.ctrl_c': 'Ctrl+C',
+        'shortcuts.ctrl_c_desc': 'نسخ',
+        'shortcuts.ctrl_x': 'Ctrl+X',
+        'shortcuts.ctrl_x_desc': 'قص',
+        'shortcuts.ctrl_v': 'Ctrl+V',
+        'shortcuts.ctrl_v_desc': 'لصق',
+        'shortcuts.ctrl_r': 'Ctrl+R',
+        'shortcuts.ctrl_r_desc': 'تحديث',
+        'shortcuts.ctrl_t': 'Ctrl+T',
+        'shortcuts.ctrl_t_desc': 'علامة تبويب جديدة',
+        'shortcuts.ctrl_w': 'Ctrl+W',
+        'shortcuts.ctrl_w_desc': 'إغلاق علامة التبويب',
+        'shortcuts.ctrl_1_9': 'Ctrl+1..9',
+        'shortcuts.ctrl_1_9_desc': 'التبديل إلى علامة التبويب',
+        'shortcuts.f1': 'F1',
+        'shortcuts.f1_desc': 'إظهار المساعدة',
+        'shortcuts.f2': 'F2',
+        'shortcuts.f2_desc': 'فتح القائمة',
+        'shortcuts.f3': 'F3',
+        'shortcuts.f3_desc': 'عرض الملف',
+        'shortcuts.f4': 'F4',
+        'shortcuts.f4_desc': 'تحرير الملف',
+        'shortcuts.f5': 'F5',
+        'shortcuts.f5_desc': 'نسخ الملفات',
+        'shortcuts.f6': 'F6',
+        'shortcuts.f6_desc': 'نقل الملفات',
+        'shortcuts.f7': 'F7',
+        'shortcuts.f7_desc': 'دليل جديد',
+        'shortcuts.f8': 'F8',
+        'shortcuts.f8_desc': 'حذف',
+        'shortcuts.f9': 'F9',
+        'shortcuts.f9_desc': 'فتح المحطة',
+        'shortcuts.f10': 'F10',
+        'shortcuts.f10_desc': 'خروج',
+
+        // Keyboard Messages
+        'keyboard.enabled': 'اختصارات لوحة المفاتيح مفعلة',
+        'keyboard.disabled': 'اختصارات لوحة المفاتيح معطلة',
+        'keyboard.help': 'اضغط F1 لعرض جميع الاختصارات',
+        'keyboard.conflict': 'تم اكتشاف تعارض في الاختصارات',
+
+        // Batch Rename
+        'batch.rename': 'إعادة تسمية دفعة',
+        'batch.pattern': 'النمط',
+        'batch.preview': 'معاينة',
+
+        // Terminal
+        'terminal.title': 'المحطة',
+        'terminal.clear': 'مسح',
+        'terminal.copy': 'نسخ',
+        'terminal.paste': 'لصق',
+
+        // Hex Editor
+        'hex.editor': 'محرر Hex',
+
+        // Advanced Search
+        'advanced.search': 'بحث متقدم',
+        'advanced.contains': 'يحتوي',
+        'advanced.starts_with': 'يبدأ بـ',
+        'advanced.ends_with': 'ينتهي بـ',
+        'advanced.matches': 'يطابق',
+        'advanced.size_filter': 'تصفية الحجم',
+
+        // Security
+        'security.checksum': 'المجموع الاختباري',
+        'security.verify': 'تحقق',
+        'security.hash': 'Hash',
+
+        // Upload
+        'upload.drag_here': 'اسحب الملفات هنا',
+        'upload.click_to_browse': 'أو انقر لتصفح الملفات',
+        'upload.uploading': 'جاري الرفع...',
+
+        // App
+        'app.loading': 'جاري تحميل JaCommander...',
+        'app.ready': 'جاهز',
+
+        // Drag & Drop
+        'drag.copy_to': 'نسخ إلى: {path}',
+        'drag.move_to': 'نقل إلى: {path}',
+        'drag.operation': 'عملية سحب وإفلات',
+        'drag.drop_files': 'أفلت الملفات',
+
+        // Placeholders
+        'placeholder.new_folder': 'مجلد جديد',
+        'placeholder.archive_zip': 'archive.zip',
+        'placeholder.search_pattern': 'أدخل اسم الملف أو النمط...',
+        'placeholder.command_name': 'اسم الأمر',
+        'placeholder.command_description': 'وصف الأمر',
+        'placeholder.command_script': 'سكريبت الأمر',
+        'placeholder.bookmark_name': 'اسم الإشارة المرجعية',
+        'placeholder.bookmark_path': '/مسار/دليل',
+        'placeholder.filter_files': 'تصفية الملفات...',
+        'placeholder.search_files': 'البحث في الملفات...',
+        'placeholder.terminal_command': 'أدخل الأمر...',
+        'placeholder.rename_file': 'اسم الملف الجديد',
+        'placeholder.create_folder': 'اسم المجلد',
+        'placeholder.archive_name': 'اسم الأرشيف',
+        'placeholder.search_content': 'البحث في المحتوى...',
+        'placeholder.regex_pattern': 'نمط Regex',
+        'placeholder.file_extension': '*.txt, *.js',
+        'placeholder.min_size': 'الحد الأدنى للحجم (بايت)',
+        'placeholder.max_size': 'الحد الأقصى للحجم (بايت)',
+        'placeholder.date_from': 'من تاريخ',
+        'placeholder.date_to': 'إلى تاريخ',
+        'placeholder.owner': 'مالك الملف',
+        'placeholder.permissions': 'الأذونات (مثل: 755)',
+        'placeholder.hash_value': 'قيمة Hash',
+        'placeholder.compare_with': 'مقارنة مع...',
+        'placeholder.encoding': 'الترميز (مثل: UTF-8)',
+        'placeholder.line_number': 'رقم السطر',
+        'placeholder.goto_line': 'الانتقال إلى السطر...',
+        'placeholder.find_text': 'البحث عن نص...',
+        'placeholder.replace_with': 'استبدال بـ...',
+        'placeholder.command_search': 'اكتب أمر أو ابحث...',
+        'placeholder.hex_search': 'أدخل قيم hex (مثل: FF 00 1A) أو نص',
+        'placeholder.select_format': 'اختر التنسيق'
     }
 };
 

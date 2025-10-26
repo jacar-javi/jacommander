@@ -1,4 +1,5 @@
 // Theme Manager Module
+/* eslint-disable no-console */
 
 export class ThemeManager {
     constructor() {
@@ -92,13 +93,6 @@ export class ThemeManager {
     updateThemeButton() {
         const button = document.getElementById('theme-btn');
         if (button) {
-            // Update icon based on current theme
-            const icons = {
-                dark: '🌙',
-                light: '☀️',
-                'high-contrast': '⚡'
-            };
-
             // Use simple icon for now
             button.textContent = '◐';
 

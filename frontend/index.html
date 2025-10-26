@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JaCommander - Minimalist File Manager</title>
+    <title>JaCommander v1.3.0 - Minimalist File Manager</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/themes.css" />
     <link rel="stylesheet" href="css/panels.css" />
@@ -22,7 +22,7 @@
     <header class="header-bar">
       <div class="header-left">
         <button id="menu-btn" class="header-btn" title="Menu (F9)">☰</button>
-        <span class="app-title">JaCommander</span>
+        <span class="app-title">JaCommander v1.3.0</span>
       </div>
       <div class="header-right">
         <!-- Custom Language Dropdown -->
@@ -40,6 +40,9 @@
         <button id="shortcuts-btn" class="header-btn" title="Keyboard Shortcuts (Ctrl+K)">⌨</button>
         <button id="config-btn" class="header-btn" title="Configuration">⚙</button>
         <button id="theme-btn" class="header-btn" title="Toggle Theme">◐</button>
+        <button id="connection-status-btn" class="header-btn connection-status" title="Backend Connection Status" data-status="connected">
+          <span class="status-indicator">●</span>
+        </button>
       </div>
     </header>
 
@@ -62,10 +65,10 @@
             <table class="file-list" id="file-list-left">
               <thead>
                 <tr>
-                  <th class="col-select">☐</th>
-                  <th class="col-name">Name</th>
-                  <th class="col-size">Size</th>
-                  <th class="col-modified">Modified</th>
+                  <th class="col-select"><input type="checkbox" class="select-all-checkbox" /></th>
+                  <th class="col-name sortable">Name</th>
+                  <th class="col-size sortable">Size</th>
+                  <th class="col-modified sortable">Modified</th>
                 </tr>
               </thead>
               <tbody id="files-left">
@@ -100,10 +103,10 @@
             <table class="file-list" id="file-list-right">
               <thead>
                 <tr>
-                  <th class="col-select">☐</th>
-                  <th class="col-name">Name</th>
-                  <th class="col-size">Size</th>
-                  <th class="col-modified">Modified</th>
+                  <th class="col-select"><input type="checkbox" class="select-all-checkbox" /></th>
+                  <th class="col-name sortable">Name</th>
+                  <th class="col-size sortable">Size</th>
+                  <th class="col-modified sortable">Modified</th>
                 </tr>
               </thead>
               <tbody id="files-right">
@@ -348,6 +351,23 @@
       </div>
     </div>
 
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal" style="display: none">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="confirm-title">Confirm</h2>
+          <button class="modal-close" data-modal="confirm-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <p id="confirm-message">Are you sure?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="confirm-yes" class="btn-primary">Yes</button>
+          <button id="confirm-no" class="btn-cancel" data-modal="confirm-modal">No</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Context Menu -->
     <div id="context-menu" class="context-menu">
       <div class="context-menu-item" data-action="view"><span>📄</span> View (F3)</div>
@@ -362,6 +382,26 @@
     </div>
 
     <!-- Scripts -->
-    <script type="module" src="js/app.js"></script>
+    <script type="module">
+      // Check if debug mode is enabled before loading remote logger
+      fetch('/api/config')
+        .then((res) => res.json())
+        .then((config) => {
+          // Update page title and app title with version
+          if (config.version) {
+            const versionText = `v${config.version}`;
+            document.title = `JaCommander ${versionText}`;
+            const appTitle = document.querySelector('.app-title');
+            if (appTitle) {
+              appTitle.textContent = `JaCommander ${versionText}`;
+            }
+          }
+        })
+        .catch(() => {
+          // If config endpoint fails, use default title
+          console.log('Config endpoint not available');
+        });
+    </script>
+    <script type="module" src="js/app.js?v=1.3.8"></script>
   </body>
 </html>
